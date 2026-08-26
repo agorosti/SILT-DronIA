@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+"""ros2 run solar_farm_gz teleop_joy"""
+import sys
+from solar_farm_gz.teleop_joy import main
+
+sys.exit(main())

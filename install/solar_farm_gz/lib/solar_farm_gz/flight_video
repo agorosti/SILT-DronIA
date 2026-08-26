@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+"""ros2 run solar_farm_gz flight_video -- --world worlds/solar_farm.sdf"""
+import sys
+from solar_farm_gz.flight_video import main
+
+sys.exit(main())

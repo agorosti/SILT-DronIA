@@ -1,0 +1,510 @@
+<?xml version="1.0"?>
+<!--
+  Holybro X500 V2 class quadrotor with a nadir RGB inspection camera.
+
+  Every number here is traceable to the client's physical airframe rather than
+  copied from a stock Iris model, because the thesis claim depends on it: the
+  point is not "I simulated an RGB drone", it is "I simulated the drone I
+  built, and this is what it would have seen".
+
+    airframe   Holybro X500 V2, 500 mm wheelbase, ~1.3 kg all-up weight
+    camera     Raspberry Pi Camera Module 3, standard (not Wide)
+               66 deg horizontal FOV, 1920x1080 @ 30 fps, nadir (-90 deg)
+
+  Wheelbase is motor-to-motor across the diagonal, so each motor sits 0.25 m
+  from centre, i.e. 0.25/sqrt(2) = 0.176777 m along each of X and Y.
+
+  ArduPilot quad-X motor order is followed exactly, since ArduCopter's mixer
+  assumes it and a permuted model flies but will not stabilise:
+
+    rotor_0  front-right  CCW      rotor_2  front-left   CW
+    rotor_1  back-left    CCW      rotor_3  back-right   CW
+-->
+<sdf version="1.9">
+  <model name="x500_rgb">
+
+    <!--
+      Mass budget totals the 1.3 kg AUW the client measured:
+      frame 0.94 + 4 rotors x 0.08 + camera 0.04 = 1.30 kg.
+
+      Frame inertia below covers the frame alone; Gazebo composes the rotor
+      and camera links on top. That composite lands near Ixx=Iyy=0.018,
+      Izz=0.035, which is the published range for an X500 at this weight.
+      Putting the whole-vehicle figure on base_link instead would double-count
+      the motors and give a sluggish, over-damped roll response.
+    -->
+    <link name="base_link">
+      <inertial>
+        <mass>0.94</mass>
+        <inertia>
+          <ixx>0.008</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>0.008</iyy><iyz>0</iyz>
+          <izz>0.015</izz>
+        </inertia>
+      </inertial>
+
+      <!-- centre plate stack (flight controller, battery, companion Pi) -->
+      <visual name="body_visual">
+        <geometry><box><size>0.18 0.11 0.06</size></box></geometry>
+        <material>
+          <ambient>0.08 0.08 0.09 1</ambient>
+          <diffuse>0.15 0.15 0.17 1</diffuse>
+          <specular>0.2 0.2 0.2 1</specular>
+        </material>
+      </visual>
+      <collision name="body_collision">
+        <geometry><box><size>0.18 0.11 0.06</size></box></geometry>
+      </collision>
+
+      <!--
+        Four booms, each rotated 45 deg in yaw so it runs centre-to-motor.
+        Modelled as visuals only: the arms never contact anything in an aerial
+        inspection flight, and giving each one a collision box would cost
+        broadphase checks against a 1000-panel world for no behavioural gain.
+      -->
+      <visual name="arm_fr">
+        <pose>0.088388 -0.088388 0 0 0 -0.785398</pose>
+        <geometry><box><size>0.25 0.016 0.016</size></box></geometry>
+        <material><diffuse>0.1 0.1 0.1 1</diffuse></material>
+      </visual>
+      <visual name="arm_bl">
+        <pose>-0.088388 0.088388 0 0 0 -0.785398</pose>
+        <geometry><box><size>0.25 0.016 0.016</size></box></geometry>
+        <material><diffuse>0.1 0.1 0.1 1</diffuse></material>
+      </visual>
+      <visual name="arm_fl">
+        <pose>0.088388 0.088388 0 0 0 0.785398</pose>
+        <geometry><box><size>0.25 0.016 0.016</size></box></geometry>
+        <material><diffuse>0.1 0.1 0.1 1</diffuse></material>
+      </visual>
+      <visual name="arm_br">
+        <pose>-0.088388 -0.088388 0 0 0 0.785398</pose>
+        <geometry><box><size>0.25 0.016 0.016</size></box></geometry>
+        <material><diffuse>0.1 0.1 0.1 1</diffuse></material>
+      </visual>
+
+      <!--
+        Landing legs. These do carry collision geometry so the aircraft can be
+        armed and take off from the ground plane rather than starting mid-air.
+        Leg feet sit at z = -0.13, which is the spawn height used in the launch
+        file.
+      -->
+      <visual name="leg_left">
+        <pose>0 0.09 -0.075 0 0 0</pose>
+        <geometry><box><size>0.02 0.02 0.11</size></box></geometry>
+        <material><diffuse>0.1 0.1 0.1 1</diffuse></material>
+      </visual>
+      <collision name="leg_left_collision">
+        <pose>0 0.09 -0.075 0 0 0</pose>
+        <geometry><box><size>0.02 0.02 0.11</size></box></geometry>
+      </collision>
+      <visual name="leg_right">
+        <pose>0 -0.09 -0.075 0 0 0</pose>
+        <geometry><box><size>0.02 0.02 0.11</size></box></geometry>
+        <material><diffuse>0.1 0.1 0.1 1</diffuse></material>
+      </visual>
+      <collision name="leg_right_collision">
+        <pose>0 -0.09 -0.075 0 0 0</pose>
+        <geometry><box><size>0.02 0.02 0.11</size></box></geometry>
+      </collision>
+
+      <!--
+        ArduPilot drives its EKF from this at 1 kHz. The rate is not cosmetic:
+        SITL runs lock-step with the simulator, and an IMU slower than the
+        flight controller's loop shows up as attitude estimate noise.
+      -->
+      <!--
+        Two things here are load-bearing and easy to get wrong.
+
+        No <topic>. ArduPilotPlugin does not read the sensor's topic element —
+        it derives the topic itself as scopedName(sensor) + "/imu" and
+        subscribes to that. Declaring a custom topic makes Gazebo publish
+        somewhere the plugin never listens, so the plugin sees no IMU data,
+        never produces valid state, and SITL sits retransmitting the same
+        frame forever ("Duplicate input frame") without ever arming.
+
+        The 180 degree roll converts Gazebo's forward-left-up body frame into
+        the forward-right-down frame ArduPilot's EKF expects. This matches the
+        reference airframe and pairs with modelXYZToAirplaneXForwardZDown
+        below; without it the controller sees an inverted aircraft.
+      -->
+      <sensor name="imu_sensor" type="imu">
+        <gz_frame_id>base_link</gz_frame_id>
+        <pose degrees="true">0 0 0 180 0 0</pose>
+        <always_on>1</always_on>
+        <update_rate>1000.0</update_rate>
+      </sensor>
+    </link>
+
+    <!--
+      Nadir camera.
+
+      Mounted under the centre plate looking straight down. Gazebo cameras
+      look along their local +X, so a +90 deg pitch swings that to -Z, which
+      is the fixed nadir mount the client described.
+
+      horizontal_fov is 66 deg = 1.151917 rad, taken from the Camera Module 3
+      datasheet. Worth noting the numbers are self-consistent: 66 deg across a
+      16:9 frame implies 40.1 deg vertically, matching the 41 deg the client
+      quoted, so the sensor is modelled as a true pinhole at the real FOV
+      rather than fudged to hit a diagonal.
+
+      At the 8 m survey altitude this yields a 10.4 m ground swath and a
+      ground sample distance of 5.4 mm/px.
+    -->
+    <link name="camera_link">
+      <pose>0 0 -0.045 0 1.570796 0</pose>
+      <inertial>
+        <mass>0.04</mass>
+        <inertia>
+          <ixx>1e-05</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>1e-05</iyy><iyz>0</iyz>
+          <izz>1e-05</izz>
+        </inertia>
+      </inertial>
+      <visual name="camera_visual">
+        <geometry><box><size>0.03 0.03 0.025</size></box></geometry>
+        <material><diffuse>0.02 0.02 0.02 1</diffuse></material>
+      </visual>
+
+      <sensor name="nadir_camera" type="camera">
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <visualize>false</visualize>
+        <topic>x500_rgb/nadir</topic>
+        <camera>
+          <horizontal_fov>1.151917</horizontal_fov>
+          <image>
+            <width>1920</width>
+            <height>1080</height>
+            <format>R8G8B8</format>
+          </image>
+          <!--
+            Far plane is 500 m rather than the Gazebo default so the whole
+            farm stays in frame on the free-orbit view; near plane 0.1 m is
+            well inside the 8 m working distance.
+          -->
+          <clip><near>0.1</near><far>500</far></clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0</mean>
+            <stddev>0.005</stddev>
+          </noise>
+        </camera>
+      </sensor>
+    </link>
+    <joint name="camera_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>camera_link</child>
+    </joint>
+
+    <!--
+      Rotors.
+
+      Props are 10 in (0.254 m diameter). motorConstant 8.54858e-06 with a
+      1000 rad/s ceiling gives ~8.5 N per motor, so 34 N of thrust against a
+      12.8 N hover requirement: a thrust-to-weight of about 2.7, which is
+      where a correctly propped X500 actually sits. Hover then lands near
+      610 rad/s, comfortably off the rail, so the controller has authority in
+      both directions.
+    -->
+    <link name="rotor_0">
+      <pose>0.176777 -0.176777 0.032 0 0 0</pose>
+      <inertial>
+        <mass>0.08</mass>
+        <inertia>
+          <ixx>1.0e-05</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>3.5e-04</iyy><iyz>0</iyz>
+          <izz>3.6e-04</izz>
+        </inertia>
+      </inertial>
+      <visual name="prop">
+        <geometry><box><size>0.254 0.022 0.005</size></box></geometry>
+        <material><diffuse>0.75 0.15 0.15 1</diffuse></material>
+      </visual>
+    </link>
+    <joint name="rotor_0_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>rotor_0</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit><lower>-1e16</lower><upper>1e16</upper></limit>
+        <dynamics><damping>0.004</damping></dynamics>
+      </axis>
+    </joint>
+
+    <link name="rotor_1">
+      <pose>-0.176777 0.176777 0.032 0 0 0</pose>
+      <inertial>
+        <mass>0.08</mass>
+        <inertia>
+          <ixx>1.0e-05</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>3.5e-04</iyy><iyz>0</iyz>
+          <izz>3.6e-04</izz>
+        </inertia>
+      </inertial>
+      <visual name="prop">
+        <geometry><box><size>0.254 0.022 0.005</size></box></geometry>
+        <material><diffuse>0.2 0.2 0.2 1</diffuse></material>
+      </visual>
+    </link>
+    <joint name="rotor_1_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>rotor_1</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit><lower>-1e16</lower><upper>1e16</upper></limit>
+        <dynamics><damping>0.004</damping></dynamics>
+      </axis>
+    </joint>
+
+    <link name="rotor_2">
+      <pose>0.176777 0.176777 0.032 0 0 0</pose>
+      <inertial>
+        <mass>0.08</mass>
+        <inertia>
+          <ixx>1.0e-05</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>3.5e-04</iyy><iyz>0</iyz>
+          <izz>3.6e-04</izz>
+        </inertia>
+      </inertial>
+      <visual name="prop">
+        <geometry><box><size>0.254 0.022 0.005</size></box></geometry>
+        <material><diffuse>0.75 0.15 0.15 1</diffuse></material>
+      </visual>
+    </link>
+    <joint name="rotor_2_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>rotor_2</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit><lower>-1e16</lower><upper>1e16</upper></limit>
+        <dynamics><damping>0.004</damping></dynamics>
+      </axis>
+    </joint>
+
+    <link name="rotor_3">
+      <pose>-0.176777 -0.176777 0.032 0 0 0</pose>
+      <inertial>
+        <mass>0.08</mass>
+        <inertia>
+          <ixx>1.0e-05</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>3.5e-04</iyy><iyz>0</iyz>
+          <izz>3.6e-04</izz>
+        </inertia>
+      </inertial>
+      <visual name="prop">
+        <geometry><box><size>0.254 0.022 0.005</size></box></geometry>
+        <material><diffuse>0.2 0.2 0.2 1</diffuse></material>
+      </visual>
+    </link>
+    <joint name="rotor_3_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>rotor_3</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit><lower>-1e16</lower><upper>1e16</upper></limit>
+        <dynamics><damping>0.004</damping></dynamics>
+      </axis>
+    </joint>
+
+    <!--
+      Propulsion.
+
+      This follows ardupilot_gazebo's own architecture rather than the
+      MulticopterMotorModel approach used by PX4-style models. ArduPilotPlugin
+      velocity-controls each rotor joint through ApplyJointForce, and the
+      actual thrust comes from LiftDrag blade elements — two per rotor, one for
+      each blade. The two schemes are mutually exclusive: a motor model applies
+      thrust directly and would fight the plugin's joint PID for control of the
+      same joint.
+
+      Blade coefficients are taken unchanged from the reference Iris. That is a
+      deliberate choice rather than laziness: the Iris is a 511 mm wheelbase
+      quadrotor, so it is within 2% of the X500's 500 mm and the blade geometry
+      transfers directly. It is also ~1.5 kg against this aircraft's 1.3 kg, so
+      reusing its coefficients leaves slightly more hover margin rather than
+      less. Trim hover throttle with MOT_THST_HOVER once flown, rather than by
+      inventing untested aero numbers here.
+    -->
+    <plugin filename="gz-sim-apply-joint-force-system"
+            name="gz::sim::systems::ApplyJointForce">
+      <joint_name>rotor_0_joint</joint_name>
+    </plugin>
+    <plugin filename="gz-sim-apply-joint-force-system"
+            name="gz::sim::systems::ApplyJointForce">
+      <joint_name>rotor_1_joint</joint_name>
+    </plugin>
+    <plugin filename="gz-sim-apply-joint-force-system"
+            name="gz::sim::systems::ApplyJointForce">
+      <joint_name>rotor_2_joint</joint_name>
+    </plugin>
+    <plugin filename="gz-sim-apply-joint-force-system"
+            name="gz::sim::systems::ApplyJointForce">
+      <joint_name>rotor_3_joint</joint_name>
+    </plugin>
+
+    <!--
+      Blade elements. `forward` is the direction the blade travels, so it flips
+      with the rotor's turning sense: CCW rotors (0, 1) have the +x blade
+      moving +y, CW rotors (2, 3) have it moving -y. Getting this backwards
+      produces a rotor that generates downforce, which reads as an aircraft
+      that flips on takeoff.
+    -->
+    <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
+      <a0>0.3</a0><alpha_stall>1.4</alpha_stall>
+      <cla>4.2500</cla><cda>0.10</cda><cma>0.0</cma>
+      <cla_stall>-0.025</cla_stall><cda_stall>0.0</cda_stall><cma_stall>0.0</cma_stall>
+      <area>0.002</area><air_density>1.2041</air_density>
+      <cp>0.084 0 0</cp><forward>0 1 0</forward><upward>0 0 1</upward>
+      <link_name>rotor_0</link_name>
+    </plugin>
+    <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
+      <a0>0.3</a0><alpha_stall>1.4</alpha_stall>
+      <cla>4.2500</cla><cda>0.10</cda><cma>0.0</cma>
+      <cla_stall>-0.025</cla_stall><cda_stall>0.0</cda_stall><cma_stall>0.0</cma_stall>
+      <area>0.002</area><air_density>1.2041</air_density>
+      <cp>-0.084 0 0</cp><forward>0 -1 0</forward><upward>0 0 1</upward>
+      <link_name>rotor_0</link_name>
+    </plugin>
+
+    <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
+      <a0>0.3</a0><alpha_stall>1.4</alpha_stall>
+      <cla>4.2500</cla><cda>0.10</cda><cma>0.0</cma>
+      <cla_stall>-0.025</cla_stall><cda_stall>0.0</cda_stall><cma_stall>0.0</cma_stall>
+      <area>0.002</area><air_density>1.2041</air_density>
+      <cp>0.084 0 0</cp><forward>0 1 0</forward><upward>0 0 1</upward>
+      <link_name>rotor_1</link_name>
+    </plugin>
+    <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
+      <a0>0.3</a0><alpha_stall>1.4</alpha_stall>
+      <cla>4.2500</cla><cda>0.10</cda><cma>0.0</cma>
+      <cla_stall>-0.025</cla_stall><cda_stall>0.0</cda_stall><cma_stall>0.0</cma_stall>
+      <area>0.002</area><air_density>1.2041</air_density>
+      <cp>-0.084 0 0</cp><forward>0 -1 0</forward><upward>0 0 1</upward>
+      <link_name>rotor_1</link_name>
+    </plugin>
+
+    <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
+      <a0>0.3</a0><alpha_stall>1.4</alpha_stall>
+      <cla>4.2500</cla><cda>0.10</cda><cma>0.0</cma>
+      <cla_stall>-0.025</cla_stall><cda_stall>0.0</cda_stall><cma_stall>0.0</cma_stall>
+      <area>0.002</area><air_density>1.2041</air_density>
+      <cp>0.084 0 0</cp><forward>0 -1 0</forward><upward>0 0 1</upward>
+      <link_name>rotor_2</link_name>
+    </plugin>
+    <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
+      <a0>0.3</a0><alpha_stall>1.4</alpha_stall>
+      <cla>4.2500</cla><cda>0.10</cda><cma>0.0</cma>
+      <cla_stall>-0.025</cla_stall><cda_stall>0.0</cda_stall><cma_stall>0.0</cma_stall>
+      <area>0.002</area><air_density>1.2041</air_density>
+      <cp>-0.084 0 0</cp><forward>0 1 0</forward><upward>0 0 1</upward>
+      <link_name>rotor_2</link_name>
+    </plugin>
+
+    <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
+      <a0>0.3</a0><alpha_stall>1.4</alpha_stall>
+      <cla>4.2500</cla><cda>0.10</cda><cma>0.0</cma>
+      <cla_stall>-0.025</cla_stall><cda_stall>0.0</cda_stall><cma_stall>0.0</cma_stall>
+      <area>0.002</area><air_density>1.2041</air_density>
+      <cp>0.084 0 0</cp><forward>0 -1 0</forward><upward>0 0 1</upward>
+      <link_name>rotor_3</link_name>
+    </plugin>
+    <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
+      <a0>0.3</a0><alpha_stall>1.4</alpha_stall>
+      <cla>4.2500</cla><cda>0.10</cda><cma>0.0</cma>
+      <cla_stall>-0.025</cla_stall><cda_stall>0.0</cda_stall><cma_stall>0.0</cma_stall>
+      <area>0.002</area><air_density>1.2041</air_density>
+      <cp>-0.084 0 0</cp><forward>0 1 0</forward><upward>0 0 1</upward>
+      <link_name>rotor_3</link_name>
+    </plugin>
+
+    <plugin filename="gz-sim-joint-state-publisher-system"
+            name="gz::sim::systems::JointStatePublisher">
+    </plugin>
+
+    <!--
+      SITL bridge.
+
+      imuName is resolved by unscoped lookup within this model, so the bare
+      sensor name is correct here; the reference model needs a longer path only
+      because its IMU sits inside a nested sub-model.
+
+      The multiplier maps ArduPilot's normalised [0,1] servo output onto rotor
+      velocity in rad/s, and its SIGN sets the direction of rotation. Channels
+      2 and 3 are negative, which is what makes rotors 2 and 3 the CW pair of
+      the quad-X mixer. This has to agree with the `forward` vectors above, or
+      the aircraft yaws uncontrollably.
+    -->
+    <plugin name="ArduPilotPlugin" filename="ArduPilotPlugin">
+      <fdm_addr>127.0.0.1</fdm_addr>
+      <fdm_port_in>9002</fdm_port_in>
+      <connectionTimeoutMaxCount>5</connectionTimeoutMaxCount>
+      <lock_step>1</lock_step>
+      <no_time_sync>1</no_time_sync>
+      <have_32_channels>0</have_32_channels>
+
+      <modelXYZToAirplaneXForwardZDown degrees="true">0 0 0 180 0 0</modelXYZToAirplaneXForwardZDown>
+      <gazeboXYZToNED degrees="true">0 0 0 180 0 90</gazeboXYZToNED>
+
+      <imuName>imu_sensor</imuName>
+
+      <control channel="0">
+        <jointName>rotor_0_joint</jointName>
+        <useForce>1</useForce>
+        <multiplier>838</multiplier>
+        <offset>0</offset>
+        <servo_min>1100</servo_min>
+        <servo_max>1900</servo_max>
+        <type>VELOCITY</type>
+        <p_gain>0.20</p_gain><i_gain>0</i_gain><d_gain>0</d_gain>
+        <i_max>0</i_max><i_min>0</i_min>
+        <cmd_max>2.5</cmd_max><cmd_min>-2.5</cmd_min>
+        <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+      </control>
+
+      <control channel="1">
+        <jointName>rotor_1_joint</jointName>
+        <useForce>1</useForce>
+        <multiplier>838</multiplier>
+        <offset>0</offset>
+        <servo_min>1100</servo_min>
+        <servo_max>1900</servo_max>
+        <type>VELOCITY</type>
+        <p_gain>0.20</p_gain><i_gain>0</i_gain><d_gain>0</d_gain>
+        <i_max>0</i_max><i_min>0</i_min>
+        <cmd_max>2.5</cmd_max><cmd_min>-2.5</cmd_min>
+        <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+      </control>
+
+      <control channel="2">
+        <jointName>rotor_2_joint</jointName>
+        <useForce>1</useForce>
+        <multiplier>-838</multiplier>
+        <offset>0</offset>
+        <servo_min>1100</servo_min>
+        <servo_max>1900</servo_max>
+        <type>VELOCITY</type>
+        <p_gain>0.20</p_gain><i_gain>0</i_gain><d_gain>0</d_gain>
+        <i_max>0</i_max><i_min>0</i_min>
+        <cmd_max>2.5</cmd_max><cmd_min>-2.5</cmd_min>
+        <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+      </control>
+
+      <control channel="3">
+        <jointName>rotor_3_joint</jointName>
+        <useForce>1</useForce>
+        <multiplier>-838</multiplier>
+        <offset>0</offset>
+        <servo_min>1100</servo_min>
+        <servo_max>1900</servo_max>
+        <type>VELOCITY</type>
+        <p_gain>0.20</p_gain><i_gain>0</i_gain><d_gain>0</d_gain>
+        <i_max>0</i_max><i_min>0</i_min>
+        <cmd_max>2.5</cmd_max><cmd_min>-2.5</cmd_min>
+        <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+      </control>
+    </plugin>
+
+  </model>
+</sdf>

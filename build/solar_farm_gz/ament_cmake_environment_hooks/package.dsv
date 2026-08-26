@@ -1,0 +1,4 @@
+source;share/solar_farm_gz/local_setup.bash
+source;share/solar_farm_gz/local_setup.dsv
+source;share/solar_farm_gz/local_setup.sh
+source;share/solar_farm_gz/local_setup.zsh
