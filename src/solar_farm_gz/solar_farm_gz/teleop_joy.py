@@ -1,36 +1,35 @@
 #!/usr/bin/env python3
-"""Teleoperación con mando para el dron de inspección.
+"""Gamepad teleoperation for the inspection drone.
 
-Lee sensor_msgs/Joy y maneja los canales RC de ArduPilot a través de
-MAVLink, de modo que un mando USB pilota la aeronave simulada exactamente
-como un transmisor pilotaría la física.
+Reads sensor_msgs/Joy and drives ArduPilot's RC channels over MAVLink, so a
+USB gamepad pilots the simulated aircraft exactly the way a transmitter
+would pilot the real thing.
 
-Por qué no MAVROS
-------------------
-MAVROS es la respuesta habitual y funciona, pero es una dependencia grande
-para añadir por lo que al final son cuatro números y un heartbeat. Hablar
-directamente con SITL usando pymavlink mantiene los requisitos en tiempo de
-ejecución en `joy` (ya incluido en una instalación de escritorio estándar
-de ROS 2) más pymavlink, y elimina todo un paquete de la lista de cosas que
-pueden desincronizarse en versión en la máquina del cliente.
+Why not MAVROS
+---------------
+MAVROS is the usual answer and it works, but it's a big dependency to add
+for what ultimately comes down to four numbers and a heartbeat. Talking
+directly to SITL with pymavlink keeps the runtime requirements at `joy`
+(already included in a standard ROS 2 desktop install) plus pymavlink, and
+removes an entire package from the list of things that can drift out of
+version sync on the client machine.
 
-El mapeo de canales sigue los valores por defecto de RC de ArduPilot:
+The channel mapping follows ArduPilot's default RC assignment:
 
     CH1 roll     CH2 pitch     CH3 throttle     CH4 yaw
 
-Las asignaciones de eje por defecto siguen la disposición Modo 2 que un
-mando estilo Xbox/PlayStation presenta a través del driver `joy`: el stick
-izquierdo es throttle/yaw, el stick derecho es pitch/roll. Cada índice es
-un parámetro de ROS, porque los mandos varían y el cliente no debería tener
-que editar el código fuente para volar.
+The default axis assignments follow the Mode 2 layout an Xbox/PlayStation-
+style gamepad exposes through the `joy` driver: the left stick is
+throttle/yaw, the right stick is pitch/roll. Each index is a ROS parameter,
+because gamepads vary and the client shouldn't have to edit source code
+just to fly.
 
     ros2 run solar_farm_gz teleop_joy
     ros2 run solar_farm_gz teleop_joy --ros-args -p master:=tcp:127.0.0.1:5760
 
-Los modos de vuelo están en botones en lugar de en un interruptor: un mando
-no tiene un interruptor de modo de tres posiciones, y
-LOITER/ALT_HOLD/STABILIZE cubre todo lo que necesita un vuelo de
-inspección.
+Flight modes are on buttons rather than a switch: a gamepad doesn't have a
+three-position mode switch, and LOITER/ALT_HOLD/STABILIZE covers everything
+an inspection flight needs.
 """
 
 import rclpy
@@ -45,10 +44,9 @@ except ImportError as exc:  # pragma: no cover - dependency guard
         "    pip install --user pymavlink\n"
         "  or: sudo apt install python3-pymavlink") from exc
 
-# ArduPilot lee el RC como microsegundos PWM. 1500 es el stick centrado; el
-# throttle es la excepción, donde el centro significa "mantener la
-# altitud actual" en ALT_HOLD y LOITER pero significa media potencia en
-# STABILIZE.
+# ArduPilot reads RC as PWM microseconds. 1500 is stick-centred; throttle is
+# the exception, where centre means "hold current altitude" in ALT_HOLD and
+# LOITER but means half power in STABILIZE.
 PWM_MIN, PWM_MID, PWM_MAX = 1000, 1500, 2000
 
 
@@ -69,18 +67,18 @@ class TeleopJoy(Node):
         self.declare_parameter('button_althold', 1)
         self.declare_parameter('button_stabilize', 2)
         self.declare_parameter('button_rtl', 3)
-        # Los sticks tienen ruido en reposo; sin una zona muerta el aparato se desplaza solo.
+        # The sticks are noisy at rest; without a deadzone the aircraft
+        # drifts on its own.
         self.declare_parameter('deadzone', 0.06)
         self.declare_parameter('expo', 0.35)
 
         master = self.get_parameter('master').value
         self.get_logger().info(f'connecting to {master} ...')
-        # source_system DEBE coincidir con el SYSID_MYGCS de ArduPilot
-        # (255 por defecto). Los overrides de cualquier otro id de sistema
-        # se aceptan en el enlace y luego se descartan silenciosamente:
-        # RC_CHANNELS sigue reportando las entradas sin modificar y la
-        # aeronave simplemente no responde, sin ningún error en ningún
-        # sitio que explique por qué.
+        # source_system MUST match ArduPilot's SYSID_MYGCS (255 by default).
+        # Overrides from any other system id are accepted on the link and
+        # then silently dropped: RC_CHANNELS keeps reporting the unmodified
+        # inputs and the aircraft simply doesn't respond, with no error
+        # anywhere explaining why.
         self.mav = mavutil.mavlink_connection(
             master, source_system=self.get_parameter('sysid_mygcs').value)
         self.mav.wait_heartbeat()
@@ -90,17 +88,17 @@ class TeleopJoy(Node):
         self._prev_buttons = []
         self.create_subscription(Joy, 'joy', self.on_joy, 10)
 
-        # ArduPilot vuelve a failsafe si dejan de llegar overrides, así que
-        # el último comando se vuelve a publicar con un temporizador en
-        # lugar de solo con eventos del joystick. Un mando que se mantiene
-        # quieto no produce ningún mensaje en absoluto.
+        # ArduPilot falls back to failsafe if overrides stop arriving, so
+        # the last command is republished on a timer instead of only on
+        # joystick events. A gamepad held still produces no messages at
+        # all.
         self._last = [PWM_MID, PWM_MID, PWM_MIN, PWM_MID]
         self.create_timer(0.05, self.publish_rc)
 
-    # --- funciones auxiliares -----------------------------------------------
+    # --- helpers ----------------------------------------------------------
 
     def _shape(self, v):
-        """Zona muerta y luego expo cúbica, para que los pequeños movimientos del stick sean suaves."""
+        """Deadzone then cubic expo, so small stick movements stay smooth."""
         dz = self.get_parameter('deadzone').value
         if abs(v) < dz:
             return 0.0
@@ -126,7 +124,7 @@ class TeleopJoy(Node):
                if i < len(self._prev_buttons) else 0)
         return msg.buttons[i] == 1 and was == 0
 
-    # --- callbacks ------------------------------------------------------------
+    # --- callbacks ----------------------------------------------------------
 
     def on_joy(self, msg):
         for name, mode in (('button_loiter', 'LOITER'),
@@ -144,9 +142,9 @@ class TeleopJoy(Node):
             self.mav.arducopter_disarm()
             self.get_logger().info('disarm requested')
 
-        # Pitch y throttle están invertidos: empujar un stick hacia adelante
-        # da un valor de eje negativo desde el driver joy, pero significa
-        # morro abajo y más potencia respectivamente.
+        # Pitch and throttle are inverted: pushing a stick forward gives a
+        # negative axis value from the joy driver, but means nose-down and
+        # more power respectively.
         self._last = [
             self._pwm(self._axis(msg, 'axis_roll')),
             self._pwm(self._axis(msg, 'axis_pitch'), invert=True),
@@ -157,8 +155,8 @@ class TeleopJoy(Node):
 
     def publish_rc(self):
         r, p, t, y = self._last
-        # 0 deja un canal sin tocar, así que los canales 5-8 se quedan con
-        # lo que sea que el controlador de vuelo o una GCS les haya fijado.
+        # 0 leaves a channel untouched, so channels 5-8 keep whatever the
+        # flight controller or a GCS has set them to.
         self.mav.mav.rc_channels_override_send(
             self.mav.target_system, self.mav.target_component,
             r, p, t, y, 0, 0, 0, 0)

@@ -1,0 +1,3198 @@
+{
+ "seed": 1101,
+ "modules": 350,
+ "tables": 35,
+ "modules_per_table": 10,
+ "clean_ratio_requested": 0.7,
+ "clean_ratio_actual": 0.6971,
+ "defect_instances": 206,
+ "defects_by_type": {
+  "dirt": 71,
+  "bird_dropping": 67,
+  "crack": 36,
+  "delamination": 32
+ },
+ "ground_style": "grass",
+ "infrastructure": {
+  "fence_rect_xyxy": [
+   -9.102,
+   -13.34,
+   28.549,
+   120.343
+  ],
+  "fence_height_m": 2.1,
+  "road_width_m": 4.0,
+  "inverters": 4
+ },
+ "module_size_m": [
+  1.05,
+  2.1
+ ],
+ "tilt_deg": 28.0,
+ "atlases": {
+  "pv_atlas_00": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.466,
+      "bbox_uv_cxcywh": [
+       0.2959,
+       0.38086,
+       0.1543,
+       0.19336
+      ]
+     },
+     {
+      "type": "dirt",
+      "severity": 0.726,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.80029,
+       0.99805,
+       0.39746
+      ],
+      "band": 0.48
+     },
+     {
+      "type": "bird_dropping",
+      "severity": 0.639,
+      "bbox_uv_cxcywh": [
+       0.80566,
+       0.52441,
+       0.11523,
+       0.0957
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.684,
+      "bbox_uv_cxcywh": [
+       0.60352,
+       0.27539,
+       0.23828,
+       0.19531
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   }
+  ],
+  "pv_atlas_01": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "dirt",
+      "severity": 0.385,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.79004,
+       0.99805,
+       0.41797
+      ],
+      "band": 0.573
+     },
+     {
+      "type": "crack",
+      "severity": 0.608,
+      "bbox_uv_cxcywh": [
+       0.61133,
+       0.51562,
+       0.77344,
+       0.64648
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.971,
+      "bbox_uv_cxcywh": [
+       0.43457,
+       0.42188,
+       0.10742,
+       0.10938
+      ]
+     },
+     {
+      "type": "dirt",
+      "severity": 0.5,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.80518,
+       0.99805,
+       0.3877
+      ],
+      "band": 0.503
+     },
+     {
+      "type": "bird_dropping",
+      "severity": 0.509,
+      "bbox_uv_cxcywh": [
+       0.59863,
+       0.22363,
+       0.23242,
+       0.12695
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "dirt",
+      "severity": 0.831,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.87451,
+       0.99805,
+       0.24902
+      ],
+      "band": 0.296
+     },
+     {
+      "type": "delamination",
+      "severity": 0.696,
+      "bbox_uv_cxcywh": [
+       0.65137,
+       0.29248,
+       0.54102,
+       0.19824
+      ],
+      "edge": false
+     }
+    ]
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   }
+  ],
+  "pv_atlas_02": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "dirt",
+      "severity": 0.9,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.87646,
+       0.99805,
+       0.24512
+      ],
+      "band": 0.289
+     },
+     {
+      "type": "dirt",
+      "severity": 0.446,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.78369,
+       0.99805,
+       0.43066
+      ],
+      "band": 0.559
+     },
+     {
+      "type": "dirt",
+      "severity": 0.363,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.80127,
+       0.99805,
+       0.39551
+      ],
+      "band": 0.549
+     }
+    ]
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "crack",
+      "severity": 0.915,
+      "bbox_uv_cxcywh": [
+       0.67285,
+       0.38574,
+       0.65039,
+       0.56055
+      ]
+     },
+     {
+      "type": "crack",
+      "severity": 0.986,
+      "bbox_uv_cxcywh": [
+       0.44336,
+       0.2959,
+       0.88672,
+       0.5918
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.917,
+      "bbox_uv_cxcywh": [
+       0.68359,
+       0.43848,
+       0.16406,
+       0.23633
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   }
+  ],
+  "pv_atlas_03": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "dirt",
+      "severity": 0.414,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.78662,
+       0.99805,
+       0.4248
+      ],
+      "band": 0.573
+     }
+    ]
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "delamination",
+      "severity": 0.926,
+      "bbox_uv_cxcywh": [
+       0.24414,
+       0.8457,
+       0.48828,
+       0.30664
+      ],
+      "edge": true
+     },
+     {
+      "type": "bird_dropping",
+      "severity": 0.495,
+      "bbox_uv_cxcywh": [
+       0.18457,
+       0.27148,
+       0.06445,
+       0.07031
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "dirt",
+      "severity": 0.496,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.87549,
+       0.99805,
+       0.24707
+      ],
+      "band": 0.319
+     }
+    ]
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.553,
+      "bbox_uv_cxcywh": [
+       0.4502,
+       0.40918,
+       0.12695,
+       0.0957
+      ]
+     }
+    ]
+   }
+  ],
+  "pv_atlas_04": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "dirt",
+      "severity": 0.96,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.88037,
+       0.99805,
+       0.2373
+      ],
+      "band": 0.275
+     },
+     {
+      "type": "dirt",
+      "severity": 0.411,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.85889,
+       0.99805,
+       0.28027
+      ],
+      "band": 0.38
+     },
+     {
+      "type": "dirt",
+      "severity": 0.427,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.89941,
+       0.99805,
+       0.19922
+      ],
+      "band": 0.265
+     }
+    ]
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "delamination",
+      "severity": 0.705,
+      "bbox_uv_cxcywh": [
+       0.25391,
+       0.50244,
+       0.50781,
+       0.32129
+      ],
+      "edge": true
+     }
+    ]
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "crack",
+      "severity": 0.481,
+      "bbox_uv_cxcywh": [
+       0.41602,
+       0.27686,
+       0.83203,
+       0.24316
+      ]
+     },
+     {
+      "type": "dirt",
+      "severity": 0.755,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.76807,
+       0.99805,
+       0.46191
+      ],
+      "band": 0.555
+     }
+    ]
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "crack",
+      "severity": 0.738,
+      "bbox_uv_cxcywh": [
+       0.4834,
+       0.24219,
+       0.9668,
+       0.48438
+      ]
+     },
+     {
+      "type": "bird_dropping",
+      "severity": 0.447,
+      "bbox_uv_cxcywh": [
+       0.82422,
+       0.6875,
+       0.11719,
+       0.12695
+      ]
+     }
+    ]
+   }
+  ],
+  "pv_atlas_05": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.418,
+      "bbox_uv_cxcywh": [
+       0.69824,
+       0.68457,
+       0.07617,
+       0.07812
+      ]
+     },
+     {
+      "type": "delamination",
+      "severity": 0.439,
+      "bbox_uv_cxcywh": [
+       0.79883,
+       0.17139,
+       0.39844,
+       0.22949
+      ],
+      "edge": true
+     },
+     {
+      "type": "dirt",
+      "severity": 0.406,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.80713,
+       0.99805,
+       0.38379
+      ],
+      "band": 0.51
+     }
+    ]
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "dirt",
+      "severity": 0.566,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.76855,
+       0.99805,
+       0.46094
+      ],
+      "band": 0.582
+     }
+    ]
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "delamination",
+      "severity": 0.867,
+      "bbox_uv_cxcywh": [
+       0.42676,
+       0.58691,
+       0.74023,
+       0.37305
+      ],
+      "edge": false
+     }
+    ]
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "crack",
+      "severity": 0.423,
+      "bbox_uv_cxcywh": [
+       0.47754,
+       0.54248,
+       0.92773,
+       0.37207
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   }
+  ],
+  "pv_atlas_06": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "dirt",
+      "severity": 0.884,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.85254,
+       0.99805,
+       0.29297
+      ],
+      "band": 0.344
+     }
+    ]
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "delamination",
+      "severity": 0.683,
+      "bbox_uv_cxcywh": [
+       0.72168,
+       0.85205,
+       0.55273,
+       0.17676
+      ],
+      "edge": true
+     },
+     {
+      "type": "dirt",
+      "severity": 0.414,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.854,
+       0.99805,
+       0.29004
+      ],
+      "band": 0.395
+     }
+    ]
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.471,
+      "bbox_uv_cxcywh": [
+       0.83691,
+       0.63525,
+       0.22461,
+       0.13574
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   }
+  ],
+  "pv_atlas_07": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "delamination",
+      "severity": 0.824,
+      "bbox_uv_cxcywh": [
+       0.65625,
+       0.1875,
+       0.63672,
+       0.375
+      ],
+      "edge": true
+     }
+    ]
+   }
+  ],
+  "pv_atlas_08": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "dirt",
+      "severity": 0.675,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.86377,
+       0.99805,
+       0.27051
+      ],
+      "band": 0.327
+     },
+     {
+      "type": "bird_dropping",
+      "severity": 0.376,
+      "bbox_uv_cxcywh": [
+       0.82227,
+       0.53125,
+       0.25,
+       0.1875
+      ]
+     },
+     {
+      "type": "dirt",
+      "severity": 0.831,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.85303,
+       0.99805,
+       0.29199
+      ],
+      "band": 0.347
+     }
+    ]
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.949,
+      "bbox_uv_cxcywh": [
+       0.35547,
+       0.19775,
+       0.17969,
+       0.17676
+      ]
+     },
+     {
+      "type": "crack",
+      "severity": 0.537,
+      "bbox_uv_cxcywh": [
+       0.64062,
+       0.43701,
+       0.71484,
+       0.50293
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "dirt",
+      "severity": 0.954,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.76611,
+       0.99805,
+       0.46582
+      ],
+      "band": 0.541
+     },
+     {
+      "type": "delamination",
+      "severity": 0.519,
+      "bbox_uv_cxcywh": [
+       0.39355,
+       0.5083,
+       0.5332,
+       0.22168
+      ],
+      "edge": false
+     }
+    ]
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   }
+  ],
+  "pv_atlas_09": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "dirt",
+      "severity": 0.495,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.7666,
+       0.99805,
+       0.46484
+      ],
+      "band": 0.596
+     },
+     {
+      "type": "dirt",
+      "severity": 0.816,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.78271,
+       0.99805,
+       0.43262
+      ],
+      "band": 0.509
+     },
+     {
+      "type": "bird_dropping",
+      "severity": 0.71,
+      "bbox_uv_cxcywh": [
+       0.57617,
+       0.76367,
+       0.16406,
+       0.13281
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "dirt",
+      "severity": 0.795,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.81738,
+       0.99805,
+       0.36328
+      ],
+      "band": 0.431
+     },
+     {
+      "type": "crack",
+      "severity": 0.36,
+      "bbox_uv_cxcywh": [
+       0.43164,
+       0.71875,
+       0.51562,
+       0.33594
+      ]
+     },
+     {
+      "type": "delamination",
+      "severity": 0.98,
+      "bbox_uv_cxcywh": [
+       0.20703,
+       0.72607,
+       0.41406,
+       0.3252
+      ],
+      "edge": true
+     }
+    ]
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "crack",
+      "severity": 0.54,
+      "bbox_uv_cxcywh": [
+       0.33008,
+       0.83984,
+       0.66016,
+       0.31836
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   }
+  ],
+  "pv_atlas_10": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "dirt",
+      "severity": 0.797,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.78857,
+       0.99805,
+       0.4209
+      ],
+      "band": 0.496
+     },
+     {
+      "type": "delamination",
+      "severity": 0.702,
+      "bbox_uv_cxcywh": [
+       0.81934,
+       0.48926,
+       0.35742,
+       0.25195
+      ],
+      "edge": true
+     },
+     {
+      "type": "bird_dropping",
+      "severity": 0.823,
+      "bbox_uv_cxcywh": [
+       0.20801,
+       0.85791,
+       0.28711,
+       0.23535
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.92,
+      "bbox_uv_cxcywh": [
+       0.81641,
+       0.81104,
+       0.25,
+       0.30176
+      ]
+     },
+     {
+      "type": "crack",
+      "severity": 0.612,
+      "bbox_uv_cxcywh": [
+       0.3457,
+       0.73926,
+       0.69141,
+       0.36328
+      ]
+     }
+    ]
+   }
+  ],
+  "pv_atlas_11": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "delamination",
+      "severity": 0.47,
+      "bbox_uv_cxcywh": [
+       0.2832,
+       0.45117,
+       0.42188,
+       0.33984
+      ],
+      "edge": false
+     }
+    ]
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.469,
+      "bbox_uv_cxcywh": [
+       0.42578,
+       0.61621,
+       0.13281,
+       0.13477
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.423,
+      "bbox_uv_cxcywh": [
+       0.29688,
+       0.4624,
+       0.10156,
+       0.08105
+      ]
+     },
+     {
+      "type": "dirt",
+      "severity": 0.516,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.86572,
+       0.99805,
+       0.2666
+      ],
+      "band": 0.344
+     }
+    ]
+   }
+  ],
+  "pv_atlas_12": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.681,
+      "bbox_uv_cxcywh": [
+       0.52148,
+       0.17432,
+       0.1875,
+       0.2666
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "crack",
+      "severity": 0.382,
+      "bbox_uv_cxcywh": [
+       0.5459,
+       0.40674,
+       0.9043,
+       0.38965
+      ]
+     },
+     {
+      "type": "bird_dropping",
+      "severity": 0.92,
+      "bbox_uv_cxcywh": [
+       0.83594,
+       0.27148,
+       0.07422,
+       0.06055
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "dirt",
+      "severity": 0.729,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.87256,
+       0.99805,
+       0.25293
+      ],
+      "band": 0.304
+     },
+     {
+      "type": "bird_dropping",
+      "severity": 0.856,
+      "bbox_uv_cxcywh": [
+       0.74609,
+       0.68701,
+       0.11328,
+       0.13965
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "delamination",
+      "severity": 0.515,
+      "bbox_uv_cxcywh": [
+       0.1582,
+       0.87744,
+       0.31641,
+       0.18066
+      ],
+      "edge": true
+     },
+     {
+      "type": "bird_dropping",
+      "severity": 0.835,
+      "bbox_uv_cxcywh": [
+       0.51953,
+       0.44336,
+       0.12891,
+       0.07617
+      ]
+     },
+     {
+      "type": "crack",
+      "severity": 0.935,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.59326,
+       0.99805,
+       0.64746
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "delamination",
+      "severity": 0.351,
+      "bbox_uv_cxcywh": [
+       0.81055,
+       0.81836,
+       0.375,
+       0.27734
+      ],
+      "edge": true
+     }
+    ]
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   }
+  ],
+  "pv_atlas_13": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.912,
+      "bbox_uv_cxcywh": [
+       0.50879,
+       0.57861,
+       0.12305,
+       0.08496
+      ]
+     },
+     {
+      "type": "dirt",
+      "severity": 0.728,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.87402,
+       0.99805,
+       0.25
+      ],
+      "band": 0.302
+     }
+    ]
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.473,
+      "bbox_uv_cxcywh": [
+       0.58105,
+       0.58301,
+       0.19336,
+       0.10938
+      ]
+     },
+     {
+      "type": "crack",
+      "severity": 0.57,
+      "bbox_uv_cxcywh": [
+       0.46191,
+       0.3374,
+       0.76367,
+       0.25879
+      ]
+     },
+     {
+      "type": "bird_dropping",
+      "severity": 0.527,
+      "bbox_uv_cxcywh": [
+       0.22363,
+       0.26807,
+       0.20898,
+       0.16113
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.848,
+      "bbox_uv_cxcywh": [
+       0.13281,
+       0.6543,
+       0.15234,
+       0.13672
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.66,
+      "bbox_uv_cxcywh": [
+       0.25391,
+       0.66797,
+       0.0625,
+       0.05469
+      ]
+     },
+     {
+      "type": "dirt",
+      "severity": 0.405,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.88721,
+       0.99805,
+       0.22363
+      ],
+      "band": 0.299
+     }
+    ]
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "crack",
+      "severity": 0.94,
+      "bbox_uv_cxcywh": [
+       0.77441,
+       0.32129,
+       0.44727,
+       0.2793
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "dirt",
+      "severity": 0.894,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.83838,
+       0.99805,
+       0.32129
+      ],
+      "band": 0.382
+     },
+     {
+      "type": "bird_dropping",
+      "severity": 0.946,
+      "bbox_uv_cxcywh": [
+       0.51074,
+       0.354,
+       0.19336,
+       0.18457
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   }
+  ],
+  "pv_atlas_14": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "crack",
+      "severity": 0.771,
+      "bbox_uv_cxcywh": [
+       0.58008,
+       0.54443,
+       0.83594,
+       0.65332
+      ]
+     },
+     {
+      "type": "bird_dropping",
+      "severity": 0.722,
+      "bbox_uv_cxcywh": [
+       0.25,
+       0.26953,
+       0.12891,
+       0.12695
+      ]
+     },
+     {
+      "type": "dirt",
+      "severity": 0.427,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.79053,
+       0.99805,
+       0.41699
+      ],
+      "band": 0.544
+     }
+    ]
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   }
+  ],
+  "pv_atlas_15": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.951,
+      "bbox_uv_cxcywh": [
+       0.25781,
+       0.60791,
+       0.19531,
+       0.16504
+      ]
+     },
+     {
+      "type": "dirt",
+      "severity": 0.794,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.76367,
+       0.99805,
+       0.4707
+      ],
+      "band": 0.562
+     },
+     {
+      "type": "bird_dropping",
+      "severity": 0.683,
+      "bbox_uv_cxcywh": [
+       0.63574,
+       0.37549,
+       0.10742,
+       0.09473
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "crack",
+      "severity": 0.747,
+      "bbox_uv_cxcywh": [
+       0.48926,
+       0.47656,
+       0.92383,
+       0.3418
+      ]
+     },
+     {
+      "type": "bird_dropping",
+      "severity": 0.383,
+      "bbox_uv_cxcywh": [
+       0.35645,
+       0.74707,
+       0.1543,
+       0.10938
+      ]
+     },
+     {
+      "type": "dirt",
+      "severity": 0.572,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.81201,
+       0.99805,
+       0.37402
+      ],
+      "band": 0.461
+     }
+    ]
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "crack",
+      "severity": 0.784,
+      "bbox_uv_cxcywh": [
+       0.57617,
+       0.30615,
+       0.84375,
+       0.6123
+      ]
+     },
+     {
+      "type": "bird_dropping",
+      "severity": 0.541,
+      "bbox_uv_cxcywh": [
+       0.23535,
+       0.35156,
+       0.13086,
+       0.0918
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   }
+  ],
+  "pv_atlas_16": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "delamination",
+      "severity": 0.733,
+      "bbox_uv_cxcywh": [
+       0.7334,
+       0.81201,
+       0.5293,
+       0.2998
+      ],
+      "edge": true
+     },
+     {
+      "type": "dirt",
+      "severity": 0.912,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.74756,
+       0.99805,
+       0.50293
+      ],
+      "band": 0.583
+     }
+    ]
+   }
+  ],
+  "pv_atlas_17": [
+   {
+    "module_index": 0,
+    "atlas_cell": [
+     0,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 1,
+    "atlas_cell": [
+     1,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 2,
+    "atlas_cell": [
+     2,
+     0
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 3,
+    "atlas_cell": [
+     3,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "bird_dropping",
+      "severity": 0.89,
+      "bbox_uv_cxcywh": [
+       0.28906,
+       0.50732,
+       0.14844,
+       0.12207
+      ]
+     },
+     {
+      "type": "dirt",
+      "severity": 0.426,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.78418,
+       0.99805,
+       0.42969
+      ],
+      "band": 0.568
+     },
+     {
+      "type": "crack",
+      "severity": 0.445,
+      "bbox_uv_cxcywh": [
+       0.26172,
+       0.42334,
+       0.52344,
+       0.1748
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 4,
+    "atlas_cell": [
+     4,
+     0
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "delamination",
+      "severity": 0.606,
+      "bbox_uv_cxcywh": [
+       0.1123,
+       0.85352,
+       0.22461,
+       0.22266
+      ],
+      "edge": true
+     },
+     {
+      "type": "dirt",
+      "severity": 0.718,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.8208,
+       0.99805,
+       0.35645
+      ],
+      "band": 0.43
+     },
+     {
+      "type": "bird_dropping",
+      "severity": 0.819,
+      "bbox_uv_cxcywh": [
+       0.47266,
+       0.54834,
+       0.25,
+       0.15723
+      ]
+     }
+    ]
+   },
+   {
+    "module_index": 5,
+    "atlas_cell": [
+     0,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 6,
+    "atlas_cell": [
+     1,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 7,
+    "atlas_cell": [
+     2,
+     1
+    ],
+    "clean": false,
+    "defects": [
+     {
+      "type": "dirt",
+      "severity": 0.815,
+      "bbox_uv_cxcywh": [
+       0.49902,
+       0.82959,
+       0.99805,
+       0.33887
+      ],
+      "band": 0.401
+     },
+     {
+      "type": "delamination",
+      "severity": 0.495,
+      "bbox_uv_cxcywh": [
+       0.4873,
+       0.68555,
+       0.61133,
+       0.28125
+      ],
+      "edge": false
+     }
+    ]
+   },
+   {
+    "module_index": 8,
+    "atlas_cell": [
+     3,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   },
+   {
+    "module_index": 9,
+    "atlas_cell": [
+     4,
+     1
+    ],
+    "clean": true,
+    "defects": []
+   }
+  ]
+ },
+ "tables_placed": [
+  {
+   "index": 0,
+   "pose_xyzyaw": [
+    -0.052,
+    0.058,
+    0.0,
+    -0.00816
+   ],
+   "atlas": "pv_atlas_01"
+  },
+  {
+   "index": 1,
+   "pose_xyzyaw": [
+    0.043,
+    11.86,
+    0.0,
+    -0.00748
+   ],
+   "atlas": "pv_atlas_08"
+  },
+  {
+   "index": 2,
+   "pose_xyzyaw": [
+    -0.021,
+    23.706,
+    0.0,
+    0.02349
+   ],
+   "atlas": "pv_atlas_11"
+  },
+  {
+   "index": 3,
+   "pose_xyzyaw": [
+    0.005,
+    35.646,
+    0.0,
+    0.01629
+   ],
+   "atlas": "pv_atlas_00"
+  },
+  {
+   "index": 4,
+   "pose_xyzyaw": [
+    0.014,
+    47.573,
+    0.0,
+    0.01068
+   ],
+   "atlas": "pv_atlas_05"
+  },
+  {
+   "index": 5,
+   "pose_xyzyaw": [
+    0.091,
+    59.446,
+    0.0,
+    -0.00746
+   ],
+   "atlas": "pv_atlas_10"
+  },
+  {
+   "index": 6,
+   "pose_xyzyaw": [
+    -0.032,
+    71.339,
+    0.0,
+    -0.00011
+   ],
+   "atlas": "pv_atlas_15"
+  },
+  {
+   "index": 7,
+   "pose_xyzyaw": [
+    -0.025,
+    83.118,
+    0.0,
+    -0.00457
+   ],
+   "atlas": "pv_atlas_07"
+  },
+  {
+   "index": 8,
+   "pose_xyzyaw": [
+    -0.043,
+    94.991,
+    0.0,
+    0.00524
+   ],
+   "atlas": "pv_atlas_14"
+  },
+  {
+   "index": 9,
+   "pose_xyzyaw": [
+    -0.029,
+    107.003,
+    0.0,
+    0.00418
+   ],
+   "atlas": "pv_atlas_06"
+  },
+  {
+   "index": 10,
+   "pose_xyzyaw": [
+    6.467,
+    -0.0,
+    0.0,
+    0.00585
+   ],
+   "atlas": "pv_atlas_13"
+  },
+  {
+   "index": 11,
+   "pose_xyzyaw": [
+    6.551,
+    11.837,
+    0.0,
+    -0.01861
+   ],
+   "atlas": "pv_atlas_17"
+  },
+  {
+   "index": 12,
+   "pose_xyzyaw": [
+    6.43,
+    23.735,
+    0.0,
+    0.01618
+   ],
+   "atlas": "pv_atlas_03"
+  },
+  {
+   "index": 13,
+   "pose_xyzyaw": [
+    6.496,
+    35.611,
+    0.0,
+    0.01446
+   ],
+   "atlas": "pv_atlas_16"
+  },
+  {
+   "index": 14,
+   "pose_xyzyaw": [
+    6.481,
+    47.524,
+    0.0,
+    -0.00235
+   ],
+   "atlas": "pv_atlas_12"
+  },
+  {
+   "index": 15,
+   "pose_xyzyaw": [
+    6.426,
+    59.375,
+    0.0,
+    0.00863
+   ],
+   "atlas": "pv_atlas_02"
+  },
+  {
+   "index": 16,
+   "pose_xyzyaw": [
+    6.494,
+    71.223,
+    0.0,
+    0.00199
+   ],
+   "atlas": "pv_atlas_09"
+  },
+  {
+   "index": 17,
+   "pose_xyzyaw": [
+    6.452,
+    83.163,
+    0.0,
+    -0.01487
+   ],
+   "atlas": "pv_atlas_04"
+  },
+  {
+   "index": 18,
+   "pose_xyzyaw": [
+    6.496,
+    95.066,
+    0.0,
+    -0.01174
+   ],
+   "atlas": "pv_atlas_05"
+  },
+  {
+   "index": 19,
+   "pose_xyzyaw": [
+    6.535,
+    106.932,
+    0.0,
+    0.00741
+   ],
+   "atlas": "pv_atlas_15"
+  },
+  {
+   "index": 20,
+   "pose_xyzyaw": [
+    13.032,
+    0.041,
+    0.0,
+    -0.01662
+   ],
+   "atlas": "pv_atlas_11"
+  },
+  {
+   "index": 21,
+   "pose_xyzyaw": [
+    12.963,
+    11.942,
+    0.0,
+    -0.01499
+   ],
+   "atlas": "pv_atlas_01"
+  },
+  {
+   "index": 22,
+   "pose_xyzyaw": [
+    13.008,
+    23.771,
+    0.0,
+    0.01223
+   ],
+   "atlas": "pv_atlas_10"
+  },
+  {
+   "index": 23,
+   "pose_xyzyaw": [
+    12.921,
+    35.654,
+    0.0,
+    0.00066
+   ],
+   "atlas": "pv_atlas_14"
+  },
+  {
+   "index": 24,
+   "pose_xyzyaw": [
+    12.962,
+    47.418,
+    0.0,
+    0.00257
+   ],
+   "atlas": "pv_atlas_08"
+  },
+  {
+   "index": 25,
+   "pose_xyzyaw": [
+    13.068,
+    59.367,
+    0.0,
+    -0.00139
+   ],
+   "atlas": "pv_atlas_17"
+  },
+  {
+   "index": 26,
+   "pose_xyzyaw": [
+    12.968,
+    71.27,
+    0.0,
+    -0.00805
+   ],
+   "atlas": "pv_atlas_09"
+  },
+  {
+   "index": 27,
+   "pose_xyzyaw": [
+    12.984,
+    83.144,
+    0.0,
+    0.01386
+   ],
+   "atlas": "pv_atlas_16"
+  },
+  {
+   "index": 28,
+   "pose_xyzyaw": [
+    13.074,
+    95.053,
+    0.0,
+    -0.01062
+   ],
+   "atlas": "pv_atlas_06"
+  },
+  {
+   "index": 29,
+   "pose_xyzyaw": [
+    13.052,
+    106.87,
+    0.0,
+    0.0072
+   ],
+   "atlas": "pv_atlas_03"
+  },
+  {
+   "index": 30,
+   "pose_xyzyaw": [
+    19.497,
+    0.052,
+    0.0,
+    -0.00439
+   ],
+   "atlas": "pv_atlas_04"
+  },
+  {
+   "index": 31,
+   "pose_xyzyaw": [
+    19.499,
+    11.861,
+    0.0,
+    0.01045
+   ],
+   "atlas": "pv_atlas_07"
+  },
+  {
+   "index": 32,
+   "pose_xyzyaw": [
+    19.479,
+    23.804,
+    0.0,
+    0.01958
+   ],
+   "atlas": "pv_atlas_13"
+  },
+  {
+   "index": 33,
+   "pose_xyzyaw": [
+    19.409,
+    35.641,
+    0.0,
+    -0.00814
+   ],
+   "atlas": "pv_atlas_12"
+  },
+  {
+   "index": 34,
+   "pose_xyzyaw": [
+    19.447,
+    47.515,
+    0.0,
+    -0.00167
+   ],
+   "atlas": "pv_atlas_02"
+  }
+ ]
+}

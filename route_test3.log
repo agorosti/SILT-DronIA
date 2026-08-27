@@ -1,0 +1,85 @@
+[1/4] starting simulator (solar_farm)
+  both cameras live
+[2/4] starting ArduPilot SITL
+[Errno 111] Connection refused sleeping
+  link up
+[3/4] flying route: 8.0 m, 70 waypoints (35 tables), capped at 60.0s
+  waiting for GPS/EKF ...
+  3D fix, 10 sats (10s)
+    Arm: Accels inconsistent
+    Arm: AHRS: waiting for home
+    Arm: Gyros inconsistent
+    Arm: Need Position Estimate
+    PreArm: Need Position Estimate
+  armed (35s)
+  at altitude (45s)
+  route: 70 waypoints (35 tables x 2 endpoints), arrival 1.5 m, timeout 55.0 s/wp
+
+  [dbg   0.0s] wp_idx=0/70 since_wp_t0=0.0s last_m=never
+
+  [  0.1s] mode -> GUIDED
+    1.0s  30 frames
+  [dbg   2.0s] wp_idx=0/70 since_wp_t0=2.0s last_m=never
+    2.0s  60 frames    3.1s  90 frames
+  [dbg   4.0s] wp_idx=0/70 since_wp_t0=4.0s last_m=never
+    4.1s  120 frames    5.1s  150 frames
+  [dbg   6.0s] wp_idx=0/70 since_wp_t0=6.0s last_m=never
+    6.2s  180 frames    7.2s  210 frames
+  [dbg   8.1s] wp_idx=0/70 since_wp_t0=8.1s last_m=never
+    8.2s  240 frames    9.3s  270 frames
+  [dbg  10.1s] wp_idx=0/70 since_wp_t0=10.1s last_m=never
+   10.3s  300 frames   11.3s  330 frames
+  [dbg  12.1s] wp_idx=0/70 since_wp_t0=12.1s last_m=never
+   12.4s  360 frames   13.4s  390 frames
+  [dbg  14.1s] wp_idx=0/70 since_wp_t0=14.1s last_m=never
+   14.4s  420 frames   15.5s  450 frames
+  [dbg  16.1s] wp_idx=0/70 since_wp_t0=16.1s last_m=never
+   16.5s  480 frames   17.6s  510 frames
+  [dbg  18.1s] wp_idx=0/70 since_wp_t0=18.1s last_m=never
+   18.6s  540 frames   19.6s  570 frames
+  [dbg  20.1s] wp_idx=0/70 since_wp_t0=20.1s last_m=never
+   20.7s  600 frames   21.7s  630 frames
+  [dbg  22.1s] wp_idx=0/70 since_wp_t0=22.1s last_m=never
+   22.7s  660 frames   23.8s  690 frames
+  [dbg  24.1s] wp_idx=0/70 since_wp_t0=24.1s last_m=never
+   24.8s  720 frames   25.8s  750 frames
+  [dbg  26.1s] wp_idx=0/70 since_wp_t0=26.1s last_m=never
+   26.8s  780 frames   27.9s  810 frames
+  [dbg  28.2s] wp_idx=0/70 since_wp_t0=28.2s last_m=never
+   28.9s  840 frames   29.9s  870 frames
+  [dbg  30.2s] wp_idx=0/70 since_wp_t0=30.2s last_m=never
+   30.9s  900 frames   32.0s  930 frames
+  [dbg  32.2s] wp_idx=0/70 since_wp_t0=32.2s last_m=never
+   33.0s  960 frames   34.0s  990 frames
+  [dbg  34.2s] wp_idx=0/70 since_wp_t0=34.2s last_m=never
+   35.0s  1020 frames   36.0s  1050 frames
+  [dbg  36.2s] wp_idx=0/70 since_wp_t0=36.2s last_m=never
+   37.0s  1080 frames   38.1s  1110 frames
+  [dbg  38.2s] wp_idx=0/70 since_wp_t0=38.2s last_m=never
+   39.1s  1140 frames   40.2s  1170 frames
+  [dbg  40.2s] wp_idx=0/70 since_wp_t0=40.2s last_m=never
+   41.2s  1200 frames
+  [dbg  42.2s] wp_idx=0/70 since_wp_t0=42.2s last_m=never
+   42.2s  1230 frames   43.3s  1260 frames
+  [dbg  44.2s] wp_idx=0/70 since_wp_t0=44.2s last_m=never
+   44.3s  1290 frames   45.4s  1320 frames
+  [dbg  46.2s] wp_idx=0/70 since_wp_t0=46.2s last_m=never
+   46.4s  1350 frames   47.4s  1380 frames
+  [dbg  48.2s] wp_idx=0/70 since_wp_t0=48.2s last_m=never
+   48.5s  1410 frames   49.6s  1440 frames
+  [dbg  50.2s] wp_idx=0/70 since_wp_t0=50.2s last_m=never
+   50.6s  1470 frames   51.6s  1500 frames
+  [dbg  52.2s] wp_idx=0/70 since_wp_t0=52.2s last_m=never
+   52.6s  1530 frames   53.7s  1560 frames
+  [dbg  54.2s] wp_idx=0/70 since_wp_t0=54.2s last_m=never
+   54.7s  1590 frames
+  [ 55.0s] table_0000_in timed out, moving on
+   55.7s  1620 frames
+  [dbg  56.2s] wp_idx=1/70 since_wp_t0=1.2s last_m=never
+   56.7s  1650 frames   57.8s  1680 frames
+  [dbg  58.2s] wp_idx=1/70 since_wp_t0=3.2s last_m=never
+   58.8s  1710 frames   59.8s  1740 frames
+[4/4] finishing
+  capture world kept in /tmp/flightvid_rkcv4wuq
+
+  videos/site_j_route_test3.mp4  1744 frames @ 30 fps  (89.8 MB)

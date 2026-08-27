@@ -43,19 +43,7 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz/environment" TYPE FILE FILES "/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_environment_hooks/pythonpath.sh")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz/environment" TYPE FILE FILES "/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_environment_hooks/pythonpath.dsv")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3.12/site-packages/solar_farm_gz-0.1.0-py3.12.egg-info" TYPE DIRECTORY FILES "/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_python/solar_farm_gz/solar_farm_gz.egg-info/")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3.12/site-packages/solar_farm_gz" TYPE DIRECTORY FILES "/home/andres/solar_farm_sim/src/solar_farm_gz/solar_farm_gz/" REGEX "/[^/]*\\.pyc$" EXCLUDE REGEX "/\\_\\_pycache\\_\\_$" EXCLUDE)
+  include("/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_symlink_install/ament_cmake_symlink_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -64,94 +52,6 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
         "/home/andres/venv-ardupilot/bin/python3" "-m" "compileall"
         "/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz"
       )
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/solar_farm_gz" TYPE PROGRAM FILES
-    "/home/andres/solar_farm_sim/src/solar_farm_gz/scripts/generate_farm"
-    "/home/andres/solar_farm_sim/src/solar_farm_gz/scripts/capture"
-    "/home/andres/solar_farm_sim/src/solar_farm_gz/scripts/teleop_joy"
-    "/home/andres/solar_farm_sim/src/solar_farm_gz/scripts/flight_video"
-    )
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz" TYPE DIRECTORY FILES "/home/andres/solar_farm_sim/src/solar_farm_gz/launch")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz" TYPE DIRECTORY FILES "/home/andres/solar_farm_sim/src/solar_farm_gz/models")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz" TYPE DIRECTORY FILES "/home/andres/solar_farm_sim/src/solar_farm_gz/gui")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz" TYPE DIRECTORY FILES "/home/andres/solar_farm_sim/src/solar_farm_gz/worlds" REGEX "/\\_\\_pycache\\_\\_$" EXCLUDE)
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz/environment" TYPE FILE FILES "/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_environment_hooks/resource_paths.dsv")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ament_index/resource_index/package_run_dependencies" TYPE FILE FILES "/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/solar_farm_gz")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ament_index/resource_index/parent_prefix_path" TYPE FILE FILES "/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/solar_farm_gz")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz/environment" TYPE FILE FILES "/opt/ros/jazzy/share/ament_cmake_core/cmake/environment_hooks/environment/ament_prefix_path.sh")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz/environment" TYPE FILE FILES "/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_environment_hooks/ament_prefix_path.dsv")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz/environment" TYPE FILE FILES "/opt/ros/jazzy/share/ament_cmake_core/cmake/environment_hooks/environment/path.sh")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz/environment" TYPE FILE FILES "/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_environment_hooks/path.dsv")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz" TYPE FILE FILES "/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_environment_hooks/local_setup.bash")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz" TYPE FILE FILES "/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_environment_hooks/local_setup.sh")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz" TYPE FILE FILES "/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_environment_hooks/local_setup.zsh")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz" TYPE FILE FILES "/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_environment_hooks/local_setup.dsv")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz" TYPE FILE FILES "/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_environment_hooks/package.dsv")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ament_index/resource_index/packages" TYPE FILE FILES "/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_index/share/ament_index/resource_index/packages/solar_farm_gz")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz/cmake" TYPE FILE FILES
-    "/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_core/solar_farm_gzConfig.cmake"
-    "/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_core/solar_farm_gzConfig-version.cmake"
-    )
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/solar_farm_gz" TYPE FILE FILES "/home/andres/solar_farm_sim/src/solar_farm_gz/package.xml")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)

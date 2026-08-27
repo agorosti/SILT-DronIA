@@ -53,9 +53,10 @@ sustituto de segunda categoría:**
   niveles de severidad como haga falta, y tantas veces como haga falta.
 - No hace falta comprar una cámara termográfica real para disponer de un
   canal térmico: el generador ya renderiza, junto a cada defecto, un canal
-  de temperatura co-registrado píxel a píxel con el daño visible (ver
-  [Canal térmico](#canal-térmico)), listo para usarse el día que el
-  proyecto lo necesite, sin rehacer ningún recurso.
+  de temperatura co-registrado píxel a píxel con el daño visible, y
+  `flight_video.py --thermal` lo usa para simular una cámara térmica real
+  en la señal de nadir grabada (ver [Canal térmico](#canal-térmico)), sin
+  rehacer ningún recurso.
 - No hace falta autorización de vuelo, seguro ni ventana meteorológica:
   Gazebo simula la física del entorno, y quien pilota el dron dentro de esa
   física es **ArduPilot SITL**, el mismo software de vuelo que llevaría un
@@ -87,9 +88,11 @@ que un detector puede entrenarse con muchas variaciones del mundo sin trabajo
 manual repetido.
 
 Este repositorio,ademas de todo el material necesario, tiene diferentes guias para que puedas operarlo. En la  [guía para principiantes](docs/GETTING_STARTED.md) puedes ver desde las instrucciones de la instalación al
-primer vuelo, paso a paso. Este README es la referencia completa; la
-[metodología](docs/METHODOLOGY.md) cubre las decisiones de diseño, y la
-[hoja de ruta](docs/ROADMAP.md) cubre lo que viene después.
+primer vuelo, paso a paso. El [RUNME](RUNME.md) es la referencia rápida para
+lanzar la simulación y generar vídeos (demo o dataset/YOLO). Este README es
+la referencia completa; la [metodología](docs/METHODOLOGY.md) cubre las
+decisiones de diseño, y la [hoja de ruta](docs/ROADMAP.md) cubre las mejoras
+opcionales que quedan abiertas.
 
 ![Arreglo solar, vista frontal](docs/images/array_front.png)
 
@@ -139,7 +142,7 @@ primer vuelo, paso a paso. Este README es la referencia completa; la
 | **Tipos de defecto** | suciedad, excrementos de aves, grietas en el vidrio, delaminación EVA |
 | **Reparto limpio / dañado** | fijado con `--clean-ratio`, realizado con precisión de un módulo |
 | **Referencia (ground truth)** | `defects.json` con el tipo de cada defecto y su caja delimitadora para usarlo direcctamente en YOLO y modelos de IA |
-| **Térmico** | canal de temperatura renderizado junto a cada atlas de albedo |
+| **Térmico** | canal de temperatura renderizado junto a cada atlas de albedo; cámara térmica simulada disponible con `flight_video.py --thermal` |
 | **Reproducibilidad** | una semilla determina el mundo por completo |
 | **Emplazamiento** | valla perimetral, camino de servicio en anillo, estaciones de inversores |
 | **Aeronave** | cuadricóptero clase Holybro X500 V2, ArduPilot SITL, cámara RGB en nadir |
@@ -416,7 +419,7 @@ habría que mantener sincronizada en versión con la pila de vuelo.
 ```bash
 ros2 run solar_farm_gz flight_video -- \
     --world install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm.sdf \
-    --duration 46 --spawn "13.0,-14,0.13" -o visuals/inspection_flight.mp4
+    --duration 46 --spawn "13.0,-14,0.13" -o videos/inspection_flight.mp4
 ```
 
 Vuela un transecto autónomo con los parámetros de inspección y graba una
@@ -424,6 +427,19 @@ vista de seguimiento (chase view) con la señal de nadir en directo incrustada
 y una superposición de telemetría. Es un vuelo real bajo control de
 ArduPilot, no una trayectoria de cámara animada — si el controlador se
 tambalea, la grabación lo muestra.
+
+Añade `--thermal` para que la señal de nadir incrustada muestre la cámara
+térmica simulada (falso color, a partir del canal `thermal` del atlas) en
+vez de luz visible; la vista de seguimiento exterior no se ve afectada. El
+texto superpuesto (título y etiqueta de estado) se puede personalizar por
+`.env` o por flags (`--title-line1`, `--title-line2`, `--status-label`).
+
+**Recomendado: usa `--route`** en vez de `--spawn`/`--duration` sueltos —
+vuela por posición GPS absoluta un recorrido en zigzag mesa a mesa leído
+del propio `.sdf` del mundo, en lugar de crucero en línea recta desde un
+punto de aparición fijo; también evita el problema del rumbo de spawn no
+determinista (ver [docs/ROADMAP.md](docs/ROADMAP.md)). Ejemplos completos,
+con `--route`, RGB y térmico, en [RUNME.md](RUNME.md).
 
 ---
 
@@ -628,10 +644,13 @@ suciedad se lee tibia porque bloquea la luz.
 
 ![Canal térmico](docs/images/atlas_thermal.png)
 
-La Fase 1 no consume este canal. Existe para que añadir una cámara térmica
-sea un simple cambio de material sobre los recursos existentes, en lugar de
-una reconstrucción de recursos — mismas mallas, mismas UV, mismas
-posiciones de defecto.
+Este canal ya está en uso: `flight_video.py --thermal` cambia el material de
+albedo de la señal de nadir grabada por el canal térmico correspondiente y
+lo colorea en falso color, simulando una cámara térmica real sobre la misma
+malla, las mismas UV y las mismas posiciones de defecto — sin reconstruir
+ningún recurso. Ver [MANUAL.md, sección
+3.4](docs/MANUAL.md#34-el-canal-térmico-cómo-la-cámara-térmica-reutiliza-los-mismos-recursos)
+para el detalle técnico, y [RUNME.md](RUNME.md) para los comandos.
 
 ---
 
@@ -717,8 +736,6 @@ una mesa a lo largo, +Z es hacia arriba.
   alturas (height field).
 - **Las grietas usan un recorrido aleatorio recursivo** y necesitan subir
   `sys.setrecursionlimit` al generar mundos muy grandes en un solo proceso.
-- **Sin inversores, vallado, cableado ni caminos de acceso.** El
-  emplazamiento contiene únicamente mesas de paneles y terreno.
 
 ---
 

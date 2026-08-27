@@ -1,20 +1,19 @@
-"""Lanza el parque solar con el dron de inspección y ambas vistas de operador.
+"""Launches the solar farm with the inspection drone and both operator views.
 
     ros2 launch solar_farm_gz inspection.launch.py
     ros2 launch solar_farm_gz inspection.launch.py world:=solar_farm_1000
     ros2 launch solar_farm_gz inspection.launch.py drone_x:=-6.0 drone_y:=-6.0
 
-Esto levanta el mundo, genera (spawn) el dron, abre juntas la vista de
-órbita libre y el panel de la cámara en nadir, y conecta la cámara a ROS 2.
-No arranca el controlador de vuelo: ArduPilot SITL se ejecuta como su
-propio proceso, para que se pueda reiniciar a mitad de sesión sin cerrar
-el mundo.
+This brings up the world, spawns the drone, opens the free-orbit view and
+the nadir camera panel together, and bridges the camera to ROS 2. It does
+not start the flight controller: ArduPilot SITL runs as its own process,
+so it can be restarted mid-session without closing the world.
 
     cd ~/ardupilot
     Tools/autotest/sim_vehicle.py -v ArduCopter -f gazebo-iris \
         --model JSON --console --map
 
-SITL llega a la aeronave por UDP 9002, coincidiendo con <fdm_port_in> en
+SITL reaches the aircraft over UDP 9002, matching <fdm_port_in> in
 models/x500_rgb/model.sdf.
 """
 
@@ -44,10 +43,10 @@ def generate_launch_description():
     bridge = LaunchConfiguration('bridge')
     ap_gazebo = LaunchConfiguration('ardupilot_gazebo')
 
-    # Los nombres de topic vienen de las definiciones de sensor en
-    # models/x500_rgb/model.sdf. camera_info se publica junto a la imagen
-    # en lugar de anidado bajo ella, por eso ambos se conectan por
-    # separado más abajo.
+    # Topic names come from the sensor definitions in
+    # models/x500_rgb/model.sdf. camera_info is published alongside the
+    # image rather than nested under it, which is why both are bridged
+    # separately below.
     image_topic = '/x500_rgb/nadir'
     caminfo_topic = '/x500_rgb/camera_info'
 
@@ -59,33 +58,33 @@ def generate_launch_description():
         DeclareLaunchArgument('bridge', default_value='true',
                               description='bridge camera and clock to ROS 2'),
 
-        # Genera (spawn) despejado de la primera fila para que la
-        # aeronave no quede dentro de una mesa al arrancar; la pose
-        # inicial de cámara de la interfaz gráfica apunta a esta esquina.
+        # Spawns clear of the first row so the aircraft doesn't land
+        # inside a table at startup; the GUI's initial camera pose points
+        # at this corner.
         DeclareLaunchArgument('drone_x', default_value='-6.0'),
         DeclareLaunchArgument('drone_y', default_value='-6.0'),
         DeclareLaunchArgument('drone_z', default_value='0.13',
                               description='leg feet sit 0.13 m below the hub'),
         DeclareLaunchArgument('drone_yaw', default_value='0.0'),
 
-        # ArduPilotPlugin no es un paquete de ROS, así que su directorio
-        # de compilación tiene que nombrarse explícitamente. El valor por
-        # defecto coincide con la ubicación de instalación documentada
-        # aguas arriba; sobrescríbelo si el repositorio vive en otro sitio.
+        # ArduPilotPlugin isn't a ROS package, so its build directory has
+        # to be named explicitly. The default matches the documented
+        # upstream install location; override it if the repo lives
+        # somewhere else.
         DeclareLaunchArgument(
             'ardupilot_gazebo',
             default_value=os.path.join(os.path.expanduser('~'),
                                        'ardupilot_gazebo'),
             description='path to the ardupilot_gazebo checkout'),
 
-        # Los URIs relativos de malla y textura en el SDF se resuelven contra estos.
+        # Relative mesh/texture URIs in the SDF resolve against these.
         SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH',
                                f'{worlds}:{models}'),
 
-        # Empuja el renderizado hacia la GPU discreta donde hay una. Sin
-        # esto, un portátil con gráficos conmutables renderiza
-        # silenciosamente todo el parque en gráficos integrados. No hace
-        # nada en máquinas sin tarjeta NVIDIA.
+        # Pushes rendering to the discrete GPU where one exists. Without
+        # this, a laptop with switchable graphics silently renders the
+        # whole farm on integrated graphics. No-op on machines without an
+        # NVIDIA card.
         *[SetEnvironmentVariable(k, v)
           for k, v in gpu.offload_env().items()],
         SetEnvironmentVariable(
@@ -100,8 +99,8 @@ def generate_launch_description():
                 'gz_args': [
                     PathJoinSubstitution([worlds, world]), '.sdf',
                     ' -r -v 2 ',
-                    # Ambas vistas de operador vienen de esta config: la
-                    # escena 3D y el panel acoplado de la cámara en nadir.
+                    # Both operator views come from this config: the 3D
+                    # scene and the docked nadir camera panel.
                     '--gui-config ', gui_config, ' ',
                     PythonExpression(
                         ["'-s' if '", headless, "'.lower() == 'true' else ''"]),
@@ -110,10 +109,9 @@ def generate_launch_description():
             }.items(),
         ),
 
-        # El dron se genera (spawn) en lugar de incrustarse en el mundo,
-        # para que generate_farm.py siga siendo un asunto exclusivo de la
-        # Fase 1 y el fichero de mundo se mantenga exactamente igual a lo
-        # que produjo el generador.
+        # The drone is spawned rather than embedded in the world, so
+        # generate_farm.py stays the sole owner of the world, and the
+        # generated file stays exactly what the generator produced.
         Node(
             package='ros_gz_sim', executable='create', name='spawn_drone',
             output='screen',
@@ -128,8 +126,8 @@ def generate_launch_description():
             ],
         ),
 
-        # image_bridge en lugar de parameter_bridge para la imagen en sí:
-        # gestiona correctamente el transporte para 1920x1080 a 30 fps.
+        # image_bridge instead of parameter_bridge for the image itself:
+        # it handles the transport correctly for 1920x1080 at 30 fps.
         Node(
             package='ros_gz_image', executable='image_bridge',
             name='nadir_image_bridge', output='screen',
@@ -141,13 +139,12 @@ def generate_launch_description():
             package='ros_gz_bridge', executable='parameter_bridge',
             name='inspection_bridge', output='screen',
             condition=IfCondition(bridge),
-            # Sin IMU aquí, a propósito. ArduPilotPlugin deriva el topic
-            # del IMU a partir del nombre con ámbito (scoped name) del
-            # sensor, así que el sensor no debe declarar un <topic>
-            # personalizado; conectarlo significaría fijar en el código
-            # esa ruta larga generada, y el controlador de vuelo ya es
-            # dueño del IMU. La cámara es lo que consume el pipeline de
-            # detección.
+            # No IMU here, on purpose. ArduPilotPlugin derives the IMU
+            # topic from the sensor's scoped name, so the sensor must not
+            # declare a custom <topic>; bridging it would mean hardcoding
+            # that long generated path, and the flight controller already
+            # owns the IMU. The camera is what the detection pipeline
+            # consumes.
             arguments=[
                 '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
                 f'{caminfo_topic}@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',

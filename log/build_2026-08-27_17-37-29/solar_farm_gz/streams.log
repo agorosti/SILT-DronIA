@@ -1,0 +1,13 @@
+[0.009s] Invoking command in '/home/andres/solar_farm_sim/build/solar_farm_gz': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PS1=\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake /home/andres/solar_farm_sim/src/solar_farm_gz -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/andres/solar_farm_sim/install/solar_farm_gz
+[0.078s] -- Found ament_cmake: 2.5.6 (/opt/ros/jazzy/share/ament_cmake/cmake)
+[0.246s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.432s] -- Configuring done (0.4s)
+[0.448s] -- Generating done (0.0s)
+[0.452s] -- Build files have been written to: /home/andres/solar_farm_sim/build/solar_farm_gz
+[0.459s] Invoked command in '/home/andres/solar_farm_sim/build/solar_farm_gz' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PS1=\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake /home/andres/solar_farm_sim/src/solar_farm_gz -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/andres/solar_farm_sim/install/solar_farm_gz
+[0.460s] Invoking command in '/home/andres/solar_farm_sim/build/solar_farm_gz': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PS1=\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --build /home/andres/solar_farm_sim/build/solar_farm_gz -- -j16 -l16
+[0.490s] failed to create symbolic link '/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_python/solar_farm_gz/solar_farm_gz' because existing path cannot be removed: Is a directory
+[0.492s] gmake[2]: *** [CMakeFiles/ament_cmake_python_symlink_solar_farm_gz.dir/build.make:70: CMakeFiles/ament_cmake_python_symlink_solar_farm_gz] Error 1
+[0.492s] gmake[1]: *** [CMakeFiles/Makefile2:138: CMakeFiles/ament_cmake_python_symlink_solar_farm_gz.dir/all] Error 2
+[0.493s] gmake: *** [Makefile:146: all] Error 2
+[0.495s] Invoked command in '/home/andres/solar_farm_sim/build/solar_farm_gz' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PS1=\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --build /home/andres/solar_farm_sim/build/solar_farm_gz -- -j16 -l16

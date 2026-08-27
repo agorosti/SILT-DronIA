@@ -1,26 +1,25 @@
-"""Síntesis procedural de texturas de módulo fotovoltaico.
+"""Procedural synthesis of PV module textures.
 
-Cada celda de módulo se renderiza como cuatro canales co-registrados:
+Each module cell is rendered as four co-registered channels:
 
-    albedo     RGB uint8   apariencia en luz visible
-    roughness  L   uint8   rugosidad PBR (vidrio liso, suciedad rugosa)
-    thermal    L   uint8   proxy de temperatura de superficie, sin usar en la Fase 1
-    normal     RGB uint8   normal en espacio tangente, compartida por cada celda
+    albedo     RGB uint8   visible-light appearance
+    roughness  L   uint8   PBR roughness (smooth glass, rough soiling)
+    thermal    L   uint8   surface-temperature proxy, consumed by
+                           flight_video.py --thermal and capture.py --thermal
+    normal     RGB uint8   tangent-space normal, shared by every cell
 
-El canal térmico es lo que hace que la Fase 2 sea un simple cambio de
-material en lugar de una reconstrucción de recursos: un defecto que dispersa
-luz en `albedo` también escribe su firma de calor en `thermal` en los mismos
-píxeles, así que una cámara térmica añadida más adelante ve los mismos
-defectos en los mismos lugares sin cambios de geometría ni de UV.
+The thermal channel is what makes the thermal camera a simple material
+swap instead of an asset rebuild: a defect that scatters light in `albedo`
+also writes its heat signature to `thermal` at the same pixels, so the
+thermal camera sees the same defects in the same places with no geometry
+or UV changes.
 
-Los defectos se emiten con cajas delimitadoras en coordenadas de píxel para
-que el generador del mundo pueda escribir un manifiesto de referencia
-(ground truth) para el entrenamiento del detector.
+Defects are emitted with bounding boxes in pixel coordinates so the world
+generator can write a ground-truth manifest for detector training.
 
-La geometría del módulo sigue una disposición moderna de celdas cortadas por
-la mitad (half-cut): 6 columnas x 24 semiceldas, marco de 25 mm, vertical
-1.05 m x 2.10 m. A la resolución de celda por defecto de 512 x 1024 eso es
-una resolución uniforme de 488 px/m en ambos ejes.
+The module geometry follows a modern half-cut-cell layout: 6 columns x 24
+half-cells, 25 mm frame, 1.05 m x 2.10 m portrait. At the default cell
+resolution of 512 x 1024 that's a uniform 488 px/m on both axes.
 """
 
 from dataclasses import dataclass, field
@@ -28,12 +27,12 @@ from dataclasses import dataclass, field
 import numpy as np
 from scipy import ndimage
 
-# --- constantes del módulo ---------------------------------------------------
+# --- module constants ---------------------------------------------------
 
 MODULE_W_M, MODULE_H_M = 1.05, 2.10
 CELL_PX_W, CELL_PX_H = 512, 1024
 FRAME_PX = 12
-N_COLS, N_ROWS = 6, 24          # semiceldas (half-cut)
+N_COLS, N_ROWS = 6, 24          # half-cut cells
 GAP_PX = 3
 
 DEFECT_TYPES = ("dirt", "bird_dropping", "crack", "delamination")
@@ -41,7 +40,7 @@ DEFECT_TYPES = ("dirt", "bird_dropping", "crack", "delamination")
 
 @dataclass
 class Defect:
-    """Una instancia de defecto, en coordenadas de píxel relativas a su celda de módulo."""
+    """A defect instance, in pixel coordinates relative to its module cell."""
     kind: str
     x0: int
     y0: int
@@ -51,7 +50,7 @@ class Defect:
     meta: dict = field(default_factory=dict)
 
     def bbox_uv(self):
-        """Caja delimitadora normalizada dentro de la celda de módulo, formato YOLO cx,cy,w,h."""
+        """Bounding box normalised within the module cell, YOLO cx,cy,w,h format."""
         cx = (self.x0 + self.x1) / 2.0 / CELL_PX_W
         cy = (self.y0 + self.y1) / 2.0 / CELL_PX_H
         return (cx, cy,
@@ -59,19 +58,18 @@ class Defect:
                 (self.y1 - self.y0) / CELL_PX_H)
 
 
-# --- ruido --------------------------------------------------------------------
+# --- noise ----------------------------------------------------------------
 
 def _octave(shape, freq, rng):
-    """Una octava de ruido de valor suave a la frecuencia base dada."""
+    """One octave of smooth value noise at the given base frequency."""
     h, w = shape
     lo = rng.random((max(2, int(h * freq)), max(2, int(w * freq))))
     return ndimage.zoom(lo, (h / lo.shape[0], w / lo.shape[1]), order=3)
 
 
 def _octave_tileable(shape, k, rng):
-    """Una octava que enlaza sin costuras: sobremuestrea una retícula
-    periódica repitiéndola en un mosaico 3x3, remuestreando, y recortando
-    el mosaico central."""
+    """A seamlessly-tiling octave: oversamples a periodic lattice by
+    tiling it 3x3, resampling, and cropping the centre tile."""
     h, w = shape
     lo = rng.random((k, k))
     big = np.tile(lo, (3, 3))
@@ -80,10 +78,9 @@ def _octave_tileable(shape, k, rng):
 
 
 def fbm_tileable(shape, rng, octaves=5, k0=4, gain=0.5):
-    """fbm sin costuras, para cualquier cosa aplicada con mosaico UV. El
-    fbm() normal de abajo funciona bien en una celda de módulo, que nunca
-    se repite en mosaico, pero deja costuras visibles en el plano del
-    suelo."""
+    """Seamless fbm, for anything applied with UV tiling. The plain fbm()
+    below works fine on a module cell, which never tiles, but leaves
+    visible seams on the ground plane."""
     out = np.zeros(shape)
     amp, k, norm = 1.0, k0, 0.0
     for _ in range(octaves):
@@ -97,7 +94,7 @@ def fbm_tileable(shape, rng, octaves=5, k0=4, gain=0.5):
 
 
 def fbm(shape, rng, octaves=4, base=0.02, gain=0.5):
-    """Movimiento browniano fractal, normalizado a 0..1."""
+    """Fractal Brownian motion, normalised to 0..1."""
     out = np.zeros(shape)
     amp, freq, norm = 1.0, base, 0.0
     for _ in range(octaves):
@@ -110,26 +107,26 @@ def fbm(shape, rng, octaves=4, base=0.02, gain=0.5):
     return out / max(out.max(), 1e-6)
 
 
-# --- módulo limpio -----------------------------------------------------------
+# --- clean module -----------------------------------------------------------
 
 def clean_module(rng):
-    """Renderiza un módulo prístino: marco, backsheet, celdas half-cut, busbars."""
+    """Renders a pristine module: frame, backsheet, half-cut cells, busbars."""
     h, w = CELL_PX_H, CELL_PX_W
     alb = np.zeros((h, w, 3), np.float32)
-    rough = np.full((h, w), 0.12, np.float32)     # el vidrio es liso
+    rough = np.full((h, w), 0.12, np.float32)     # glass is smooth
 
-    alb[:] = (0.62, 0.63, 0.65)                   # marco de aluminio anodizado
+    alb[:] = (0.62, 0.63, 0.65)                   # anodised aluminium frame
     rough[:] = 0.35
 
     iy0, iy1 = FRAME_PX, h - FRAME_PX
     ix0, ix1 = FRAME_PX, w - FRAME_PX
-    alb[iy0:iy1, ix0:ix1] = (0.90, 0.90, 0.89)    # backsheet blanco
+    alb[iy0:iy1, ix0:ix1] = (0.90, 0.90, 0.89)    # white backsheet
     rough[iy0:iy1, ix0:ix1] = 0.55
 
     cw = (ix1 - ix0 - (N_COLS - 1) * GAP_PX) / N_COLS
     ch = (iy1 - iy0 - (N_ROWS - 1) * GAP_PX) / N_ROWS
 
-    # sutil variación de color entre obleas, como en un string mono real
+    # subtle colour variation between wafers, like a real mono string
     for r in range(N_ROWS):
         for c in range(N_COLS):
             y0 = int(iy0 + r * (ch + GAP_PX))
@@ -139,27 +136,27 @@ def clean_module(rng):
             alb[y0:y1, x0:x1] = (0.030 + tint, 0.042 + tint, 0.085 + tint)
             rough[y0:y1, x0:x1] = 0.10
 
-            # tres busbars plateados por celda
+            # three silver busbars per cell
             for bb in (0.25, 0.5, 0.75):
                 bx = int(x0 + bb * cw)
                 alb[y0:y1, bx:bx + 2] = (0.55, 0.56, 0.58)
                 rough[y0:y1, bx:bx + 2] = 0.25
 
-    # textura muy fina para que el vidrio no sea un color plano bajo luz especular
+    # very fine texture so the glass isn't a flat colour under specular light
     alb *= (0.97 + 0.06 * fbm((h, w), rng, octaves=3, base=0.25))[..., None]
 
-    # temperatura ambiente del módulo, cálida pero uniforme
+    # module ambient temperature, warm but uniform
     thermal = np.full((h, w), 0.42, np.float32)
     thermal += 0.02 * fbm((h, w), rng, octaves=2, base=0.05)
     return alb, rough, thermal
 
 
-# --- generadores de defectos --------------------------------------------------
-# Cada uno devuelve (mask, colour, d_rough, d_thermal, Defect). `mask` es la
-# cobertura en 0..1; quien llama compone el color con alpha sobre el albedo.
+# --- defect generators --------------------------------------------------------
+# Each returns (mask, colour, d_rough, d_thermal, Defect). `mask` is 0..1
+# coverage; the caller alpha-composites the colour onto the albedo.
 
 def _blob(shape, cy, cx, ry, rx, rng, rough_edge=0.45):
-    """Mancha radial irregular centrada en (cy, cx)."""
+    """Irregular radial blob centred at (cy, cx)."""
     h, w = shape
     yy, xx = np.ogrid[:h, :w]
     d = np.sqrt(((yy - cy) / max(ry, 1)) ** 2 + ((xx - cx) / max(rx, 1)) ** 2)
@@ -168,9 +165,9 @@ def _blob(shape, cy, cx, ry, rx, rng, rough_edge=0.45):
 
 
 def dirt(shape, rng, severity):
-    """Suciedad. Se acumula hacia el borde inferior, siguiendo la escorrentía de la lluvia."""
+    """Soiling. Accumulates toward the lower edge, following rain runoff."""
     h, w = shape
-    band = rng.uniform(0.25, 0.6)                 # fracción de la altura afectada
+    band = rng.uniform(0.25, 0.6)                 # fraction of height affected
     y0 = int(h * (1.0 - band))
 
     grad = np.zeros((h, w), np.float32)
@@ -179,20 +176,20 @@ def dirt(shape, rng, severity):
     mask = np.clip(grad * (0.45 + 1.1 * tex) * severity, 0, 1)
     mask[mask < 0.06] = 0.0
 
-    colour = np.array(rng.choice([(0.42, 0.36, 0.26),      # polvo seco
-                                  (0.34, 0.30, 0.24),      # tierra
-                                  (0.48, 0.44, 0.35)]))    # arenoso
+    colour = np.array(rng.choice([(0.42, 0.36, 0.26),      # dry dust
+                                  (0.34, 0.30, 0.24),      # soil
+                                  (0.48, 0.44, 0.35)]))    # sandy
     ys, xs = np.nonzero(mask > 0.08)
     if len(ys) == 0:
         return None
     d = Defect("dirt", int(xs.min()), int(ys.min()), int(xs.max()),
                int(ys.max()), severity, {"band": round(band, 3)})
-    # la suciedad bloquea la luz -> la celda de debajo se calienta
+    # soiling blocks light -> the cell underneath warms up
     return mask * 0.85, colour, mask * 0.5, mask * 0.30, d
 
 
 def bird_dropping(shape, rng, severity):
-    """Una mancha con regueros de goteo hacia abajo. Pequeña, opaca, de alto contraste."""
+    """A splat with drip trails running downward. Small, opaque, high contrast."""
     h, w = shape
     r = rng.uniform(0.012, 0.045) * h * (0.6 + severity)
     cy = rng.uniform(0.1, 0.85) * h
@@ -200,7 +197,7 @@ def bird_dropping(shape, rng, severity):
 
     mask = _blob((h, w), cy, cx, r, r * rng.uniform(0.7, 1.3), rng,
                  rough_edge=0.75)
-    # goteos
+    # drips
     for _ in range(rng.integers(1, 4)):
         dx = cx + rng.normal(0, r * 0.5)
         dlen = r * rng.uniform(1.2, 3.5)
@@ -219,7 +216,7 @@ def bird_dropping(shape, rng, severity):
 
 
 def crack(shape, rng, severity):
-    """Fractura de vidrio ramificada que irradia desde un punto de impacto."""
+    """Branching glass fracture radiating from an impact point."""
     h, w = shape
     mask = np.zeros((h, w), np.float32)
     cy = rng.uniform(0.15, 0.85) * h
@@ -248,7 +245,7 @@ def crack(shape, rng, severity):
     ys, xs = np.nonzero(mask > 0.12)
     if len(ys) == 0:
         return None
-    # el vidrio fracturado dispersa la luz -> se lee brillante, no oscuro
+    # fractured glass scatters light -> reads bright, not dark
     colour = np.array((0.78, 0.79, 0.80))
     d = Defect("crack", int(xs.min()), int(ys.min()), int(xs.max()),
                int(ys.max()), severity)
@@ -256,7 +253,7 @@ def crack(shape, rng, severity):
 
 
 def delamination(shape, rng, severity):
-    """Decoloración lechosa del EVA, con sesgo hacia el perímetro del módulo."""
+    """Milky EVA discolouration, biased toward the module's perimeter."""
     h, w = shape
     edge = rng.random() < 0.7
     if edge:
@@ -276,7 +273,7 @@ def delamination(shape, rng, severity):
     ys, xs = np.nonzero(mask > 0.1)
     if len(ys) == 0:
         return None
-    colour = np.array((0.72, 0.66, 0.45)) * rng.uniform(0.9, 1.15)  # amarillento
+    colour = np.array((0.72, 0.66, 0.45)) * rng.uniform(0.9, 1.15)  # yellowish
     d = Defect("delamination", int(xs.min()), int(ys.min()), int(xs.max()),
                int(ys.max()), severity, {"edge": bool(edge)})
     return mask, colour, mask * 0.35, mask * 0.70, d
@@ -290,13 +287,13 @@ _GENERATORS = {
 }
 
 
-# --- composición ---------------------------------------------------------------
+# --- compositing ---------------------------------------------------------------
 
 def render_module(rng, defect_plan):
-    """Renderiza un módulo.
+    """Renders a module.
 
-    `defect_plan` es una lista de (kind, severity). Devuelve los tres
-    canales más las anotaciones Defect que realmente se aplicaron.
+    `defect_plan` is a list of (kind, severity). Returns the three channels
+    plus the Defect annotations that actually got applied.
     """
     alb, rough, therm = clean_module(rng)
     found = []
@@ -311,20 +308,19 @@ def render_module(rng, defect_plan):
         therm = np.clip(therm + d_therm * 0.45, 0.0, 1.0)
         found.append(ann)
 
-    # los defectos nunca cubren el marco
+    # defects never cover the frame
     alb[:FRAME_PX], alb[-FRAME_PX:] = (0.62, 0.63, 0.65), (0.62, 0.63, 0.65)
     alb[:, :FRAME_PX], alb[:, -FRAME_PX:] = (0.62, 0.63, 0.65), (0.62, 0.63, 0.65)
     return alb, rough, therm, found
 
 
 def module_normal_map(rng):
-    """Mapa de normales en espacio tangente. Idéntico para cada módulo, así
-    que se construye una sola vez y se comparte: el relieve de la
-    cuadrícula de celdas no varía entre módulos."""
+    """Tangent-space normal map. Identical for every module, so it's built
+    once and shared: the cell-grid relief doesn't vary between modules."""
     h, w = CELL_PX_H, CELL_PX_W
     height = np.zeros((h, w), np.float32)
     iy0, iy1, ix0, ix1 = FRAME_PX, h - FRAME_PX, FRAME_PX, w - FRAME_PX
-    height[iy0:iy1, ix0:ix1] = 1.0                # las celdas quedan por debajo del marco
+    height[iy0:iy1, ix0:ix1] = 1.0                # cells sit below the frame
     cw = (ix1 - ix0 - (N_COLS - 1) * GAP_PX) / N_COLS
     ch = (iy1 - iy0 - (N_ROWS - 1) * GAP_PX) / N_ROWS
     for r in range(N_ROWS):

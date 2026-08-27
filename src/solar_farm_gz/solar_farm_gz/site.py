@@ -1,27 +1,25 @@
-"""Infraestructura del emplazamiento: valla perimetral, caminos de acceso y estaciones de inversores.
+"""Site infrastructure: perimeter fence, access roads and inverter stations.
 
-La Fase 1 entregó deliberadamente solo paneles y terreno. Este módulo añade
-el resto de lo que lleva un emplazamiento fotovoltaico real, para los planos
-de establecimiento y el pase de "efecto wow", sin tocar ningún recurso de la
-Fase 1.
+The core generator deliberately ships just panels and terrain. This module
+adds the rest of what a real PV site carries, for establishing shots and
+the "wow factor" pass, without touching any of the base panel/terrain
+assets.
 
-Dos restricciones dieron forma a todo esto:
+Two constraints shaped all of this:
 
-* **Estabilidad de la semilla.** La infraestructura toma valores de su
-  propio flujo de RNG, así que activarla o desactivarla no puede desplazar
-  ni una sola mesa. Una semilla dada produce el mismo parque en ambos casos,
-  lo que mantiene reproducibles los mundos de la Fase 1 y permite
-  renderizar ambos como un par emparejado.
+* **Seed stability.** Infrastructure draws from its own RNG stream, so
+  turning it on or off can't shift a single table. A given seed produces
+  the same farm either way, which keeps worlds reproducible and lets both
+  be rendered as a matched pair.
 
-* **Presupuesto de triángulos.** El mundo de 1000 módulos ya mantiene el
-  tiempo real fusionando geometría en lugar de instanciarla, y la
-  infraestructura tiene que respetar la misma regla. Un perímetro de 420 m
-  con postes cada 3 m son ~140 postes; como modelos individuales eso son
-  140 entidades más que la fase amplia (broadphase) de física y la cola de
-  renderizado tienen que recorrer cada fotograma. Fusionado en una sola
-  malla es un único draw call, así que eso es lo que ocurre a
-  continuación. Por la misma razón, el tejido de malla metálica es un
-  quad con textura alpha por lado en lugar de alambre modelado.
+* **Triangle budget.** The 1000-module world already holds real time by
+  merging geometry instead of instancing it, and the infrastructure has to
+  follow the same rule. A 420 m perimeter with posts every 3 m is ~140
+  posts; as individual models that's 140 extra entities for the physics
+  broadphase and the render queue to walk every frame. Merged into a
+  single mesh it's one draw call, so that's what happens below. For the
+  same reason, the chain-link fabric is an alpha-textured quad per side
+  rather than modelled wire.
 """
 
 import math
@@ -32,28 +30,27 @@ from PIL import Image
 
 from . import pv_textures
 
-FENCE_HEIGHT = 2.10      # m, valla de seguridad típica incluyendo brazo de púas
-POST_SPACING = 3.00      # m entre postes de línea
-POST_SIDE = 0.06         # m, sección cuadrada
-ROAD_WIDTH = 4.00        # m, ancho suficiente para un vehículo de servicio
-ROAD_Z = 0.02            # m, elevado del plano del suelo para evitar z-fighting
+FENCE_HEIGHT = 2.10      # m, typical security fence including barb arm
+POST_SPACING = 3.00      # m between line posts
+POST_SIDE = 0.06         # m, square cross-section
+ROAD_WIDTH = 4.00        # m, wide enough for a service vehicle
+ROAD_Z = 0.02            # m, raised off the ground plane to avoid z-fighting
 
-# Bancada de inversor/transformador. Los inversores centrales reales para un
-# parque de este tamaño son aproximadamente del tamaño de un contenedor;
-# estos tienen el tamaño de una unidad pequeña montada sobre bancada.
+# Inverter/transformer skid. Real central inverters for a farm this size
+# are roughly container-sized; these are sized like a small skid-mounted
+# unit.
 INV_SIZE = (2.60, 1.60, 2.10)
 
 
-# --- texturas -----------------------------------------------------------------
+# --- textures -----------------------------------------------------------------
 
 def _chainlink_rgba(rng, px=512, pitch=42, wire=4):
-    """Tejido de malla metálica en mosaico como RGBA, con el alfa recortado al alambre.
+    """Tiled chain-link fabric as RGBA, with alpha cut to the wire.
 
-    La retícula de rombos son dos familias de líneas diagonales, así que se
-    obtiene a partir de las dos coordenadas diagonales (x+y) y (x-y) tomadas
-    módulo el paso de la malla. Trabajar en la base diagonal en lugar de
-    dibujar alambres uno a uno es lo que mantiene esto exactamente en
-    mosaico.
+    The diamond lattice is two families of diagonal lines, so it comes
+    from the two diagonal coordinates (x+y) and (x-y) taken modulo the
+    mesh pitch. Working in the diagonal basis instead of drawing wires one
+    at a time is what keeps this exactly tileable.
     """
     yy, xx = np.mgrid[0:px, 0:px]
     d1 = (xx + yy) % pitch
@@ -61,8 +58,8 @@ def _chainlink_rgba(rng, px=512, pitch=42, wire=4):
     on = ((np.minimum(d1, pitch - d1) < wire) |
           (np.minimum(d2, pitch - d2) < wire))
 
-    # Acero galvanizado, con suficiente ruido tonal para que un tramo largo
-    # de valla no se lea como una pantalla gris plana a distancia.
+    # Galvanised steel, with enough tonal noise that a long fence run
+    # doesn't read as a flat grey screen at a distance.
     grime = pv_textures.fbm_tileable((px, px), rng, octaves=4, k0=6)
     base = 0.62 + 0.16 * grime
     img = np.zeros((px, px, 4), np.float32)
@@ -74,7 +71,7 @@ def _chainlink_rgba(rng, px=512, pitch=42, wire=4):
 
 
 def _gravel(rng, px=1024):
-    """Camino de acceso de grava compactada."""
+    """Compacted-gravel access road."""
     coarse = pv_textures.fbm_tileable((px, px), rng, octaves=5, k0=8)
     grit = pv_textures.fbm_tileable((px, px), rng, octaves=3, k0=48)
     img = np.zeros((px, px, 3), np.float32)
@@ -86,7 +83,7 @@ def _gravel(rng, px=1024):
 
 
 def _housing(rng, px=512):
-    """Carcasa de chapa de acero pintada con tenues costuras de panel verticales."""
+    """Painted sheet-steel housing with faint vertical panel seams."""
     n = pv_textures.fbm_tileable((px, px), rng, octaves=4, k0=10)
     img = np.zeros((px, px, 3), np.float32)
     v = 0.68 + 0.08 * n
@@ -115,7 +112,7 @@ def build_textures(rng, outdir, asset_pkg):
         os.path.join(tex, "site_roughness.png"), optimize=True)
 
 
-# --- geometría ------------------------------------------------------------
+# --- geometry ------------------------------------------------------------
 
 def _quad(verts, uvs, faces, p0, p1, p2, p3, uv):
     base = len(verts) + 1
@@ -126,7 +123,7 @@ def _quad(verts, uvs, faces, p0, p1, p2, p3, uv):
 
 def _write_obj(path, verts, uvs, faces, normal=(0.0, 0.0, 1.0)):
     with open(path, "w") as f:
-        f.write("# generado por solar_farm_gz.site\n")
+        f.write("# generated by solar_farm_gz.site\n")
         for x, y, z in verts:
             f.write(f"v {x:.4f} {y:.4f} {z:.4f}\n")
         for u, v in uvs:
@@ -138,17 +135,16 @@ def _write_obj(path, verts, uvs, faces, normal=(0.0, 0.0, 1.0)):
 
 
 def write_fence_obj(path, x0, y0, x1, y1):
-    """Tejido de malla metálica como cuatro quads en mosaico, uno por lado.
+    """Chain-link fabric as four tiled quads, one per side.
 
-    Las UV se repiten en mosaico a lo largo del tramo con una repetición de
-    malla cada 1.4 m, así que el tamaño del rombo se mantiene físicamente
-    consistente sin importar la longitud del lado.
+    UVs tile along the run at one mesh repeat per 1.4 m, so the diamond
+    size stays physically consistent no matter the side's length.
 
-    Cada lado lleva su propia normal hacia afuera. No es un detalle que se
-    pueda omitir: el tejido es vertical, así que una normal compartida
-    orientada hacia arriba deja cada panel iluminado como si fuera suelo, y
-    la valla se renderiza negra o desaparece por completo. `double_sided`
-    en el material controla el culling, no el sombreado, y no lo compensa.
+    Each side carries its own outward normal. It's not a detail that can
+    be skipped: the fabric is vertical, so a shared upward-facing normal
+    lights every panel as if it were ground, and the fence renders black
+    or vanishes entirely. `double_sided` on the material controls culling,
+    not shading, and doesn't make up for it.
     """
     verts, uvs, faces, normals = [], [], [], []
     corners = [((x0, y0), (x1, y0)), ((x1, y0), (x1, y1)),
@@ -156,7 +152,7 @@ def write_fence_obj(path, x0, y0, x1, y1):
     for (ax, ay), (bx, by) in corners:
         run = math.hypot(bx - ax, by - ay)
         u = run / 1.4
-        # normal hacia afuera: la dirección del tramo rotada -90 grados en planta
+        # outward normal: the run direction rotated -90 degrees in plan
         nx, ny = (by - ay) / run, -(bx - ax) / run
         normals.append((nx, ny, 0.0))
         base = len(verts) + 1
@@ -166,7 +162,7 @@ def write_fence_obj(path, x0, y0, x1, y1):
         faces.append(((base, base + 1, base + 2, base + 3), len(normals)))
 
     with open(path, "w") as f:
-        f.write("# generado por solar_farm_gz.site\n")
+        f.write("# generated by solar_farm_gz.site\n")
         for x, y, z in verts:
             f.write(f"v {x:.4f} {y:.4f} {z:.4f}\n")
         for u, v in uvs:
@@ -179,7 +175,7 @@ def write_fence_obj(path, x0, y0, x1, y1):
 
 
 def write_posts_obj(path, x0, y0, x1, y1):
-    """Postes de línea fusionados en una sola malla."""
+    """Line posts merged into a single mesh."""
     from . import pv_mesh
     verts, faces = [], []
     h = FENCE_HEIGHT + 0.08
@@ -199,13 +195,12 @@ def write_posts_obj(path, x0, y0, x1, y1):
     run(x1, y1, x0, y1)
     run(x0, y1, x0, y0)
 
-    # Riel superior. El tejido de malla metálica es sobre todo huecos, así
-    # que a la altitud de vuelo de inspección su textura alfa se desvanece
-    # a nada con el mipmapping y el perímetro se lee como una línea de
-    # postes desconectados. Una valla de seguridad real lleva un riel a lo
-    # largo de la parte superior, y esa línea horizontal continua es lo que
-    # realmente hace legible una valla desde el aire — así que se gana sus
-    # cuatro cajas.
+    # Top rail. Chain-link fabric is mostly gaps, so at inspection flight
+    # altitude its alpha texture fades to nothing under mipmapping and the
+    # perimeter reads as a line of disconnected posts. A real security
+    # fence carries a rail along the top, and that continuous horizontal
+    # line is what actually makes a fence legible from the air -- so it
+    # earns its four boxes.
     r = 0.05
     rz = FENCE_HEIGHT
     pv_mesh._box(verts, faces, (x0 + x1) / 2, y0, rz, x1 - x0, r, r)
@@ -214,7 +209,7 @@ def write_posts_obj(path, x0, y0, x1, y1):
     pv_mesh._box(verts, faces, x1, (y0 + y1) / 2, rz, r, y1 - y0, r)
 
     with open(path, "w") as f:
-        f.write("# generado por solar_farm_gz.site\n")
+        f.write("# generated by solar_farm_gz.site\n")
         for x, y, z in verts:
             f.write(f"v {x:.4f} {y:.4f} {z:.4f}\n")
         f.write("vt 0.0 0.0\n")
@@ -226,36 +221,33 @@ def write_posts_obj(path, x0, y0, x1, y1):
 
 
 def road_rect(x0, y0, x1, y1):
-    """Línea central del camino en anillo, retranqueada respecto a la valla.
+    """Centreline of the ring road, set back from the fence.
 
-    El camino se dibuja alrededor de esta línea central, así que el
-    retranqueo tiene que despejar media anchura de camino más un margen —
-    si no, la calzada se monta sobre la línea de la valla y la grava se
-    renderiza a ambos lados de esta.
+    The road is drawn around this centreline, so the setback has to clear
+    half the road width plus a margin -- otherwise the carriageway rides
+    up onto the fence line and gravel renders on both sides of it.
     """
     d = ROAD_WIDTH / 2.0 + 1.0
     return x0 + d, y0 + d, x1 - d, y1 - d
 
 
 def write_road_obj(path, x0, y0, x1, y1):
-    """Camino perimetral en anillo, colocado justo dentro de la línea de la valla.
+    """Perimeter ring road, placed just inside the fence line.
 
-    Cuatro rectángulos en lugar de un anillo con inglete real: las esquinas
-    se solapan, lo cual es invisible sobre una textura de grava plana y
-    evita las matemáticas del inglete.
+    Four rectangles instead of a real mitred ring: the corners overlap,
+    which is invisible over a flat gravel texture and avoids mitre maths.
     """
     x0, y0, x1, y1 = road_rect(x0, y0, x1, y1)
     verts, uvs, faces = [], [], []
     w = ROAD_WIDTH
 
     def strip(ax, ay, bx, by, horizontal):
-        """Una calzada.
+        """One carriageway segment.
 
-        Ambas ramas deben devanarse en sentido antihorario vistas desde
-        arriba, o el quad mira hacia el suelo y se descarta por
-        backface-culling — desaparece mientras sus vecinas en los otros dos
-        lados renderizan con normalidad, lo que parece un fallo de
-        colocación en lugar de uno de devanado.
+        Both branches must wind counter-clockwise seen from above, or the
+        quad faces the ground and gets backface-culled -- it vanishes
+        while its neighbours on the other two sides render normally,
+        which looks like a placement bug rather than a winding one.
         """
         if horizontal:
             p = [(ax, ay - w / 2), (bx, ay - w / 2),
@@ -279,10 +271,10 @@ def write_road_obj(path, x0, y0, x1, y1):
     return _write_obj(path, verts, uvs, faces)
 
 
-# --- fragmento de mundo -----------------------------------------------------
+# --- world fragment -----------------------------------------------------
 
 def extent(assignments, span, module_l, margin):
-    """Rectángulo de valla alrededor del arreglo, con un retranqueo de O&M."""
+    """Fence rectangle around the array, with an O&M setback."""
     xs = [a[0] for a in assignments]
     ys = [a[1] for a in assignments]
     return (min(xs) - module_l / 2.0 - margin,
@@ -292,11 +284,10 @@ def extent(assignments, span, module_l, margin):
 
 
 def inverter_positions(x0, y0, x1, y1, n):
-    """Espaciados uniformemente a lo largo del borde interior del camino oeste.
+    """Evenly spaced along the inner edge of the west road.
 
-    Toma el rectángulo de la valla y deriva el camino a partir de él, de
-    modo que quien llame solo tenga que tratar con un único sistema de
-    coordenadas.
+    Takes the fence rectangle and derives the road from it, so the caller
+    only has to deal with a single coordinate system.
     """
     rx0, ry0, _, ry1 = road_rect(x0, y0, x1, y1)
     out = []
@@ -309,7 +300,7 @@ def inverter_positions(x0, y0, x1, y1, n):
 
 
 def sdf(asset_uri, x0, y0, x1, y1, n_inverters, shadows):
-    """Fragmento SDF para toda la infraestructura del emplazamiento. Estático, así que sin coste de física."""
+    """SDF fragment for all site infrastructure. Static, so no physics cost."""
     cast = 'true' if shadows else 'false'
     rough = asset_uri("materials/textures/site_roughness.png")
 
@@ -376,10 +367,10 @@ def sdf(asset_uri, x0, y0, x1, y1, n_inverters, shadows):
     </model>
 
     <!--
-      El tejido está recortado por alfa en lugar de modelado como alambre.
-      double_sided es obligatorio: un quad de una sola cara es invisible
-      desde fuera del perímetro, lo que se ve como una valla que
-      desaparece cuando el dron pasa volando junto a ella.
+      The fabric is alpha-cut rather than modelled as wire. double_sided
+      is mandatory: a single-sided quad is invisible from outside the
+      perimeter, which looks like a fence that vanishes as the drone
+      flies past it.
     -->
     <model name="site_fence_fabric">
       <static>true</static>

@@ -1,4 +1,4 @@
-"""Lanza el mundo del parque solar en Gazebo Harmonic.
+"""Launches the solar farm world in Gazebo Harmonic.
 
     ros2 launch solar_farm_gz solar_farm.launch.py
     ros2 launch solar_farm_gz solar_farm.launch.py headless:=true
@@ -36,11 +36,11 @@ def generate_launch_description():
         DeclareLaunchArgument('bridge', default_value='true',
                               description='start the ros_gz clock bridge'),
 
-        # los URIs relativos de malla y textura en el SDF se resuelven contra esto
+        # relative mesh/texture URIs in the SDF resolve against this
         SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', worlds),
 
-        # Renderiza en la GPU discreta cuando la máquina tiene una; ver
-        # solar_farm_gz.gpu para saber por qué esto no es incondicional.
+        # Renders on the discrete GPU when the machine has one; see
+        # solar_farm_gz.gpu for why this isn't unconditional.
         *[SetEnvironmentVariable(k, v)
           for k, v in gpu.offload_env().items()],
 
@@ -52,11 +52,11 @@ def generate_launch_description():
                 'gz_args': [
                     PathJoinSubstitution([worlds, world]), '.sdf',
                     ' -r -v 2 ',
-                    # -s es solo servidor; la interfaz gráfica es la mitad
-                    # cara. Esto tiene que ser una substitution: `headless`
-                    # es una LaunchConfiguration, así que compararla con
-                    # una cadena en Python siempre daría False e ignoraría
-                    # el argumento silenciosamente.
+                    # -s is server-only; the GUI is half the cost. This has
+                    # to be a substitution: `headless` is a
+                    # LaunchConfiguration, so comparing it to a string in
+                    # Python would always be False and silently ignore the
+                    # argument.
                     PythonExpression(
                         ["'-s' if '", headless, "'.lower() == 'true' else ''"]),
                 ],

@@ -291,7 +291,7 @@ cd ~/solar_farm_sim && source install/setup.bash
 ros2 run solar_farm_gz flight_video -- \
     --world install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm.sdf \
     --duration 46 --spawn "13.0,-14,0.13" \
-    -o visuals/my_flight.mp4
+    -o videos/my_flight.mp4
 ```
 
 | Opción | Valor por defecto | Significado |
@@ -301,6 +301,18 @@ ros2 run solar_farm_gz flight_video -- \
 | `--speed` | 1.5 | velocidad de crucero, m/s |
 | `--spawn` | `3.25,-10,0.13` | posición inicial |
 | `--width` `--height` | 1280 × 720 | resolución de salida |
+
+También admite `--thermal` (cámara térmica simulada en el recuadro de
+nadir) y textos superpuestos personalizables (`--title-line1`,
+`--title-line2`, `--status-label`, o el fichero `.env`).
+
+**Recomendado: usa `--route`** en vez de `--spawn`/`--duration` sueltos —
+vuela por posición GPS absoluta un recorrido en zigzag mesa a mesa leído
+del propio `.sdf` del mundo, en lugar de crucero en línea recta desde un
+punto de aparición fijo; también evita el problema del rumbo de spawn no
+determinista (ver [docs/ROADMAP.md](docs/ROADMAP.md)). Lista completa de
+parámetros, con ejemplos `--route`, térmico/RGB y de título, en
+[RUNME.md](RUNME.md).
 
 Para grabaciones pilotadas a mano, usa cualquier grabador de pantalla
 mientras vuelas con el mando.
@@ -408,11 +420,15 @@ real te los da.
 solar_farm_sim/
 ├── INSTRUCTIONS.md              este fichero
 ├── README.md                    referencia completa
+├── RUNME.md                     guía rápida: lanzar la simulación y generar vídeos
 ├── docs/
+│   ├── MANUAL.md                manual técnico completo
 │   ├── GETTING_STARTED.md       guía para principiantes
 │   └── ROADMAP.md               qué está hecho, qué podría venir después
-├── visuals/
-│   └── inspection_flight.mp4    vuelo de ejemplo
+├── videos/                      vídeos generados (RGB y térmicos, demos y footage)
+├── tools/                       scripts de generación de datasets (ver tools/README.md)
+├── yolo_dataset/                dataset real: solo datos (images/, labels/, data.yaml)
+├── quicklook_dataset/           dataset rápido: solo datos
 └── src/solar_farm_gz/
     ├── launch/
     │   ├── inspection.launch.py mundo + dron + ambas vistas + puente ROS

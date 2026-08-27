@@ -257,7 +257,9 @@ ros2 run solar_farm_gz capture -- \
 
 El vídeo se codifica con OpenCV, así que no hay que instalar nada extra. Ver
 el [README](../README.md#capturar-imágenes-y-vídeos-de-vuelo) para más
-detalles.
+detalles, o el [RUNME](../RUNME.md) para la guía completa de generación de
+vídeo (incluida la cámara térmica simulada y los títulos personalizables de
+`flight_video.py`).
 
 ---
 

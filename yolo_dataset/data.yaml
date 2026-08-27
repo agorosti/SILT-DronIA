@@ -1,0 +1,11 @@
+path: .
+train: images/train
+val: images/val
+nc: 5
+names:
+  0: dirt
+  1: bird_dropping
+  2: crack
+  3: delamination
+  4: thermal_problem
+test: images/test

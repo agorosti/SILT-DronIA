@@ -198,17 +198,17 @@ solar_farm_gz_uninstall/fast:
 .PHONY : solar_farm_gz_uninstall/fast
 
 #=============================================================================
-# Target rules for targets named ament_cmake_python_copy_solar_farm_gz
+# Target rules for targets named ament_cmake_python_symlink_solar_farm_gz
 
 # Build rule for target.
-ament_cmake_python_copy_solar_farm_gz: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ament_cmake_python_copy_solar_farm_gz
-.PHONY : ament_cmake_python_copy_solar_farm_gz
+ament_cmake_python_symlink_solar_farm_gz: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ament_cmake_python_symlink_solar_farm_gz
+.PHONY : ament_cmake_python_symlink_solar_farm_gz
 
 # fast build rule for target.
-ament_cmake_python_copy_solar_farm_gz/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ament_cmake_python_copy_solar_farm_gz.dir/build.make CMakeFiles/ament_cmake_python_copy_solar_farm_gz.dir/build
-.PHONY : ament_cmake_python_copy_solar_farm_gz/fast
+ament_cmake_python_symlink_solar_farm_gz/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ament_cmake_python_symlink_solar_farm_gz.dir/build.make CMakeFiles/ament_cmake_python_symlink_solar_farm_gz.dir/build
+.PHONY : ament_cmake_python_symlink_solar_farm_gz/fast
 
 #=============================================================================
 # Target rules for targets named ament_cmake_python_build_solar_farm_gz_egg
@@ -237,7 +237,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... test"
 	@echo "... ament_cmake_python_build_solar_farm_gz_egg"
-	@echo "... ament_cmake_python_copy_solar_farm_gz"
+	@echo "... ament_cmake_python_symlink_solar_farm_gz"
 	@echo "... solar_farm_gz_uninstall"
 	@echo "... uninstall"
 .PHONY : help

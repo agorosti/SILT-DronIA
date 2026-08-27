@@ -1,0 +1,161 @@
+[0.006s] Invoking command in '/home/andres/solar_farm_sim/build/solar_farm_gz': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PS1=\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake /home/andres/solar_farm_sim/src/solar_farm_gz -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/andres/solar_farm_sim/install/solar_farm_gz
+[0.187s] -- The C compiler identification is GNU 13.3.0
+[0.319s] -- The CXX compiler identification is GNU 13.3.0
+[0.339s] -- Detecting C compiler ABI info
+[0.395s] -- Detecting C compiler ABI info - done
+[0.401s] -- Check for working C compiler: /usr/lib/ccache/cc - skipped
+[0.401s] -- Detecting C compile features
+[0.402s] -- Detecting C compile features - done
+[0.411s] -- Detecting CXX compiler ABI info
+[0.467s] -- Detecting CXX compiler ABI info - done
+[0.473s] -- Check for working CXX compiler: /usr/lib/ccache/c++ - skipped
+[0.473s] -- Detecting CXX compile features
+[0.474s] -- Detecting CXX compile features - done
+[0.504s] -- Found ament_cmake: 2.5.6 (/opt/ros/jazzy/share/ament_cmake/cmake)
+[0.591s] -- Found Python3: /home/andres/venv-ardupilot/bin/python3 (found version "3.12.3") found components: Interpreter 
+[0.648s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.833s] -- Configuring done (0.8s)
+[0.835s] -- Generating done (0.0s)
+[0.836s] -- Build files have been written to: /home/andres/solar_farm_sim/build/solar_farm_gz
+[0.841s] Invoked command in '/home/andres/solar_farm_sim/build/solar_farm_gz' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PS1=\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake /home/andres/solar_farm_sim/src/solar_farm_gz -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/andres/solar_farm_sim/install/solar_farm_gz
+[0.842s] Invoking command in '/home/andres/solar_farm_sim/build/solar_farm_gz': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PS1=\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --build /home/andres/solar_farm_sim/build/solar_farm_gz -- -j16 -l16
+[0.875s] Built target ament_cmake_python_symlink_solar_farm_gz
+[1.091s] running egg_info
+[1.100s] creating solar_farm_gz.egg-info
+[1.100s] writing solar_farm_gz.egg-info/PKG-INFO
+[1.101s] writing dependency_links to solar_farm_gz.egg-info/dependency_links.txt
+[1.101s] writing top-level names to solar_farm_gz.egg-info/top_level.txt
+[1.101s] writing manifest file 'solar_farm_gz.egg-info/SOURCES.txt'
+[1.126s] reading manifest file 'solar_farm_gz.egg-info/SOURCES.txt'
+[1.127s] writing manifest file 'solar_farm_gz.egg-info/SOURCES.txt'
+[1.144s] Built target ament_cmake_python_build_solar_farm_gz_egg
+[1.153s] Invoked command in '/home/andres/solar_farm_sim/build/solar_farm_gz' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PS1=\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --build /home/andres/solar_farm_sim/build/solar_farm_gz -- -j16 -l16
+[1.160s] Invoking command in '/home/andres/solar_farm_sim/build/solar_farm_gz': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PS1=\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --install /home/andres/solar_farm_sim/build/solar_farm_gz
+[1.165s] -- Install configuration: ""
+[1.165s] -- Execute custom install script
+[1.165s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/environment/pythonpath.sh
+[1.170s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/environment/pythonpath.dsv
+[1.175s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz-0.1.0-py3.12.egg-info/PKG-INFO
+[1.179s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz-0.1.0-py3.12.egg-info/SOURCES.txt
+[1.184s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz-0.1.0-py3.12.egg-info/dependency_links.txt
+[1.189s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz-0.1.0-py3.12.egg-info/top_level.txt
+[1.194s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/__init__.py
+[1.198s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/capture.py
+[1.203s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/flight_video.py
+[1.209s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/generate_farm.py
+[1.214s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/gpu.py
+[1.219s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/pv_mesh.py
+[1.223s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/pv_textures.py
+[1.227s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/site.py
+[1.233s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/teleop_joy.py
+[1.236s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/solar_farm_gz/generate_farm
+[1.241s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/solar_farm_gz/capture
+[1.246s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/solar_farm_gz/teleop_joy
+[1.250s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/solar_farm_gz/flight_video
+[1.254s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/launch/inspection.launch.py
+[1.258s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/launch/solar_farm.launch.py
+[1.264s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/models/x500_rgb/model.config
+[1.268s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/models/x500_rgb/model.sdf
+[1.272s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/gui/inspection.config
+[1.278s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/defects.json
+[1.282s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm.sdf
+[1.287s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/fence_fabric.png
+[1.291s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/ground_albedo.png
+[1.295s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/inverter_albedo.png
+[1.300s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_00_albedo.png
+[1.304s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_00_roughness.png
+[1.310s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_00_thermal.png
+[1.314s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_01_albedo.png
+[1.319s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_01_roughness.png
+[1.323s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_01_thermal.png
+[1.328s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_02_albedo.png
+[1.332s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_02_roughness.png
+[1.336s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_02_thermal.png
+[1.341s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_03_albedo.png
+[1.345s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_03_roughness.png
+[1.349s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_03_thermal.png
+[1.353s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_04_albedo.png
+[1.358s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_04_roughness.png
+[1.362s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_04_thermal.png
+[1.366s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_05_albedo.png
+[1.370s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_05_roughness.png
+[1.375s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_05_thermal.png
+[1.379s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_06_albedo.png
+[1.385s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_06_roughness.png
+[1.391s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_06_thermal.png
+[1.397s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_07_albedo.png
+[1.403s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_07_roughness.png
+[1.409s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_07_thermal.png
+[1.415s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_08_albedo.png
+[1.421s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_08_roughness.png
+[1.428s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_08_thermal.png
+[1.434s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_09_albedo.png
+[1.440s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_09_roughness.png
+[1.446s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_09_thermal.png
+[1.452s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_10_albedo.png
+[1.457s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_10_roughness.png
+[1.463s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_10_thermal.png
+[1.468s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_11_albedo.png
+[1.473s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_11_roughness.png
+[1.478s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_11_thermal.png
+[1.483s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_12_albedo.png
+[1.489s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_12_roughness.png
+[1.494s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_12_thermal.png
+[1.499s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_13_albedo.png
+[1.504s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_13_roughness.png
+[1.510s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_13_thermal.png
+[1.516s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_14_albedo.png
+[1.521s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_14_roughness.png
+[1.527s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_14_thermal.png
+[1.532s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_15_albedo.png
+[1.538s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_15_roughness.png
+[1.543s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_15_thermal.png
+[1.548s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_16_albedo.png
+[1.553s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_16_roughness.png
+[1.559s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_16_thermal.png
+[1.564s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_17_albedo.png
+[1.569s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_17_roughness.png
+[1.574s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_17_thermal.png
+[1.579s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_18_albedo.png
+[1.584s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_18_roughness.png
+[1.589s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_18_thermal.png
+[1.595s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_19_albedo.png
+[1.600s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_19_roughness.png
+[1.605s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_19_thermal.png
+[1.611s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_normal.png
+[1.616s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/road_albedo.png
+[1.622s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/site_roughness.png
+[1.628s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/meshes/fence_fabric.obj
+[1.633s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/meshes/fence_posts.obj
+[1.638s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/meshes/ground.obj
+[1.644s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/meshes/pv_glass.obj
+[1.650s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/meshes/pv_rack.obj
+[1.655s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/meshes/road.obj
+[1.660s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/model.config
+[1.666s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/environment/resource_paths.dsv
+[1.671s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/ament_index/resource_index/package_run_dependencies/solar_farm_gz
+[1.676s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/ament_index/resource_index/parent_prefix_path/solar_farm_gz
+[1.682s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/environment/ament_prefix_path.sh
+[1.688s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/environment/ament_prefix_path.dsv
+[1.693s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/environment/path.sh
+[1.698s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/environment/path.dsv
+[1.703s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/local_setup.bash
+[1.708s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/local_setup.sh
+[1.715s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/local_setup.zsh
+[1.720s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/local_setup.dsv
+[1.725s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/package.dsv
+[1.730s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/ament_index/resource_index/packages/solar_farm_gz
+[1.736s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/cmake/solar_farm_gzConfig.cmake
+[1.742s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/cmake/solar_farm_gzConfig-version.cmake
+[1.747s] -- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/package.xml
+[1.792s] Listing '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz'...
+[1.792s] Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/__init__.py'...
+[1.792s] Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/capture.py'...
+[1.792s] Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/flight_video.py'...
+[1.793s] Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/generate_farm.py'...
+[1.793s] Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/gpu.py'...
+[1.793s] Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/pv_mesh.py'...
+[1.793s] Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/pv_textures.py'...
+[1.793s] Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/site.py'...
+[1.793s] Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/teleop_joy.py'...
+[1.799s] Invoked command in '/home/andres/solar_farm_sim/build/solar_farm_gz' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PS1=\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --install /home/andres/solar_farm_sim/build/solar_farm_gz

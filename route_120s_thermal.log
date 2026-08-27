@@ -1,0 +1,319 @@
+[1/4] starting simulator (solar_farm)
+  both cameras live
+[2/4] starting ArduPilot SITL
+[Errno 111] Connection refused sleeping
+  link up
+[3/4] flying route: 8.0 m, 70 waypoints (35 tables), capped at 120.0s
+  waiting for GPS/EKF ...
+  3D fix, 10 sats (9s)
+    Arm: Accels inconsistent
+    Arm: AHRS: waiting for home
+    Arm: Gyros inconsistent
+    Arm: Need Position Estimate
+    PreArm: Need Position Estimate
+  armed (34s)
+  at altitude (8s)
+  route: 70 waypoints (35 tables x 2 endpoints), arrival 1.5 m, timeout 25.0 s/wp
+
+  [dbg   0.0s] wp_idx=0/70 since_wp_t0=0.0s last_m=never
+
+  [  0.2s] table_0000_in:   5.8 m to go (N +4.7 m, E -3.4 m), spd 0.0 m/s
+
+  [  0.6s] mode -> GUIDED
+    1.1s  30 frames
+  [dbg   2.0s] wp_idx=0/70 since_wp_t0=2.0s last_m=0.2s ago
+    2.2s  60 frames
+  [  2.7s] table_0000_in reached (1.1 m)
+    3.3s  90 frames
+  [  3.3s] table_0000_out:  10.8 m to go (N +10.8 m, E -0.0 m), spd 0.9 m/s
+
+  [dbg   4.0s] wp_idx=1/70 since_wp_t0=1.4s last_m=0.1s ago
+    4.3s  120 frames    5.4s  150 frames
+  [dbg   6.0s] wp_idx=1/70 since_wp_t0=3.4s last_m=0.1s ago
+
+  [  6.4s] table_0000_out:   2.5 m to go (N +2.5 m, E +0.1 m), spd 2.9 m/s
+    6.4s  180 frames
+  [  6.8s] table_0000_out reached (1.5 m)
+
+  [  7.4s] table_0001_in reached (1.5 m)
+    7.5s  210 frames
+  [dbg   8.1s] wp_idx=3/70 since_wp_t0=0.7s last_m=0.0s ago
+    8.5s  240 frames
+  [  9.5s] table_0001_out:   8.0 m to go (N +8.0 m, E +0.1 m), spd 4.4 m/s
+    9.5s  270 frames
+  [dbg  10.1s] wp_idx=3/70 since_wp_t0=2.7s last_m=0.2s ago
+   10.6s  300 frames
+  [ 11.3s] table_0001_out reached (1.4 m)
+   11.6s  330 frames
+  [ 11.9s] table_0002_in reached (1.5 m)
+
+  [dbg  12.1s] wp_idx=5/70 since_wp_t0=0.2s last_m=0.2s ago
+
+  [ 12.6s] table_0002_out:  11.2 m to go (N +11.2 m, E -0.2 m), spd 1.9 m/s
+   12.7s  360 frames   13.7s  390 frames
+  [dbg  14.1s] wp_idx=5/70 since_wp_t0=2.2s last_m=0.2s ago
+   14.8s  420 frames
+  [ 15.4s] table_0002_out reached (1.4 m)
+
+  [ 15.6s] table_0003_in:   2.2 m to go (N +2.2 m, E +0.2 m), spd 1.9 m/s
+   15.8s  450 frames
+  [dbg  16.1s] wp_idx=6/70 since_wp_t0=0.8s last_m=0.1s ago
+
+  [ 16.2s] table_0003_in reached (1.3 m)
+   16.9s  480 frames   17.9s  510 frames
+  [dbg  18.2s] wp_idx=7/70 since_wp_t0=2.0s last_m=0.1s ago
+
+  [ 18.7s] table_0003_out:   6.3 m to go (N +6.3 m, E -0.1 m), spd 4.3 m/s
+   19.0s  540 frames   20.1s  570 frames
+  [ 20.1s] table_0003_out reached (1.5 m)
+
+  [dbg  20.2s] wp_idx=8/70 since_wp_t0=0.1s last_m=0.1s ago
+
+  [ 20.9s] table_0004_in reached (1.3 m)
+   21.2s  600 frames
+  [ 21.8s] table_0004_out:  10.9 m to go (N +10.9 m, E -0.1 m), spd 1.0 m/s
+
+  [dbg  22.2s] wp_idx=9/70 since_wp_t0=1.3s last_m=0.0s ago
+   22.3s  630 frames   23.3s  660 frames
+  [dbg  24.2s] wp_idx=9/70 since_wp_t0=3.3s last_m=0.2s ago
+   24.3s  690 frames
+  [ 24.8s] table_0004_out reached (1.4 m)
+
+  [ 25.0s] table_0005_in:   2.2 m to go (N +2.2 m, E +0.1 m), spd 1.9 m/s
+   25.4s  720 frames
+  [ 25.4s] table_0005_in reached (1.5 m)
+
+  [dbg  26.2s] wp_idx=11/70 since_wp_t0=0.8s last_m=0.2s ago
+   26.4s  750 frames   27.4s  780 frames
+  [ 28.1s] table_0005_out:   5.9 m to go (N +5.9 m, E +0.1 m), spd 4.2 m/s
+
+  [dbg  28.3s] wp_idx=11/70 since_wp_t0=2.8s last_m=0.2s ago
+   28.4s  810 frames   29.5s  840 frames
+  [ 29.6s] table_0005_out reached (1.3 m)
+
+  [ 30.1s] table_0006_in reached (1.5 m)
+
+  [dbg  30.3s] wp_idx=13/70 since_wp_t0=0.1s last_m=0.1s ago
+   30.5s  870 frames
+  [ 31.2s] table_0006_out:  11.2 m to go (N +11.2 m, E -0.1 m), spd 1.7 m/s
+   31.5s  900 frames
+  [dbg  32.3s] wp_idx=13/70 since_wp_t0=2.2s last_m=0.1s ago
+   32.6s  930 frames   33.7s  960 frames
+  [ 34.1s] table_0006_out reached (1.5 m)
+
+  [ 34.3s] table_0007_in:   2.1 m to go (N +2.1 m, E -0.0 m), spd 1.9 m/s
+
+  [dbg  34.3s] wp_idx=14/70 since_wp_t0=0.3s last_m=0.1s ago
+
+  [ 34.7s] table_0007_in reached (1.4 m)
+   34.7s  990 frames   35.8s  1020 frames
+  [dbg  36.3s] wp_idx=15/70 since_wp_t0=1.7s last_m=0.0s ago
+   36.8s  1050 frames
+  [ 37.3s] table_0007_out:   3.9 m to go (N +3.9 m, E +0.0 m), spd 3.6 m/s
+   37.9s  1080 frames
+  [ 38.2s] table_0007_out reached (1.5 m)
+
+  [dbg  38.4s] wp_idx=16/70 since_wp_t0=0.2s last_m=0.2s ago
+   38.9s  1110 frames
+  [ 39.0s] table_0008_in reached (1.2 m)
+   40.0s  1140 frames
+  [dbg  40.4s] wp_idx=17/70 since_wp_t0=1.3s last_m=0.1s ago
+
+  [ 40.5s] table_0008_out:  10.1 m to go (N +10.1 m, E -0.1 m), spd 2.3 m/s
+   41.0s  1170 frames   42.1s  1200 frames
+  [dbg  42.4s] wp_idx=17/70 since_wp_t0=3.4s last_m=0.1s ago
+
+  [ 43.1s] table_0008_out reached (1.2 m)
+   43.2s  1230 frames
+  [ 43.5s] table_0009_in:   1.8 m to go (N +1.8 m, E +0.1 m), spd 1.3 m/s
+
+  [ 43.9s] table_0009_in reached (1.4 m)
+   44.2s  1260 frames
+  [dbg  44.4s] wp_idx=19/70 since_wp_t0=0.5s last_m=0.0s ago
+   45.2s  1290 frames   46.3s  1320 frames
+  [dbg  46.4s] wp_idx=19/70 since_wp_t0=2.5s last_m=0.2s ago
+
+  [ 46.6s] table_0009_out:   4.3 m to go (N +4.3 m, E +0.0 m), spd 3.8 m/s
+   47.3s  1350 frames
+  [ 47.6s] table_0009_out reached (1.3 m)
+   48.3s  1380 frames
+  [dbg  48.4s] wp_idx=20/70 since_wp_t0=0.8s last_m=0.2s ago
+   49.4s  1410 frames
+  [ 49.7s] table_0019_in:   3.7 m to go (N -0.3 m, E +3.7 m), spd 3.1 m/s
+   50.4s  1440 frames
+  [dbg  50.4s] wp_idx=20/70 since_wp_t0=2.8s last_m=0.2s ago
+
+  [ 50.5s] table_0019_in reached (1.5 m)
+   51.5s  1470 frames
+  [dbg  52.4s] wp_idx=21/70 since_wp_t0=1.9s last_m=0.1s ago
+   52.5s  1500 frames
+  [ 52.8s] table_0019_out:   7.4 m to go (N -7.4 m, E -0.1 m), spd 4.1 m/s
+   53.6s  1530 frames
+  [dbg  54.5s] wp_idx=21/70 since_wp_t0=4.0s last_m=0.0s ago
+
+  [ 54.6s] table_0019_out reached (1.2 m)
+   54.7s  1560 frames
+  [ 55.3s] table_0018_in reached (1.5 m)
+   55.7s  1590 frames
+  [ 55.9s] table_0018_out:  11.5 m to go (N -11.5 m, E -0.1 m), spd 1.4 m/s
+
+  [dbg  56.5s] wp_idx=23/70 since_wp_t0=1.2s last_m=0.2s ago
+   56.8s  1620 frames   57.8s  1650 frames
+  [dbg  58.5s] wp_idx=23/70 since_wp_t0=3.2s last_m=0.2s ago
+   58.9s  1680 frames
+  [ 58.9s] table_0018_out reached (1.4 m)
+
+  [ 59.2s] table_0017_in:   2.2 m to go (N -2.2 m, E +0.0 m), spd 1.9 m/s
+
+  [ 59.6s] table_0017_in reached (1.5 m)
+   59.9s  1710 frames
+  [dbg  60.5s] wp_idx=25/70 since_wp_t0=1.0s last_m=0.1s ago
+   60.9s  1740 frames   61.9s  1770 frames
+  [ 62.3s] table_0017_out:   5.9 m to go (N -5.9 m, E -0.1 m), spd 4.2 m/s
+
+  [dbg  62.5s] wp_idx=25/70 since_wp_t0=3.0s last_m=0.0s ago
+   63.1s  1800 frames
+  [ 63.7s] table_0017_out reached (1.3 m)
+   64.1s  1830 frames
+  [dbg  64.6s] wp_idx=26/70 since_wp_t0=0.8s last_m=0.2s ago
+
+  [ 64.6s] table_0016_in reached (1.3 m)
+   65.1s  1860 frames
+  [ 65.4s] table_0016_out:  11.0 m to go (N -11.0 m, E +0.1 m), spd 2.1 m/s
+   66.1s  1890 frames
+  [dbg  66.6s] wp_idx=27/70 since_wp_t0=2.0s last_m=0.2s ago
+   67.1s  1920 frames   68.1s  1950 frames
+  [ 68.2s] table_0016_out reached (1.2 m)
+
+  [ 68.4s] table_0015_in:   2.0 m to go (N -2.0 m, E -0.1 m), spd 1.7 m/s
+
+  [dbg  68.6s] wp_idx=28/70 since_wp_t0=0.3s last_m=0.1s ago
+
+  [ 68.9s] table_0015_in reached (1.3 m)
+   69.2s  1980 frames   70.2s  2010 frames
+  [dbg  70.6s] wp_idx=29/70 since_wp_t0=1.7s last_m=0.1s ago
+   71.2s  2040 frames
+  [ 71.6s] table_0015_out:   5.9 m to go (N -5.9 m, E +0.0 m), spd 4.2 m/s
+   72.2s  2070 frames
+  [dbg  72.6s] wp_idx=29/70 since_wp_t0=3.7s last_m=0.2s ago
+
+  [ 73.0s] table_0015_out reached (1.2 m)
+   73.3s  2100 frames
+  [ 73.6s] table_0014_in reached (1.4 m)
+   74.3s  2130 frames
+  [dbg  74.6s] wp_idx=31/70 since_wp_t0=1.0s last_m=0.2s ago
+
+  [ 74.6s] table_0014_out:  11.0 m to go (N -11.0 m, E -0.0 m), spd 1.8 m/s
+   75.3s  2160 frames   76.3s  2190 frames
+  [dbg  76.6s] wp_idx=31/70 since_wp_t0=3.0s last_m=0.2s ago
+   77.3s  2220 frames
+  [ 77.5s] table_0014_out reached (1.3 m)
+
+  [ 77.7s] table_0013_in:   2.1 m to go (N -2.1 m, E -0.1 m), spd 1.8 m/s
+
+  [ 78.3s] table_0013_in reached (1.2 m)
+   78.4s  2250 frames
+  [dbg  78.6s] wp_idx=33/70 since_wp_t0=0.3s last_m=0.1s ago
+   79.4s  2280 frames   80.4s  2310 frames
+  [dbg  80.6s] wp_idx=33/70 since_wp_t0=2.3s last_m=0.1s ago
+
+  [ 80.8s] table_0013_out:   6.2 m to go (N -6.2 m, E +0.1 m), spd 4.2 m/s
+   81.4s  2340 frames
+  [ 82.2s] table_0013_out reached (1.4 m)
+   82.5s  2370 frames
+  [dbg  82.7s] wp_idx=34/70 since_wp_t0=0.5s last_m=0.1s ago
+
+  [ 83.0s] table_0012_in reached (1.2 m)
+   83.5s  2400 frames
+  [ 83.8s] table_0012_out:  10.8 m to go (N -10.8 m, E +0.1 m), spd 1.1 m/s
+   84.6s  2430 frames
+  [dbg  84.7s] wp_idx=35/70 since_wp_t0=1.7s last_m=0.1s ago
+   85.6s  2460 frames   86.6s  2490 frames
+  [dbg  86.7s] wp_idx=35/70 since_wp_t0=3.7s last_m=0.0s ago
+
+  [ 86.9s] table_0012_out reached (1.3 m)
+
+  [ 87.1s] table_0011_in:   2.1 m to go (N -2.1 m, E +0.1 m), spd 1.8 m/s
+
+  [ 87.5s] table_0011_in reached (1.4 m)
+   87.6s  2520 frames
+  [dbg  88.7s] wp_idx=37/70 since_wp_t0=1.2s last_m=0.2s ago
+   88.7s  2550 frames   89.7s  2580 frames
+  [ 90.2s] table_0011_out:   5.9 m to go (N -5.9 m, E -0.1 m), spd 4.2 m/s
+
+  [dbg  90.7s] wp_idx=37/70 since_wp_t0=3.2s last_m=0.1s ago
+   90.8s  2610 frames
+  [ 91.6s] table_0011_out reached (1.3 m)
+   91.8s  2640 frames
+  [ 92.2s] table_0010_in reached (1.4 m)
+
+  [dbg  92.7s] wp_idx=39/70 since_wp_t0=0.5s last_m=0.1s ago
+   92.8s  2670 frames
+  [ 93.3s] table_0010_out:  11.0 m to go (N -11.0 m, E +0.1 m), spd 1.8 m/s
+   93.9s  2700 frames
+  [dbg  94.7s] wp_idx=39/70 since_wp_t0=2.5s last_m=0.0s ago
+   94.9s  2730 frames   95.9s  2760 frames
+  [ 96.1s] table_0010_out reached (1.3 m)
+
+  [ 96.3s] table_0020_in:   6.5 m to go (N -0.9 m, E +6.4 m), spd 1.8 m/s
+
+  [dbg  96.8s] wp_idx=40/70 since_wp_t0=0.6s last_m=0.0s ago
+   96.9s  2790 frames   98.0s  2820 frames
+  [dbg  98.8s] wp_idx=40/70 since_wp_t0=2.7s last_m=0.0s ago
+
+  [ 99.0s] table_0020_in reached (1.5 m)
+   99.1s  2850 frames
+  [ 99.4s] table_0020_out:  10.7 m to go (N +10.7 m, E +0.8 m), spd 1.6 m/s
+  100.2s  2880 frames
+  [dbg 100.8s] wp_idx=41/70 since_wp_t0=1.9s last_m=0.2s ago
+  101.3s  2910 frames  102.4s  2940 frames
+  [102.5s] table_0020_out:   3.0 m to go (N +3.0 m, E -0.0 m), spd 3.2 m/s
+
+  [dbg 102.8s] wp_idx=41/70 since_wp_t0=3.9s last_m=0.2s ago
+
+  [103.1s] table_0020_out reached (1.3 m)
+  103.4s  2970 frames
+  [103.9s] table_0021_in reached (1.3 m)
+  104.5s  3000 frames
+  [dbg 104.9s] wp_idx=43/70 since_wp_t0=1.0s last_m=0.1s ago
+
+  [105.5s] table_0021_out:   8.2 m to go (N +8.2 m, E +0.1 m), spd 4.4 m/s
+  105.6s  3030 frames  106.6s  3060 frames
+  [dbg 106.9s] wp_idx=43/70 since_wp_t0=3.0s last_m=0.1s ago
+
+  [107.6s] table_0021_out reached (1.1 m)
+  107.7s  3090 frames
+  [108.2s] table_0022_in reached (1.3 m)
+
+  [108.6s] table_0022_out:  11.7 m to go (N +11.7 m, E -0.1 m), spd 0.6 m/s
+  108.7s  3120 frames
+  [dbg 108.9s] wp_idx=45/70 since_wp_t0=0.7s last_m=0.1s ago
+  109.7s  3150 frames  110.8s  3180 frames
+  [dbg 110.9s] wp_idx=45/70 since_wp_t0=2.7s last_m=0.0s ago
+
+  [111.7s] table_0022_out:   2.6 m to go (N +2.6 m, E -0.0 m), spd 3.0 m/s
+  111.8s  3210 frames
+  [112.1s] table_0022_out reached (1.5 m)
+  112.8s  3240 frames
+  [dbg 112.9s] wp_idx=46/70 since_wp_t0=0.8s last_m=0.2s ago
+
+  [112.9s] table_0023_in reached (1.2 m)
+  113.8s  3270 frames
+  [114.8s] table_0023_out:   8.4 m to go (N +8.4 m, E +0.0 m), spd 3.9 m/s
+  114.8s  3300 frames
+  [dbg 115.0s] wp_idx=47/70 since_wp_t0=2.0s last_m=0.2s ago
+  115.9s  3330 frames
+  [116.8s] table_0023_out reached (1.3 m)
+  116.9s  3360 frames
+  [dbg 117.0s] wp_idx=48/70 since_wp_t0=0.1s last_m=0.1s ago
+
+  [117.4s] table_0024_in reached (1.3 m)
+
+  [117.8s] table_0024_out:  11.3 m to go (N +11.3 m, E +0.0 m), spd 1.2 m/s
+  117.9s  3390 frames  119.0s  3420 frames
+  [dbg 119.0s] wp_idx=49/70 since_wp_t0=1.6s last_m=0.1s ago
+
+[4/4] finishing
+
+  videos/site_j_route_120s_thermal.mp4  3448 frames @ 30 fps  (92.9 MB)
+  videos/site_j_route_120s_thermal_nadir.mp4  (raw nadir, native resolution, 130.2 MB)

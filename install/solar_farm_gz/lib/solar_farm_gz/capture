@@ -1,6 +1,1 @@
-#!/usr/bin/env python3
-"""ros2 run solar_farm_gz capture -- --world <path> --pose "x y z r p y" """
-import sys
-from solar_farm_gz.capture import main
-
-sys.exit(main())
+/home/andres/solar_farm_sim/src/solar_farm_gz/scripts/capture

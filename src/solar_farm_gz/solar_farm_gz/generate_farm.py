@@ -1,22 +1,21 @@
 #!/usr/bin/env python3
-"""Generador parametrizado de mundos de parque solar para Gazebo Harmonic.
+"""Parametric solar-farm world generator for Gazebo Harmonic.
 
-Vuelve a ejecutarlo con un --seed distinto para obtener un parque
-completamente diferente: distintos tipos de defecto, posiciones,
-orientaciones, tamaños y severidades, con el ratio limpio/dañado que pidas.
-Nada se coloca a mano.
+Run it again with a different --seed to get a completely different farm:
+different defect types, positions, orientations, sizes and severities, at
+whatever clean/damaged ratio you ask for. Nothing is placed by hand.
 
-    # 1000 paneles, 80% limpio, mezcla de defectos por defecto
+    # 1000 panels, 80% clean, default defect mix
     python3 -m solar_farm_gz.generate_farm --panels 1000 --out install/...
 
-    # una segunda variación de dataset, más daño, aleatorización distinta
+    # a second dataset variation, more damage, different randomisation
     python3 -m solar_farm_gz.generate_farm --panels 1000 --clean-ratio 0.6 \
         --seed 7
 
-Cada defecto generado también se escribe en defects.json con su tipo, el
-módulo en el que se encuentra, y su caja delimitadora en espacio UV del
-módulo, así que la referencia (ground truth) del detector sale del
-generador en lugar de un etiquetado manual.
+Every generated defect is also written to defects.json with its type, the
+module it's on, and its bounding box in the module's UV space, so the
+detector's ground truth comes straight from the generator instead of manual
+labelling.
 """
 
 import argparse
@@ -33,14 +32,13 @@ from .pv_textures import CELL_PX_H, CELL_PX_W, DEFECT_TYPES
 
 MODULES_PER_TABLE = pv_mesh.ATLAS_COLS * pv_mesh.ATLAS_ROWS   # 10
 
-# Los recursos viven en un paquete de modelo de Gazebo real, referenciado
-# mediante URIs model://. Los URIs relativos simples NO se pueden usar
-# aquí: gz-sim resuelve un <uri> relativo para una malla contra
-# GZ_SIM_RESOURCE_PATH, pero las rutas relativas <albedo_map> /
-# <roughness_map> / <normal_map> dentro de <pbr> no se resuelven de la
-# misma forma y se descartan silenciosamente, dejando cada superficie sin
-# textura y sin que se registre ningún error. model:// se resuelve de
-# forma consistente para ambos casos, y se mantiene portable.
+# Assets live in a real Gazebo model package, referenced via model:// URIs.
+# Plain relative URIs can NOT be used here: gz-sim resolves a relative
+# <uri> for a mesh against GZ_SIM_RESOURCE_PATH, but the relative
+# <albedo_map> / <roughness_map> / <normal_map> paths inside <pbr> don't
+# resolve the same way and are silently dropped, leaving every surface
+# untextured with no error logged anywhere. model:// resolves consistently
+# for both cases, and stays portable.
 ASSET_PKG = "solar_farm_assets"
 
 
@@ -60,15 +58,14 @@ MODEL_CONFIG = """<?xml version="1.0"?>
 """
 
 
-# --- texturas -----------------------------------------------------------------
+# --- textures -----------------------------------------------------------------
 
 def build_atlases(n_variants, clean_ratio, mix, rng, outdir, scale):
-    """Renderiza el conjunto de atlases.
+    """Renders the set of atlases.
 
-    Cada atlas contiene MODULES_PER_TABLE celdas de módulo. Una mesa hace
-    referencia a un atlas, así que el ratio limpio/dañado se realiza a
-    través del conjunto y se mantiene globalmente sin importar cuántas
-    mesas lo reutilicen.
+    Each atlas contains MODULES_PER_TABLE module cells. A table references
+    one atlas, so the clean/damaged ratio is enforced across the pool and
+    stays global no matter how many tables reuse it.
     """
     tex_dir = os.path.join(outdir, ASSET_PKG, "materials", "textures")
     os.makedirs(tex_dir, exist_ok=True)
@@ -98,9 +95,9 @@ def build_atlases(n_variants, clean_ratio, mix, rng, outdir, scale):
 
             plan = []
             if damaged[cell_i]:
-                # 1-3 defectos por módulo dañado, cada uno localizado: un
-                # módulo nunca queda cubierto uniformemente, que es
-                # precisamente el objetivo para la detección
+                # 1-3 defects per damaged module, each localised: a module
+                # is never covered uniformly, which is exactly the point
+                # for detection.
                 for _ in range(int(rng.integers(1, 4))):
                     k = kinds[int(rng.choice(len(kinds), p=weights))]
                     plan.append((k, float(rng.uniform(0.35, 1.0))))
@@ -130,7 +127,7 @@ def build_atlases(n_variants, clean_ratio, mix, rng, outdir, scale):
 
         _save(alb, f"pv_atlas_{v:02d}_albedo.png", "RGB")
         _save(rgh, f"pv_atlas_{v:02d}_roughness.png", "L")
-        # La Fase 2 lee esto; la Fase 1 solo tiene que no descartarlo
+        # flight_video.py --thermal reads this; the generator just needs to not drop it
         _save(thm, f"pv_atlas_{v:02d}_thermal.png", "L")
         manifest[f"pv_atlas_{v:02d}"] = cells
 
@@ -145,25 +142,25 @@ def build_atlases(n_variants, clean_ratio, mix, rng, outdir, scale):
 
 GROUND_STYLES = ("grass", "earth")
 
-# Tinte ambiental de la escena por estilo de suelo. El suelo rebota la
-# mayor parte de la luz indirecta en un emplazamiento abierto, así que
-# dejar el tinte de tierra bajo el césped se ve embarrado.
+# Ambient scene tint per ground style. The ground bounces most of the
+# indirect light on an open site, so leaving the earth tint under grass
+# reads as muddy.
 GROUND_AMBIENT = {"earth": "0.30 0.27 0.21", "grass": "0.20 0.26 0.15"}
 
-# Césped exuberante y estresado por sequía, sRGB. Los emplazamientos reales
-# son un mosaico entre ambos en lugar de uniformemente uno u otro, que es
-# lo que evita que un plano grande en mosaico se lea como un color plano.
+# Lush and drought-stressed grass, sRGB. Real sites are a patchwork of both
+# rather than uniformly one or the other, which is what keeps a large
+# tiled plane from reading as a flat colour.
 _GRASS_LUSH = np.array([0.16, 0.30, 0.10], np.float32)
 _GRASS_DRY = np.array([0.45, 0.42, 0.22], np.float32)
 
 
 def build_ground_texture(rng, outdir, style="grass", px=2048):
-    """Albedo de suelo en mosaico.
+    """Tiled ground albedo.
 
-    'earth' es tierra seca nivelada. 'grass' es vegetación segada, que es
-    lo que realmente llevan la mayoría de los emplazamientos industriales
-    entre filas — la gestión de la vegetación es una actividad estándar de
-    O&M, así que esto no es puramente una elección cosmética.
+    'earth' is levelled dry soil. 'grass' is mown vegetation, which is what
+    most industrial sites actually run between rows -- vegetation
+    management is a standard O&M activity, so this isn't purely a
+    cosmetic choice.
     """
     tex_dir = os.path.join(outdir, ASSET_PKG, "materials", "textures")
     img = np.zeros((px, px, 3), np.float32)
@@ -175,10 +172,10 @@ def build_ground_texture(rng, outdir, style="grass", px=2048):
         img[..., 1] = 0.38 + 0.18 * base + 0.07 * grit
         img[..., 2] = 0.29 + 0.13 * base + 0.05 * grit
     else:
-        # Tres escalas, porque el césped no resulta convincente si falta
-        # alguna: manchas de humedad a escala de metro, apelmazamiento a
-        # escala de decímetro, y una ruptura fina a escala de brizna que
-        # sobrevive vista desde 8 m de altura.
+        # Three scales, because grass doesn't read as convincing if any
+        # one is missing: metre-scale moisture patches, decimetre-scale
+        # clumping, and a fine blade-scale break that survives viewed
+        # from 8 m up.
         patch = pv_textures.fbm_tileable((px, px), rng, octaves=5, k0=3)
         clump = pv_textures.fbm_tileable((px, px), rng, octaves=4, k0=12)
         blade = pv_textures.fbm_tileable((px, px), rng, octaves=2, k0=96,
@@ -195,7 +192,7 @@ def write_ground_mesh(path, size, tile=25.0):
     h = size / 2.0
     n = size / tile
     with open(path, "w") as f:
-        f.write("# generado por solar_farm_gz\n")
+        f.write("# generated by solar_farm_gz\n")
         for x, y in ((-h, -h), (h, -h), (h, h), (-h, h)):
             f.write(f"v {x:.2f} {y:.2f} 0.00\n")
         for u, v in ((0, 0), (n, 0), (n, n), (0, n)):
@@ -204,7 +201,7 @@ def write_ground_mesh(path, size, tile=25.0):
         f.write("f 1/1/1 2/2/1 3/3/1 4/4/1\n")
 
 
-# --- mundo ------------------------------------------------------------------
+# --- world ------------------------------------------------------------------
 
 def pbr_block(albedo, rough, normal=None, metal=0.0):
     n = f"\n            <normal_map>{normal}</normal_map>" if normal else ""
@@ -272,20 +269,19 @@ def build_world(a, assignments, ground_size, infra=""):
          -math.sin(sun_el))
 
     return f"""<?xml version="1.0" ?>
-<!-- Generado por solar_farm_gz.generate_farm.
+<!-- Generated by solar_farm_gz.generate_farm.
      seed={a.seed} panels={a.panels} clean_ratio={a.clean_ratio}
-     No editar a mano: vuelve a ejecutar el generador en su lugar. -->
+     Do not hand-edit: re-run the generator instead. -->
 <sdf version="1.10">
   <world name="{a.world_name}">
     <!--
-      Paso de 1 ms (1000 Hz), no los 4 ms con los que se conformaría un
-      mundo estático. ArduCopter ejecuta un bucle principal a 400 Hz y se
-      niega a armar a menos que el giroscopio entregue al menos 1.8x eso
-      (720 Hz). Con un paso de 4 ms el simulador le da 250 Hz y cada
-      intento de armado falla con "Gyro 0 rate 250Hz < loop rate*1.8" y
-      "Main loop slow". Los paneles son estáticos, así que los pasos
-      extra cuestan poco: la física no es en lo que este mundo gasta su
-      tiempo.
+      1 ms step (1000 Hz), not the 4 ms a static world would settle for.
+      ArduCopter runs a 400 Hz main loop and refuses to arm unless the
+      gyro delivers at least 1.8x that (720 Hz). At a 4 ms step the
+      simulator only gives it 250 Hz and every arm attempt fails with
+      "Gyro 0 rate 250Hz < loop rate*1.8" and "Main loop slow". The panels
+      are static, so the extra steps cost little: physics isn't where
+      this world spends its time.
     -->
     <physics name="default" type="ode">
       <max_step_size>0.001</max_step_size>
@@ -305,13 +301,12 @@ def build_world(a, assignments, ground_size, infra=""):
     <plugin filename="gz-sim-navsat-system" name="gz::sim::systems::NavSat"/>
 
     <!--
-      ArduPilot necesita un origen georreferenciado para derivar su
-      posición home y su solución GPS. Sin este bloque, SITL arma pero
-      nunca obtiene una estimación de posición, así que el despegue en
-      modo GUIDED se acepta y luego no hace nada. Las coordenadas son la
-      ubicación por defecto propia de SITL de ArduPilot, lo que mantiene
-      el parque simulado consistente con las herramientas y los logs
-      estándar de ArduPilot.
+      ArduPilot needs a georeferenced origin to derive its home position
+      and GPS solution. Without this block, SITL arms but never gets a
+      position estimate, so takeoff in GUIDED mode is accepted and then
+      does nothing. The coordinates are ArduPilot's own SITL default
+      location, which keeps the simulated farm consistent with standard
+      ArduPilot tools and logs.
     -->
     <spherical_coordinates>
       <latitude_deg>-35.363262</latitude_deg>
@@ -367,10 +362,10 @@ def build_world(a, assignments, ground_size, infra=""):
 """
 
 
-# --- disposición ---------------------------------------------------------
+# --- layout ---------------------------------------------------------------
 
 def layout(a, rng, n_tables):
-    """Coloca las mesas en una cuadrícula de filas con una pequeña variación de tolerancia de topografía."""
+    """Places tables on a row grid with small survey-tolerance jitter."""
     span = pv_mesh.table_span(a.modules_per_table)
     per_row = a.tables_per_row
     out = []
@@ -461,12 +456,11 @@ def main(argv=None):
                              a.texture_scale)
 
     print(f"[2/5] ground texture ({a.ground_style})", flush=True)
-    # Flujo independiente, no el rng principal: los dos estilos toman un
-    # número distinto de muestras, y compartir el flujo haría que
-    # --ground-style perturbara la disposición de mesas más adelante.
-    # Mantenerlo separado significa que una misma semilla da el mismo
-    # parque bajo cualquiera de las dos coberturas de suelo, así que ambas
-    # se pueden renderizar como un par A/B emparejado.
+    # Independent stream, not the main rng: the two styles draw a different
+    # number of samples, and sharing the stream would make --ground-style
+    # perturb the table layout further down. Keeping it separate means the
+    # same seed gives the same farm under either ground cover, so both can
+    # be rendered as a matched A/B pair.
     build_ground_texture(np.random.default_rng([a.seed, 0x62726F]),
                          a.out, a.ground_style)
 
@@ -485,11 +479,10 @@ def main(argv=None):
 
     print(f"[4/5] layout: {n_tables} tables, {n_modules} modules", flush=True)
     placed = layout(a, rng, n_tables)
-    # Asignación equilibrada, no muestreo con reemplazo: cada atlas se usa
-    # un número de veces casi igual, así que la fracción de módulos
-    # dañados realizada coincide con --clean-ratio en lugar de fluctuar
-    # con el sorteo, y ninguna variante se genera y luego queda sin
-    # colocar.
+    # Balanced assignment, not sampling with replacement: every atlas is
+    # used a near-equal number of times, so the realised fraction of
+    # damaged modules matches --clean-ratio instead of fluctuating with
+    # the draw, and no variant gets generated and then left unplaced.
     order = np.concatenate([rng.permutation(n_variants)
                             for _ in range(n_tables // n_variants + 1)])
     placed = [(ox, oy, yaw, int(order[i]))
@@ -499,10 +492,10 @@ def main(argv=None):
     fence = None
     if a.infrastructure:
         print("[4b/5] site infrastructure", flush=True)
-        # Otra vez su propio flujo, por la misma razón que la textura del
-        # suelo: los recursos del emplazamiento toman un número variable
-        # de muestras, y compartir el rng haría que --no-infrastructure
-        # cambiara silenciosamente la distribución de defectos.
+        # Its own stream again, for the same reason as the ground texture:
+        # site assets draw a variable number of samples, and sharing the
+        # rng would make --no-infrastructure silently change the defect
+        # distribution.
         site_rng = np.random.default_rng([a.seed, 0x517E])
         fence = site.extent(placed, span, pv_mesh.MODULE_L, a.fence_margin)
         site.build_textures(site_rng, a.out, ASSET_PKG)
@@ -516,9 +509,8 @@ def main(argv=None):
     with open(world_path, "w") as f:
         f.write(build_world(a, placed, ground, infra_sdf))
 
-    # Se informa sobre los módulos realmente colocados en el mundo, no
-    # sobre el conjunto de atlases: una variante usada dos veces aporta
-    # sus defectos dos veces.
+    # Reports on the modules actually placed in the world, not the atlas
+    # pool: a variant used twice contributes its defects twice.
     n_def, n_bad, per_kind = 0, 0, {k: 0 for k in DEFECT_TYPES}
     for _, _, _, v in placed:
         for c in manifest[f"pv_atlas_{v:02d}"]:

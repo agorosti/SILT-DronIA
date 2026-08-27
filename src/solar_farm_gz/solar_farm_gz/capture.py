@@ -1,31 +1,42 @@
 #!/usr/bin/env python3
-"""Captura headless de imágenes fijas y vídeos de vuelo a partir de un mundo generado.
+"""Headless capture of still images and flight videos from a generated world.
 
-No hay GPU discreta en la máquina de referencia y la interfaz gráfica de
-Gazebo es la mitad cara del renderizador, así que las imágenes se producen
-inyectando una cámara en el mundo, ejecutando el servidor sin interfaz
-gráfica, y extrayendo los fotogramas directamente del topic de imagen de
-gz-transport.
+Gazebo's GUI costs about as much to render as the scene itself, so images
+are produced by injecting a camera into the world, running the server
+without a GUI, and pulling frames straight off the gz-transport image
+topic -- worth doing regardless of how much GPU headroom the machine has,
+and what makes headless, scripted capture possible in the first place.
 
-Dos modos:
+Two modes:
 
-    still     un lanzamiento, un fotograma, pose fija
-    fly       un lanzamiento, cámara reposicionada por fotograma a través
-              del servicio set_pose, fotogramas codificados a mp4
+    still     one launch, one frame, fixed pose
+    fly       one launch, camera repositioned per frame via the set_pose
+              service, frames encoded to mp4
 
-El vídeo de vuelo deliberadamente *no* relanza el mundo por cada fotograma.
-Un mundo de 1000 módulos tarda ~18 s en cargar, así que una secuencia de
-120 fotogramas construida de esa forma costaría más de media hora; mover la
-cámara dentro de un mundo ya en marcha lo reduce a menos de un minuto.
+The flight video deliberately does *not* relaunch the world per frame. A
+1000-module world takes ~18 s to load, so a 120-frame sequence built that
+way would cost over half an hour; moving the camera inside an already-
+running world brings it down to under a minute.
 
-    # imagen fija única
+    # single still image
     python3 -m solar_farm_gz.capture --world worlds/solar_farm.sdf \\
         --pose "42 8 15 0 0.36 3.0" -o array_front.png
 
-    # vídeo de vuelo a lo largo de un transecto de inspección
+    # flight video along an inspection transect
     python3 -m solar_farm_gz.capture --world worlds/solar_farm.sdf --fly \\
         --path "30,-10,12,0,0.35,1.5708; 30,110,12,0,0.35,1.5708" \\
         --frames 150 --fps 30 -o flythrough.mp4
+
+    # same, but with the thermal channel (false colour) instead of RGB
+    python3 -m solar_farm_gz.capture --world worlds/solar_farm.sdf --fly \\
+        --thermal \\
+        --path "30,-10,12,0,0.35,1.5708; 30,110,12,0,0.35,1.5708" \\
+        --frames 150 --fps 30 -o flythrough_thermal.mp4
+
+`--fly` eases in/out of motion, rounds the corner at each interior
+waypoint, and banks into turns by default (see `lerp_path` / --no-ease /
+--corner-radius / --bank-deg to tune or disable), so a multi-waypoint path
+reads as piloted rather than a piecewise-linear survey pass.
 """
 
 import argparse
@@ -64,7 +75,7 @@ _CAM_SDF = """
 """
 
 
-# --- funciones auxiliares ----------------------------------------------------
+# --- helpers -----------------------------------------------------------------
 
 def parse_pose(s):
     v = [float(x) for x in re.split(r"[,\s]+", s.strip()) if x]
@@ -73,8 +84,80 @@ def parse_pose(s):
     return v
 
 
-def lerp_path(waypoints, n):
-    """Interpolación lineal por tramos entre waypoints, con ritmo por longitud de arco."""
+def _smoothstep(u):
+    """Cubic ease-in/ease-out remap of a [0, 1] parameter (zero derivative
+    at both ends). Applied to the arc-length parameter so a flythrough
+    accelerates into motion and decelerates into the final waypoint,
+    instead of cutting in and out at a constant cruise speed."""
+    u = np.clip(u, 0.0, 1.0)
+    return u * u * (3.0 - 2.0 * u)
+
+
+def _smooth_columns(arr, sigma):
+    """Gaussian-weighted moving average along axis 0, faded back to the
+    raw values over the first/last ~3*sigma samples so the sequence still
+    starts and ends exactly where it did before smoothing.
+
+    This is what turns the sharp corners a piecewise-linear path makes at
+    each interior waypoint into a continuous curve, without moving the
+    two endpoints the caller actually asked for.
+    """
+    n = len(arr)
+    if sigma <= 0 or n < 5:
+        return arr.copy()
+    span = int(min(round(sigma * 3), n // 2))
+    if span < 1:
+        return arr.copy()
+    k = np.arange(-span, span + 1)
+    kernel = np.exp(-0.5 * (k / sigma) ** 2)
+    kernel /= kernel.sum()
+    smoothed = np.empty_like(arr)
+    for c in range(arr.shape[1]):
+        padded = np.pad(arr[:, c], span, mode="edge")
+        smoothed[:, c] = np.convolve(padded, kernel, mode="valid")
+    fade_n = min(span, n // 2)
+    if fade_n < 1:
+        return smoothed
+    ramp = np.linspace(0.0, 1.0, fade_n)
+    weight = np.ones(n)
+    weight[:fade_n] = ramp
+    weight[n - fade_n:] = ramp[::-1]
+    return arr * (1.0 - weight)[:, None] + smoothed * weight[:, None]
+
+
+def _wrap_pi(a):
+    """Wraps an angle (radians) to (-pi, pi]."""
+    return (a + math.pi) % (2.0 * math.pi) - math.pi
+
+
+def lerp_path(waypoints, n, ease=True, corner_radius=6.0, bank_deg=15.0,
+              fps=30.0):
+    """Piecewise-linear interpolation between waypoints, paced by arc
+    length -- with three optional cinematic refinements layered on top so
+    the recorded flythrough reads as piloted rather than surveyed:
+
+    * `ease` re-times the arc-length parameter with a smoothstep, so the
+      camera ramps up to cruise speed and ramps back down instead of
+      starting/stopping instantaneously. Default on.
+    * `corner_radius` (Gaussian sigma, in frames; 0 disables) rounds the
+      hard corner a piecewise-linear path makes at each interior waypoint
+      into a smooth curve. Only position (x, y, z) is smoothed -- pitch,
+      roll and yaw stay exactly what the waypoints ask for, before any
+      banking below is added. A 2-waypoint path has no interior corner to
+      round, so this is a no-op for the common straight-line case.
+    * `bank_deg` (max degrees of added roll; 0 disables) banks the camera
+      into a turn, proportional to how fast the path's yaw is changing
+      per second (using `fps` to convert per-frame yaw change into a
+      rate), clipped to +/-bank_deg. This is a cosmetic approximation
+      tuned by eye, not a modelled coordinated turn -- there is no
+      aircraft here to derive the physical relationship from, so a path
+      with sharp direction changes may want a lower --bank-deg than the
+      default.
+
+    All three default to on but degrade to the original plain
+    piecewise-linear behaviour when disabled (`ease=False,
+    corner_radius=0, bank_deg=0`).
+    """
     wp = np.array(waypoints, float)
     if len(wp) == 1:
         return np.repeat(wp, n, axis=0)
@@ -82,7 +165,34 @@ def lerp_path(waypoints, n):
     t = np.concatenate([[0.0], np.cumsum(seg)])
     t /= t[-1]
     q = np.linspace(0.0, 1.0, n)
-    return np.stack([np.interp(q, t, wp[:, i]) for i in range(6)], axis=1)
+    if ease:
+        q = _smoothstep(q)
+    out = np.stack([np.interp(q, t, wp[:, i]) for i in range(6)], axis=1)
+
+    if corner_radius > 0 and len(wp) > 2:
+        out[:, :3] = _smooth_columns(out[:, :3], corner_radius)
+
+    if bank_deg > 0 and n > 4:
+        yaw = out[:, 5]
+        dyaw = np.zeros(n)
+        dyaw[1:-1] = [_wrap_pi(yaw[i + 1] - yaw[i - 1]) / 2.0
+                      for i in range(1, n - 1)]
+        dyaw[0], dyaw[-1] = dyaw[1], dyaw[-2]
+        # Smooth the yaw-rate signal itself even if corner_radius is 0:
+        # otherwise the hard corner in the (still piecewise-linear-in-t)
+        # yaw column produces a single-frame bank spike right at each
+        # waypoint instead of a gradual lean into the turn.
+        smooth_sigma = corner_radius if corner_radius > 0 else max(2.0, n * 0.02)
+        dyaw = _smooth_columns(dyaw[:, None], smooth_sigma)[:, 0]
+        turn_rate = dyaw * fps   # rad/s
+        max_bank = math.radians(bank_deg)
+        # Saturates at max_bank around a 0.5 rad/s (~29 deg/s) turn rate --
+        # a fairly brisk turn. Not physically derived; adjust --bank-deg
+        # (or this constant) after previewing footage.
+        bank = np.clip(turn_rate * (max_bank / 0.5), -max_bank, max_bank)
+        out[:, 3] = out[:, 3] + bank
+
+    return out
 
 
 def rpy_to_quat(r, p, y):
@@ -119,13 +229,28 @@ def inject_camera(sdf, pose, w, h, fov, rate):
     return sdf.replace("</world>", cam + "\n  </world>", 1)
 
 
-class FrameSink:
-    """El último fotograma de cámara más un contador de fotogramas monótonamente creciente.
+def _thermal_colour(img):
+    """Raw probe frame over an already thermal-swapped world -> calibrated
+    false colour. Same treatment as flight_video.py's thermal path (same
+    THERMAL_LOW/HIGH, same INFERNO map), so the stills and videos generated
+    here look like they came from the same camera family as the flight
+    videos."""
+    import cv2
+    from . import flight_video as fv  # deferred import: flight_video imports capture
+    gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY).astype(np.float32)
+    span = fv.THERMAL_HIGH - fv.THERMAL_LOW
+    gray = np.clip((gray - fv.THERMAL_LOW) * (255.0 / span), 0, 255)
+    gray = gray.astype(np.uint8)
+    return cv2.cvtColor(cv2.applyColorMap(gray, cv2.COLORMAP_INFERNO),
+                        cv2.COLOR_BGR2RGB)
 
-    El contador es lo que hace seguro el reposicionamiento: tras mover la
-    cámara esperamos N fotogramas más antes de muestrear, así que la imagen
-    guardada no puede ser una renderizada antes de que el movimiento se
-    completara.
+
+class FrameSink:
+    """The latest camera frame plus a monotonically increasing frame counter.
+
+    The counter is what makes repositioning safe: after moving the camera
+    we wait N more frames before sampling, so the saved image can't be one
+    rendered before the move finished.
     """
 
     def __init__(self):
@@ -165,9 +290,9 @@ def wait_for_frames(sink, proc, target, timeout):
 
 
 def set_pose(env, wname, pose, timeout_ms=5000, attempts=4):
-    """Reposiciona la sonda. Con reintentos: el servicio a veces agota el
-    tiempo de espera en una máquina cargada, y perder una llamada truncaría
-    toda la secuencia."""
+    """Repositions the probe. With retries: the service sometimes times out
+    on a loaded machine, and losing one call would truncate the whole
+    sequence."""
     x, y, z, r, p, yw = pose
     qx, qy, qz, qw = rpy_to_quat(r, p, yw)
     req = (f'name: "{PROBE_NAME}", '
@@ -186,10 +311,13 @@ def set_pose(env, wname, pose, timeout_ms=5000, attempts=4):
     return False
 
 
-# --- modos ---------------------------------------------------------------
+# --- modes -----------------------------------------------------------------
 
 def capture_still(a):
     sdf = open(a.world).read()
+    if a.thermal:
+        from . import flight_video as fv
+        sdf = fv._thermal_swap(sdf)
     env = build_env(a.world)
     out = inject_camera(sdf, " ".join(f"{v:.4f}" for v in parse_pose(a.pose)),
                         a.width, a.height, a.fov, 5.0)
@@ -210,7 +338,8 @@ def capture_still(a):
     if not ok:
         print(f"no frame within {a.timeout}s", file=sys.stderr)
         return 1
-    PILImage.fromarray(sink.img).save(a.out)
+    img = _thermal_colour(sink.img) if a.thermal else sink.img
+    PILImage.fromarray(img).save(a.out)
     print(f"  {a.out}")
     return 0
 
@@ -219,9 +348,14 @@ def capture_fly(a):
     if not a.path:
         raise SystemExit("--fly needs --path with at least two waypoints")
     sdf = open(a.world).read()
+    if a.thermal:
+        from . import flight_video as fv
+        sdf = fv._thermal_swap(sdf)
     env = build_env(a.world)
     wname = world_name(sdf)
-    track = lerp_path([parse_pose(p) for p in a.path.split(";")], a.frames)
+    track = lerp_path([parse_pose(p) for p in a.path.split(";")], a.frames,
+                      ease=a.ease, corner_radius=a.corner_radius,
+                      bank_deg=a.bank_deg, fps=a.fps)
 
     start = " ".join(f"{v:.4f}" for v in track[0])
     tmp = "/tmp/solar_farm_capture_fly.sdf"
@@ -251,15 +385,16 @@ def capture_fly(a):
         if not set_pose(env, wname, pose):
             print(f"  frame {i}: set_pose failed", file=sys.stderr)
             break
-        # Descarta `settle` fotogramas para que la muestra no pueda ser anterior al movimiento.
+        # Discard `settle` frames so the sample can't be older than the move.
         target = sink.count + a.settle + 1
         if not wait_for_frames(sink, proc, target, a.frame_timeout):
             print(f"  frame {i}: timed out waiting for a fresh frame",
                   file=sys.stderr)
             break
-        frames.append(sink.img.copy())
+        frame = _thermal_colour(sink.img) if a.thermal else sink.img.copy()
+        frames.append(frame)
         if a.save_frames:
-            PILImage.fromarray(sink.img).save(
+            PILImage.fromarray(frame).save(
                 os.path.join(a.outdir, f"frame_{i:04d}.png"))
         if (i + 1) % 10 == 0 or i + 1 == len(track):
             el = time.time() - t1
@@ -290,7 +425,7 @@ def encode(frames, a):
               file=sys.stderr)
         return 1
     for f in frames:
-        vw.write(cv2.cvtColor(f, cv2.COLOR_RGB2BGR))   # OpenCV espera BGR
+        vw.write(cv2.cvtColor(f, cv2.COLOR_RGB2BGR))   # OpenCV expects BGR
     vw.release()
     size = os.path.getsize(a.out) / 1e6
     print(f"\n  {a.out}  {len(frames)} frames @ {a.fps} fps  ({size:.1f} MB)")
@@ -304,12 +439,28 @@ def main(argv=None):
     p.add_argument("--world", required=True)
     p.add_argument("--fly", action="store_true",
                    help="flythrough instead of a single still")
+    p.add_argument("--thermal", action="store_true",
+                   help="probe reads the simulated thermal channel "
+                        "(false-colour) instead of visible light; works "
+                        "with --fly as well as a single still")
     p.add_argument("--pose", default="15 15 10 0 0.45 2.2",
                    help="x y z roll pitch yaw, for a still")
     p.add_argument("--path", default=None,
                    help="semicolon-separated poses to interpolate through")
     p.add_argument("--frames", type=int, default=150)
     p.add_argument("--fps", type=int, default=30)
+    p.add_argument("--no-ease", dest="ease", action="store_false",
+                   default=True,
+                   help="--fly only: disable ease-in/ease-out timing, "
+                        "reverting to constant cruise speed start-to-finish")
+    p.add_argument("--corner-radius", type=float, default=6.0,
+                   help="--fly only: Gaussian sigma (frames) rounding off "
+                        "each interior waypoint corner into a curve; 0 "
+                        "reverts to a hard corner (default 6.0)")
+    p.add_argument("--bank-deg", type=float, default=15.0,
+                   help="--fly only: maximum roll (degrees) added when "
+                        "banking into a turn; 0 disables banking "
+                        "(default 15.0)")
     p.add_argument("--rate", type=float, default=10.0,
                    help="camera sensor update rate, Hz of sim time")
     p.add_argument("--settle", type=int, default=2,

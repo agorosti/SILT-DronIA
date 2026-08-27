@@ -1,0 +1,155 @@
+-- The C compiler identification is GNU 13.3.0
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/lib/ccache/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/lib/ccache/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 2.5.6 (/opt/ros/jazzy/share/ament_cmake/cmake)
+-- Found Python3: /home/andres/venv-ardupilot/bin/python3 (found version "3.12.3") found components: Interpreter 
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Configuring done (0.8s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/andres/solar_farm_sim/build/solar_farm_gz
+Built target ament_cmake_python_symlink_solar_farm_gz
+running egg_info
+creating solar_farm_gz.egg-info
+writing solar_farm_gz.egg-info/PKG-INFO
+writing dependency_links to solar_farm_gz.egg-info/dependency_links.txt
+writing top-level names to solar_farm_gz.egg-info/top_level.txt
+writing manifest file 'solar_farm_gz.egg-info/SOURCES.txt'
+reading manifest file 'solar_farm_gz.egg-info/SOURCES.txt'
+writing manifest file 'solar_farm_gz.egg-info/SOURCES.txt'
+Built target ament_cmake_python_build_solar_farm_gz_egg
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/environment/pythonpath.sh
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/environment/pythonpath.dsv
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz-0.1.0-py3.12.egg-info/PKG-INFO
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz-0.1.0-py3.12.egg-info/SOURCES.txt
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz-0.1.0-py3.12.egg-info/dependency_links.txt
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz-0.1.0-py3.12.egg-info/top_level.txt
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/__init__.py
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/capture.py
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/flight_video.py
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/generate_farm.py
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/gpu.py
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/pv_mesh.py
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/pv_textures.py
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/site.py
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/teleop_joy.py
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/solar_farm_gz/generate_farm
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/solar_farm_gz/capture
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/solar_farm_gz/teleop_joy
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/lib/solar_farm_gz/flight_video
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/launch/inspection.launch.py
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/launch/solar_farm.launch.py
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/models/x500_rgb/model.config
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/models/x500_rgb/model.sdf
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/gui/inspection.config
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/defects.json
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm.sdf
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/fence_fabric.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/ground_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/inverter_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_00_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_00_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_00_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_01_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_01_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_01_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_02_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_02_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_02_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_03_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_03_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_03_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_04_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_04_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_04_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_05_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_05_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_05_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_06_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_06_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_06_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_07_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_07_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_07_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_08_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_08_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_08_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_09_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_09_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_09_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_10_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_10_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_10_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_11_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_11_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_11_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_12_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_12_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_12_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_13_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_13_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_13_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_14_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_14_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_14_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_15_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_15_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_15_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_16_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_16_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_16_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_17_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_17_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_17_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_18_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_18_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_18_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_19_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_19_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_atlas_19_thermal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/pv_normal.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/road_albedo.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/materials/textures/site_roughness.png
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/meshes/fence_fabric.obj
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/meshes/fence_posts.obj
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/meshes/ground.obj
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/meshes/pv_glass.obj
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/meshes/pv_rack.obj
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/meshes/road.obj
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm_assets/model.config
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/environment/resource_paths.dsv
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/ament_index/resource_index/package_run_dependencies/solar_farm_gz
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/ament_index/resource_index/parent_prefix_path/solar_farm_gz
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/environment/ament_prefix_path.sh
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/environment/ament_prefix_path.dsv
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/environment/path.sh
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/environment/path.dsv
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/local_setup.bash
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/local_setup.sh
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/local_setup.zsh
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/local_setup.dsv
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/package.dsv
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/ament_index/resource_index/packages/solar_farm_gz
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/cmake/solar_farm_gzConfig.cmake
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/cmake/solar_farm_gzConfig-version.cmake
+-- Symlinking: /home/andres/solar_farm_sim/install/solar_farm_gz/share/solar_farm_gz/package.xml
+Listing '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz'...
+Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/__init__.py'...
+Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/capture.py'...
+Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/flight_video.py'...
+Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/generate_farm.py'...
+Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/gpu.py'...
+Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/pv_mesh.py'...
+Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/pv_textures.py'...
+Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/site.py'...
+Compiling '/home/andres/solar_farm_sim/install/solar_farm_gz/lib/python3.12/site-packages/solar_farm_gz/teleop_joy.py'...

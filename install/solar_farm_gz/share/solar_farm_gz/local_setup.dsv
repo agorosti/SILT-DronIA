@@ -1,4 +1,1 @@
-source;share/solar_farm_gz/environment/ament_prefix_path.sh
-source;share/solar_farm_gz/environment/path.sh
-source;share/solar_farm_gz/environment/pythonpath.sh
-source;share/solar_farm_gz/environment/resource_paths.dsv
+/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_environment_hooks/local_setup.dsv

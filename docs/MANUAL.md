@@ -26,7 +26,7 @@ referencia rápida después.
 11. [Mapa de ficheros del proyecto](#11-mapa-de-ficheros-del-proyecto)
 12. [Referencia rápida de comandos](#12-referencia-rápida-de-comandos)
 13. [Solución de problemas](#13-solución-de-problemas)
-14. [Fases del proyecto y hoja de ruta](#14-fases-del-proyecto-y-hoja-de-ruta)
+14. [Qué incluye el proyecto y mejoras opcionales](#14-qué-incluye-el-proyecto-y-mejoras-opcionales)
 15. [Límites conocidos](#15-límites-conocidos)
 16. [Glosario](#16-glosario)
 
@@ -84,10 +84,11 @@ dañada:
   niveles de severidad como haga falta, y tantas veces como haga falta.
 - No hace falta comprar una cámara termográfica real para disponer de un
   canal térmico: el generador ya renderiza, junto a cada defecto, un canal
-  de temperatura co-registrado píxel a píxel con el daño visible (ver
-  [sección 3.4](#34-el-canal-térmico-preparar-la-fase-3-sin-rehacer-nada)),
-  listo para usarse el día que el proyecto lo necesite, sin rehacer ningún
-  recurso.
+  de temperatura co-registrado píxel a píxel con el daño visible, y
+  `flight_video.py --thermal` lo usa para simular una cámara térmica real
+  (ver [sección
+  3.4](#34-el-canal-térmico-cómo-la-cámara-térmica-reutiliza-los-mismos-recursos)),
+  sin rehacer ningún recurso.
 - No hace falta autorización de vuelo, seguro ni ventana meteorológica:
   Gazebo simula la física del entorno, y quien pilota el dron dentro de esa
   física es **ArduPilot SITL**, el mismo software de vuelo que llevaría un
@@ -129,10 +130,10 @@ tipo de vibración, encuadre y velocidad de sobrevuelo.
 | Necesidad | Cómo la cubre el proyecto |
 |---|---|
 | Generar imágenes de paneles con defectos, ya etiquetadas | `generate_farm.py` genera el mundo y escribe `defects.json` con la clase y la caja delimitadora de cada defecto |
-| Entrenar un detector de defectos (YOLO u otro) | `build_roboflow_dataset.py` convierte `defects.json` y los atlases de textura en un dataset YOLO listo para subir a Roboflow o entrenar localmente |
+| Entrenar un detector de defectos (YOLO u otro) | `tools/build_quicklook_dataset.py` (recorte rápido del atlas) o `tools/capture_dataset/` (dataset real, con cámara) convierten `defects.json` y el mundo en un dataset YOLO — ver [sección 10](#10-construir-un-dataset-de-entrenamiento) |
 | Probar cómo se comporta un pipeline de detección con vídeo real de vuelo | `inspection.launch.py` + ArduPilot SITL transmiten la cámara del dron a ROS 2 en directo, como lo haría el dron físico |
 | Producir imágenes o vídeos de demostración sin hardware ni GPU potente | `capture.py` renderiza en modo headless (sin interfaz gráfica) directamente a PNG o MP4 |
-| Ensayar la lógica de vuelo de inspección (transectos, cobertura de filas) | `recorrido_parque.py` / `recorrido_parque_1.py` vuelan rutas autónomas en zigzag sobre el parque generado |
+| Ensayar la lógica de vuelo de inspección (transectos, cobertura de filas) | `autonomous_flight.py` / `autonomous_flight_grid.py` vuelan rutas autónomas en zigzag sobre el parque generado |
 
 ### A quién está dirigido
 
@@ -188,7 +189,7 @@ flowchart TB
     CAMTOPIC -- "image_bridge" --> BRIDGE
     BRIDGE -- "/x500_rgb/nadir<br/>/x500_rgb/camera_info" --> CONSUMER["Consumidor externo:<br/>detector, grabador, rviz..."]
 
-    PILOT <-. "MAVLink" .-> SCRIPTS["recorrido_parque.py<br/>flight_video.py<br/>(vuelo autónomo / grabación)"]
+    PILOT <-. "MAVLink" .-> SCRIPTS["autonomous_flight.py<br/>flight_video.py<br/>(vuelo autónomo / grabación)"]
 
     style GEN fill:#eef3ee,stroke:#5b7a5b,color:#20301f
     style SIM fill:#eef1f7,stroke:#4a5f8a,color:#1c2740
@@ -214,8 +215,9 @@ detectores).*
 | **`capture.py`** | Herramienta de captura headless | Renderiza imágenes fijas o vídeos de vuelo sin abrir la interfaz gráfica de Gazebo |
 | **`flight_video.py`** | Grabador de vuelo real | Vuela un transecto con ArduPilot de verdad y graba una vista de seguimiento con la cámara de nadir incrustada |
 | **`teleop_joy.py`** | Teleoperación con mando | Traduce `sensor_msgs/Joy` a canales RC de MAVLink |
-| **`recorrido_parque.py`** | Vuelo autónomo de inspección | Lee las mesas reales del `.sdf` y vuela un zigzag que las cubre todas |
-| **`build_roboflow_dataset.py`** | Constructor de dataset | Convierte los atlases de textura + `defects.json` en un dataset YOLO |
+| **`autonomous_flight.py`** | Vuelo autónomo de inspección | Lee las mesas reales del `.sdf` y vuela un zigzag que las cubre todas |
+| **`tools/build_quicklook_dataset.py`** | Constructor de dataset rápido | Convierte los atlases de textura + `defects.json` en un dataset YOLO, sin cámara |
+| **`tools/capture_dataset/`** | Constructor de dataset real | Renderiza tomas desde la cámara del dron y proyecta las cajas 3D→2D |
 
 ---
 
@@ -284,7 +286,7 @@ generados viven en un paquete de modelo real de Gazebo
 (`worlds/solar_farm_assets/`) y se referencian con URIs `model://...`, que
 sí se resuelven de forma consistente en ambos casos.
 
-### 3.4 El canal térmico: preparar la Fase 3 sin rehacer nada
+### 3.4 El canal térmico: cómo la cámara térmica reutiliza los mismos recursos
 
 Cada atlas de textura no se genera con un solo canal (el color visible),
 sino con **cuatro, co-registrados píxel a píxel**:
@@ -299,9 +301,13 @@ flowchart LR
 ```
 
 *Una grieta que dispersa luz en `albedo` también escribe su firma de calor
-en `thermal`, en los mismos píxeles. La Fase 1 no usa este canal; existe
-para que añadir una cámara térmica en el futuro sea un simple cambio de
-material sobre los recursos existentes, no una reconstrucción.*
+en `thermal`, en los mismos píxeles. `flight_video.py --thermal` cambia el
+material de albedo por este canal en la señal de nadir grabada y lo
+colorea en falso color (ver `_thermal_swap` y `THERMAL_LOW`/`THERMAL_HIGH`
+en `flight_video.py`) — un simple cambio de material sobre los recursos
+existentes, sin ninguna reconstrucción ni segundo sensor real que añadir.
+La vista de seguimiento (chase) exterior no se ve afectada; solo la señal
+de nadir incrustada.*
 
 ### 3.5 El dron es un modelo real, no un cuadricóptero genérico
 
@@ -315,7 +321,7 @@ equipado igual, sin tener que reajustar el detector al pasar de una a otra.
 
 ### 3.6 El vuelo es real, no una animación de cámara
 
-Cuando `flight_video.py` o `recorrido_parque.py` "vuelan" el dron, no están
+Cuando `flight_video.py` o `autonomous_flight.py` "vuelan" el dron, no están
 moviendo una cámara por una trayectoria prefijada: están hablando por
 MAVLink con un proceso real de `arducopter` (ArduPilot SITL) que ejecuta su
 propio bucle de control, su propio EKF de estimación de estado y sus
@@ -722,7 +728,7 @@ ros2 run solar_farm_gz teleop_joy --ros-args \
 
 ### 8.2 Vuelo autónomo (recorrido de inspección en zigzag)
 
-`recorrido_parque.py` (en la raíz del proyecto) automatiza todo el ciclo:
+`autonomous_flight.py` (en la raíz del proyecto) automatiza todo el ciclo:
 conecta por MAVLink, cambia a modo GUIDED, arma, despega, **lee las
 posiciones reales de todas las mesas directamente del `.sdf` del mundo
 generado** (no asume una rejilla uniforme), construye una ruta en zigzag
@@ -730,20 +736,22 @@ que las cubre todas, la vuela punto a punto, y vuelve a home (RTL) al
 terminar.
 
 ```bash
-python3 recorrido_parque.py
+python3 autonomous_flight.py
 ```
 
 Es útil para validar que la cobertura de vuelo cubre el parque completo
 sin huecos, y como referencia de cómo generar rutas de inspección a partir
-del propio fichero de mundo. `recorrido_parque_1.py` es una variante más
-simple que asume una rejilla regular de filas en vez de leer el `.sdf`.
+del propio fichero de mundo. `autonomous_flight_grid.py` es una variante
+más simple que asume una rejilla regular de filas en vez de leer el `.sdf`.
 
 ### 8.3 Grabar un vuelo (vista de seguimiento + nadir incrustado)
 
 ```bash
 ros2 run solar_farm_gz flight_video -- \
     --world install/solar_farm_gz/share/solar_farm_gz/worlds/solar_farm.sdf \
-    --duration 46 --spawn "13.0,-14,0.13" -o visuals/inspection_flight.mp4
+    --route --route-tolerance 1.0 \
+    --duration 120 -o videos/inspection_flight.mp4 \
+    --nadir-out videos/inspection_flight_nadir.mp4
 ```
 
 A diferencia de las dos anteriores, esta herramienta **arranca su propio
@@ -756,13 +764,32 @@ graba un vídeo con la vista de seguimiento a pantalla completa, la señal de
 nadir incrustada en una esquina, y una superposición de telemetría
 (altitud, velocidad, GSD, franja cubierta).
 
+**`--route` (recomendado)** vuela mesa a mesa por posición GPS absoluta,
+leyendo las mesas reales del `.sdf` del mundo — igual que
+`autonomous_flight.py` (§8.2). Sin `--route`, el dron cruza en línea recta
+desde `--spawn` con un rumbo fijo que solo recorre las filas si ese rumbo
+coincide con la orientación real del mundo concreto, lo cual no está
+garantizado (detalle en [docs/ROADMAP.md](ROADMAP.md)).
+
 | Opción | Por defecto | Significado |
 |---|---|---|
-| `--duration` | 40 | segundos grabados |
+| `--duration` | 40 | segundos grabados; con `--route`, si la ruta termina antes, ahí acaba la grabación |
 | `--alt` | 8.0 | altitud, en metros |
-| `--speed` | 1.5 | velocidad de crucero, m/s |
-| `--spawn` | `3.25,-10,0.13` | posición inicial |
+| `--speed` | 1.5 | velocidad de crucero, m/s (solo sin `--route`) |
+| `--route` | desactivado | vuela mesa a mesa por posición GPS absoluta — ver arriba |
+| `--route-tolerance` | 1.0 | metros de tolerancia en X para agrupar mesas en la misma fila (solo con `--route`) |
+| `--spawn` | `3.25,-10,0.13` | posición inicial; sin `--route`, también fija el rumbo de crucero |
 | `--width` `--height` | 1280 × 720 | resolución de salida |
+| `--thermal` | desactivado | la señal de nadir incrustada muestra la cámara térmica simulada (falso color) en vez de RGB; la vista de seguimiento no cambia |
+| `--nadir-out` | desactivado | además del vídeo compuesto, escribe la señal de nadir en crudo (resolución nativa, sin recuadro ni HUD) en el mismo vuelo — la resolución sobre la que entrena el detector, y la que conviene usar para correr inferencia |
+| `--title-line1` `--title-line2` | ver `.env` | texto del título superpuesto; si no se pasan, se leen de `.env` (`FLIGHT_TITLE_LINE1`/`2`) |
+| `--status-label` | ver `.env` | etiqueta de estado superpuesta (`FLIGHT_STATUS_LABEL` en `.env`) |
+| `--env-file` | `.env` | fichero `CLAVE=VALOR` de donde se leen los textos anteriores si no se pasan por flag |
+| `-o`, `--out` | `inspection_flight.mp4` | ruta del vídeo de salida |
+
+Ejemplos completos (RGB, térmico, títulos personalizados) en
+[RUNME.md](../RUNME.md), sección 2.1 — incluye la lista completa de
+opciones de `--route`.
 
 ---
 
@@ -802,10 +829,25 @@ terminara de moverse.
 
 ## 10. Construir un dataset de entrenamiento
 
-`build_roboflow_dataset.py`, en la raíz del proyecto, convierte los
-atlases de textura y `defects.json` en un dataset en **formato YOLO**
-(imágenes + etiquetas `.txt`), listo para subir a Roboflow o entrenar
-localmente.
+Los scripts que generan datasets viven en `tools/`, fuera de las carpetas
+de datos — así `yolo_dataset/` y `quicklook_dataset/` contienen solo
+imágenes, etiquetas y `data.yaml`, listos para subir a Colab, Roboflow o
+donde haga falta, sin arrastrar código. Hay dos caminos:
+
+- **`tools/build_quicklook_dataset.py`** (esta sección) — recorta cada
+  módulo directamente del atlas de textura, sin pasar por ninguna cámara.
+  Rápido, útil como primera comprobación, pero no representa la
+  perspectiva real del dron.
+- **`tools/capture_dataset/capture_dataset.py`** — genera el dataset
+  pensado para el detector real: renderiza tomas desde la cámara del dron
+  en poses realistas y proyecta las cajas en 3D. Es el que produjo
+  `yolo_dataset/`. Ver [RUNME.md, sección
+  3](../RUNME.md#3-el-dataset-de-entrenamiento-yolo-no-es-un-vídeo) y
+  [tools/README.md](../tools/README.md) para el detalle.
+
+Esta sección cubre el primero. `tools/build_quicklook_dataset.py`
+convierte los atlases de textura y `defects.json` en un dataset en
+**formato YOLO** (imágenes + etiquetas `.txt`).
 
 ```mermaid
 flowchart LR
@@ -825,20 +867,20 @@ necesita ver ejemplos de paneles sanos.*
 
 ```bash
 # 1. Inspecciona la estructura real de defects.json (una sola vez)
-python3 build_roboflow_dataset.py --inspect
+python3 tools/build_quicklook_dataset.py --inspect
 
 # 2. Genera unas pocas imágenes con las cajas dibujadas, para comprobar
 #    a ojo que caen sobre el defecto real
-python3 build_roboflow_dataset.py --verify
+python3 tools/build_quicklook_dataset.py --verify
 
 # 3. Genera el dataset completo
-python3 build_roboflow_dataset.py
+python3 tools/build_quicklook_dataset.py
 ```
 
-La salida (en `roboflow_dataset/` por defecto) contiene:
+La salida (en `quicklook_dataset/` por defecto) contiene:
 
 ```
-roboflow_dataset/
+quicklook_dataset/
 ├── images/<atlas>_<modulo>.png
 ├── labels/<atlas>_<modulo>.txt   # clase xc yc w h, normalizado 0-1
 └── classes.txt                   # una clase por línea, en el orden de sus IDs
@@ -855,16 +897,22 @@ ninguna conversión de coordenadas de píxel: es una copia directa.
 ```
 solar_farm_sim/
 ├── README.md                        referencia completa del proyecto
+├── RUNME.md                         guía rápida: lanzar la simulación y generar vídeos
 ├── INSTRUCTIONS.md                  guía operativa (arrancar, volar, depurar)
 ├── docs/
 │   ├── MANUAL.md                    este documento
 │   ├── GETTING_STARTED.md           guía para principiantes
-│   └── ROADMAP.md                   fases del proyecto
-├── visuals/
-│   └── inspection_flight.mp4        vuelo de ejemplo grabado
-├── build_roboflow_dataset.py        atlases + defects.json -> dataset YOLO
-├── recorrido_parque.py              vuelo autónomo (lee mesas del .sdf)
-├── recorrido_parque_1.py            vuelo autónomo (rejilla asumida)
+│   ├── YOLO_DATASET.md              detalle completo del dataset yolo_dataset/
+│   └── ROADMAP.md                   mejoras opcionales y notas pendientes
+├── videos/                          vídeos generados (RGB y térmicos, demos y footage)
+├── tools/
+│   ├── README.md                    qué hace cada script y cómo correrlo
+│   ├── build_quicklook_dataset.py   atlases + defects.json -> dataset YOLO rápido, sin cámara
+│   └── capture_dataset/             genera el dataset real (con cámara y proyección 3D->2D)
+├── yolo_dataset/                    dataset real: solo datos (images/, labels/, data.yaml)
+├── quicklook_dataset/               dataset rápido: solo datos (images/, labels/, classes.txt)
+├── autonomous_flight.py              vuelo autónomo (lee mesas del .sdf)
+├── autonomous_flight_grid.py         vuelo autónomo (rejilla asumida)
 └── src/solar_farm_gz/
     ├── launch/
     │   ├── inspection.launch.py     mundo + dron + ambas vistas + puente ROS
@@ -896,10 +944,12 @@ solar_farm_sim/
 | Arrancar el piloto automático | `cd ~/ardupilot && Tools/autotest/sim_vehicle.py -v ArduCopter -f gazebo-iris --model JSON --console --map` |
 | Armar y despegar (consola MAVProxy) | `mode GUIDED` → `arm throttle` → `takeoff 8` |
 | Volar con mando | `ros2 run joy joy_node` + `ros2 run solar_farm_gz teleop_joy` |
-| Volar un recorrido automático | `python3 recorrido_parque.py` |
-| Grabar un vídeo de vuelo real | `ros2 run solar_farm_gz flight_video -- --world <ruta.sdf> -o video.mp4` |
+| Volar un recorrido automático | `python3 autonomous_flight.py` |
+| Grabar un vídeo de vuelo real (RGB) | `ros2 run solar_farm_gz flight_video -- --world <ruta.sdf> -o video.mp4` |
+| Grabar un vídeo con cámara térmica simulada | `ros2 run solar_farm_gz flight_video -- --world <ruta.sdf> --thermal -o video_thermal.mp4` |
 | Capturar una imagen sin abrir Gazebo | `ros2 run solar_farm_gz capture -- --world <ruta.sdf> --pose "x y z r p y" -o foto.png` |
-| Construir el dataset YOLO | `python3 build_roboflow_dataset.py` |
+| Construir el dataset YOLO rápido (sin cámara) | `python3 tools/build_quicklook_dataset.py` |
+| Construir el dataset YOLO real (con cámara) | `python3 tools/capture_dataset/capture_dataset.py --world-dir <dir> --site <tag> --n 40 --seed N --images-out <dir> --labels-out <dir>` |
 | Ver la cámara del dron en vivo | `ros2 run rqt_image_view rqt_image_view /x500_rgb/nadir` |
 
 ---
@@ -925,36 +975,21 @@ Más detalle en la sección 10 de [INSTRUCTIONS.md](../INSTRUCTIONS.md).
 
 ---
 
-## 14. Fases del proyecto y hoja de ruta
+## 14. Qué incluye el proyecto y mejoras opcionales
 
-```mermaid
-flowchart LR
-    F1["Fase 1<br/>Entorno<br/>✅ entregada"] --> F2["Fase 2<br/>Vuelo y control<br/>✅ entregada"]
-    F2 --> F3["Fase 3<br/>Imagen térmica<br/>⏳ pendiente"]
-    F2 -.-> OPT["Pulido visual opcional<br/>(infraestructura extra,<br/>relieve, PBR, cielo)"]
+El proyecto se entrega completo, como una sola pieza: entorno
+procedural, síntesis de defectos, referencia (`defects.json`), vuelo real
+bajo ArduPilot SITL, dron modelado sobre un armazón real, teleoperación con
+mando, transmisión de cámara en directo por ROS 2, infraestructura del
+emplazamiento, grabación de transectos autónomos, y cámara térmica simulada
+(`flight_video.py --thermal`, [sección
+3.4](#34-el-canal-térmico-cómo-la-cámara-térmica-reutiliza-los-mismos-recursos)).
 
-    style F1 fill:#eef3ee,stroke:#5b7a5b,color:#20301f
-    style F2 fill:#eef1f7,stroke:#4a5f8a,color:#1c2740
-    style F3 fill:#f4eef7,stroke:#7a4a8a,color:#301c40
-    style OPT fill:#f7f0ea,stroke:#8a5a2f,color:#402a10
-```
-
-- **Fase 1 — Entorno (entregada).** Parque procedural, síntesis de
-  defectos, referencia (`defects.json`), materiales preparados para lo
-  térmico.
-- **Fase 2 — Vuelo y control (entregada).** ArduPilot SITL integrado con
-  Gazebo, dron modelado sobre un armazón real, teleoperación con mando,
-  transmisión de cámara en directo por ROS 2, infraestructura del
-  emplazamiento, grabación de transectos autónomos.
-- **Fase 3 — Imagen térmica (pendiente).** Convertir el canal térmico ya
-  preparado en la Fase 1 en una cámara térmica funcional de verdad, sin
-  reconstruir ningún recurso de panel.
-- **Pulido visual opcional.** Más infraestructura, relieve del terreno,
-  texturas PBR de mayor resolución, cielo volumétrico — mejora de valor de
-  producción, no de corrección funcional.
-
-El detalle completo, con las notas técnicas de cada fase, está en
-[ROADMAP.md](ROADMAP.md).
+Más allá de eso quedan, sin más plan que "cuando haga falta", mejoras
+opcionales de realismo visual — más infraestructura, relieve del terreno,
+texturas PBR de mayor resolución, cielo volumétrico — que son valor de
+producción para presentaciones, no correcciones funcionales. El detalle
+completo está en [ROADMAP.md](ROADMAP.md).
 
 ---
 

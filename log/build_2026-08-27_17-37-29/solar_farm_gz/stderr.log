@@ -1,0 +1,4 @@
+failed to create symbolic link '/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_python/solar_farm_gz/solar_farm_gz' because existing path cannot be removed: Is a directory
+gmake[2]: *** [CMakeFiles/ament_cmake_python_symlink_solar_farm_gz.dir/build.make:70: CMakeFiles/ament_cmake_python_symlink_solar_farm_gz] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:138: CMakeFiles/ament_cmake_python_symlink_solar_farm_gz.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

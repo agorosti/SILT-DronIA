@@ -1,17 +1,17 @@
-"""Detección de render-offload de NVIDIA PRIME.
+"""NVIDIA PRIME render-offload detection.
 
-Los portátiles con gráficos conmutables ejecutan el escritorio en la GPU
-integrada y dejan la tarjeta discreta inactiva hasta que un proceso la pide
-explícitamente. Gazebo no la pide, así que en una máquina como un MSI GS66 o
-un HP OMEN renderizará sin problema un mundo de 1000 módulos en los
-gráficos Intel UHD mientras una tarjeta RTX se queda en 15 MB de memoria
-usada. Nada te avisa: simplemente va más lento, y el único síntoma visible
-es `libEGL warning: failed to create dri2 screen` enterrado en el log.
+Laptops with switchable graphics run the desktop on the integrated GPU and
+leave the discrete card idle until a process explicitly asks for it. Gazebo
+doesn't ask, so on a machine like an MSI GS66 or an HP OMEN it will happily
+render a 1000-module world on the Intel UHD graphics while an RTX card sits
+at 15 MB of memory used. Nothing warns you: it's just slower, and the only
+visible symptom is `libEGL warning: failed to create dri2 screen` buried in
+the log.
 
-Estas variables son la vía de activación documentada. Solo se fijan cuando
-hay realmente una GPU NVIDIA presente, porque forzar
-__GLX_VENDOR_LIBRARY_NAME=nvidia en una máquina sin el driver rompe GLX por
-completo en lugar de hacer un fallback.
+These variables are the documented activation path. They're only set when
+an NVIDIA GPU is actually present, because forcing
+__GLX_VENDOR_LIBRARY_NAME=nvidia on a machine without the driver breaks GLX
+outright instead of falling back gracefully.
 """
 
 import glob
@@ -21,12 +21,11 @@ _EGL_NVIDIA_JSON = "/usr/share/glvnd/egl_vendor.d/10_nvidia.json"
 
 
 def nvidia_present():
-    """True si hay un driver de NVIDIA cargado y existe su fichero EGL vendor.
+    """True if an NVIDIA driver is loaded and its EGL vendor file exists.
 
-    Comprueba /proc en lugar de invocar nvidia-smi: esto se ejecuta durante
-    la descripción del lanzamiento, y un subproceso ahí cuesta latencia de
-    arranque en cada lanzamiento para una pregunta que una comprobación de
-    fichero ya responde.
+    Checks /proc instead of invoking nvidia-smi: this runs during launch
+    description, and a subprocess there costs startup latency on every
+    launch for a question a file check already answers.
     """
     if not os.path.exists(_EGL_NVIDIA_JSON):
         return False
@@ -34,10 +33,10 @@ def nvidia_present():
 
 
 def offload_env():
-    """Overrides de entorno que mueven el renderizado a la GPU discreta.
+    """Environment overrides that move rendering to the discrete GPU.
 
-    Devuelve un diccionario vacío cuando no hay GPU NVIDIA, para que quien
-    llame pueda aplicarlo sin condiciones y siga siendo portable.
+    Returns an empty dict when there's no NVIDIA GPU, so callers can apply
+    it unconditionally and stay portable.
     """
     if not nvidia_present():
         return {}

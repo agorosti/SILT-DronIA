@@ -1,0 +1,168 @@
+[1/4] starting simulator (solar_farm)
+  both cameras live
+[2/4] starting ArduPilot SITL
+[Errno 111] Connection refused sleeping
+  link up
+[3/4] flying route: 8.0 m, 70 waypoints (35 tables), capped at 60.0s
+  waiting for GPS/EKF ...
+  3D fix, 10 sats (10s)
+    Arm: Accels inconsistent
+    Arm: AHRS: waiting for home
+    Arm: Gyros inconsistent
+    Arm: Need Position Estimate
+    PreArm: Need Position Estimate
+  armed (34s)
+  at altitude (9s)
+  route: 70 waypoints (35 tables x 2 endpoints), arrival 1.5 m, timeout 25.0 s/wp
+
+  [dbg   0.0s] wp_idx=0/70 since_wp_t0=0.0s last_m=never
+
+  [  0.2s] table_0000_in:   5.8 m to go (N +4.7 m, E -3.4 m), spd 0.0 m/s
+
+  [  0.7s] mode -> GUIDED
+    1.0s  30 frames
+  [dbg   2.0s] wp_idx=0/70 since_wp_t0=2.0s last_m=0.1s ago
+    2.1s  60 frames
+  [  2.7s] table_0000_in reached (1.1 m)
+    3.1s  90 frames
+  [  3.3s] table_0000_out:  10.8 m to go (N +10.8 m, E -0.0 m), spd 0.9 m/s
+
+  [dbg   4.0s] wp_idx=1/70 since_wp_t0=1.3s last_m=0.0s ago
+    4.1s  120 frames    5.2s  150 frames
+  [dbg   6.0s] wp_idx=1/70 since_wp_t0=3.3s last_m=0.1s ago
+    6.2s  180 frames
+  [  6.5s] table_0000_out:   2.0 m to go (N +2.0 m, E +0.1 m), spd 2.6 m/s
+
+  [  6.9s] table_0000_out reached (1.1 m)
+    7.3s  210 frames
+  [  7.6s] table_0001_in reached (1.3 m)
+
+  [dbg   8.0s] wp_idx=3/70 since_wp_t0=0.5s last_m=0.0s ago
+    8.3s  240 frames    9.3s  270 frames
+  [  9.7s] table_0001_out:   6.1 m to go (N +6.1 m, E +0.1 m), spd 4.3 m/s
+
+  [dbg  10.0s] wp_idx=3/70 since_wp_t0=2.5s last_m=0.1s ago
+   10.4s  300 frames
+  [ 11.1s] table_0001_out reached (1.3 m)
+   11.4s  330 frames
+  [ 11.8s] table_0002_in reached (1.5 m)
+
+  [dbg  12.0s] wp_idx=5/70 since_wp_t0=0.3s last_m=0.1s ago
+   12.5s  360 frames
+  [ 12.8s] table_0002_out:  11.0 m to go (N +11.0 m, E -0.2 m), spd 1.9 m/s
+   13.5s  390 frames
+  [dbg  14.0s] wp_idx=5/70 since_wp_t0=2.3s last_m=0.0s ago
+   14.5s  420 frames   15.5s  450 frames
+  [ 15.6s] table_0002_out reached (1.3 m)
+
+  [ 15.9s] table_0003_in:   2.2 m to go (N +2.1 m, E +0.2 m), spd 1.8 m/s
+
+  [dbg  16.0s] wp_idx=6/70 since_wp_t0=0.4s last_m=0.2s ago
+
+  [ 16.3s] table_0003_in reached (1.5 m)
+   16.5s  480 frames   17.6s  510 frames
+  [dbg  18.0s] wp_idx=7/70 since_wp_t0=1.8s last_m=0.1s ago
+   18.6s  540 frames
+  [ 18.9s] table_0003_out:   5.6 m to go (N +5.6 m, E -0.1 m), spd 4.1 m/s
+   19.6s  570 frames
+  [dbg  20.1s] wp_idx=7/70 since_wp_t0=3.8s last_m=0.1s ago
+
+  [ 20.4s] table_0003_out reached (1.1 m)
+   20.6s  600 frames
+  [ 21.0s] table_0004_in reached (1.5 m)
+   21.7s  630 frames
+  [dbg  22.1s] wp_idx=9/70 since_wp_t0=1.0s last_m=0.2s ago
+
+  [ 22.1s] table_0004_out:  10.7 m to go (N +10.7 m, E -0.0 m), spd 2.5 m/s
+   22.7s  660 frames   23.8s  690 frames
+  [dbg  24.1s] wp_idx=9/70 since_wp_t0=3.0s last_m=0.1s ago
+
+  [ 24.8s] table_0004_out reached (1.4 m)
+   24.8s  720 frames
+  [ 25.2s] table_0005_in:   1.8 m to go (N +1.8 m, E +0.1 m), spd 1.5 m/s
+
+  [ 25.7s] table_0005_in reached (1.3 m)
+   25.9s  750 frames
+  [dbg  26.1s] wp_idx=11/70 since_wp_t0=0.4s last_m=0.0s ago
+   26.9s  780 frames   27.9s  810 frames
+  [dbg  28.1s] wp_idx=11/70 since_wp_t0=2.4s last_m=0.2s ago
+
+  [ 28.3s] table_0005_out:   4.4 m to go (N +4.4 m, E +0.1 m), spd 3.8 m/s
+   28.9s  840 frames
+  [ 29.4s] table_0005_out reached (1.3 m)
+   30.0s  870 frames
+  [dbg  30.1s] wp_idx=12/70 since_wp_t0=0.7s last_m=0.1s ago
+
+  [ 30.2s] table_0006_in reached (1.3 m)
+   31.0s  900 frames
+  [ 31.5s] table_0006_out:  10.1 m to go (N +10.1 m, E -0.1 m), spd 3.1 m/s
+   32.0s  930 frames
+  [dbg  32.1s] wp_idx=13/70 since_wp_t0=1.9s last_m=0.2s ago
+   33.1s  960 frames
+  [ 33.9s] table_0006_out reached (1.3 m)
+   34.1s  990 frames
+  [dbg  34.1s] wp_idx=14/70 since_wp_t0=0.1s last_m=0.1s ago
+
+  [ 34.6s] table_0007_in reached (1.4 m)
+
+  [ 34.8s] table_0007_out:  11.9 m to go (N +11.9 m, E +0.0 m), spd 0.8 m/s
+   35.1s  1020 frames
+  [dbg  36.1s] wp_idx=15/70 since_wp_t0=1.5s last_m=0.1s ago
+   36.1s  1050 frames   37.1s  1080 frames
+  [ 37.9s] table_0007_out:   3.0 m to go (N +3.0 m, E +0.0 m), spd 3.2 m/s
+
+  [dbg  38.1s] wp_idx=15/70 since_wp_t0=3.5s last_m=0.0s ago
+   38.2s  1110 frames
+  [ 38.5s] table_0007_out reached (1.3 m)
+
+  [ 39.1s] table_0008_in reached (1.4 m)
+   39.2s  1140 frames
+  [dbg  40.1s] wp_idx=17/70 since_wp_t0=1.0s last_m=0.2s ago
+   40.2s  1170 frames
+  [ 41.0s] table_0008_out:   9.0 m to go (N +9.0 m, E -0.1 m), spd 3.4 m/s
+   41.3s  1200 frames
+  [dbg  42.1s] wp_idx=17/70 since_wp_t0=3.0s last_m=0.1s ago
+   42.3s  1230 frames
+  [ 43.3s] table_0008_out reached (1.2 m)
+   43.3s  1260 frames
+  [ 44.1s] table_0009_in reached (1.4 m)
+
+  [dbg  44.1s] wp_idx=19/70 since_wp_t0=0.0s last_m=0.0s ago
+
+  [ 44.3s] table_0009_out:  11.8 m to go (N +11.8 m, E +0.0 m), spd 1.2 m/s
+   44.3s  1290 frames   45.4s  1320 frames
+  [dbg  46.1s] wp_idx=19/70 since_wp_t0=2.0s last_m=0.1s ago
+   46.4s  1350 frames
+  [ 47.4s] table_0009_out:   1.9 m to go (N +1.9 m, E +0.0 m), spd 2.6 m/s
+   47.4s  1380 frames
+  [ 47.6s] table_0009_out reached (1.4 m)
+
+  [dbg  48.1s] wp_idx=20/70 since_wp_t0=0.5s last_m=0.1s ago
+   48.5s  1410 frames   49.5s  1440 frames
+  [dbg  50.1s] wp_idx=20/70 since_wp_t0=2.5s last_m=0.0s ago
+   50.5s  1470 frames
+  [ 50.5s] table_0019_in reached (1.4 m)
+
+  [ 50.7s] table_0019_out:  10.9 m to go (N -10.8 m, E +1.1 m), spd 1.9 m/s
+   51.5s  1500 frames
+  [dbg  52.2s] wp_idx=21/70 since_wp_t0=1.7s last_m=0.0s ago
+   52.5s  1530 frames   53.6s  1560 frames
+  [ 53.9s] table_0019_out:   3.3 m to go (N -3.3 m, E -0.0 m), spd 3.3 m/s
+
+  [dbg  54.2s] wp_idx=21/70 since_wp_t0=3.7s last_m=0.1s ago
+   54.6s  1590 frames
+  [ 54.7s] table_0019_out reached (1.1 m)
+
+  [ 55.3s] table_0018_in reached (1.4 m)
+   55.6s  1620 frames
+  [dbg  56.2s] wp_idx=23/70 since_wp_t0=0.9s last_m=0.1s ago
+   56.7s  1650 frames
+  [ 56.9s] table_0018_out:   9.7 m to go (N -9.7 m, E -0.1 m), spd 2.9 m/s
+   57.7s  1680 frames
+  [dbg  58.2s] wp_idx=23/70 since_wp_t0=2.9s last_m=0.2s ago
+   58.7s  1710 frames
+  [ 59.4s] table_0018_out reached (1.3 m)
+   59.7s  1740 frames
+[4/4] finishing
+
+  videos/site_j_route_thermal_test.mp4  1748 frames @ 30 fps  (49.7 MB)

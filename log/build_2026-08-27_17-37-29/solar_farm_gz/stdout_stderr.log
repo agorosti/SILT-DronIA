@@ -1,0 +1,9 @@
+-- Found ament_cmake: 2.5.6 (/opt/ros/jazzy/share/ament_cmake/cmake)
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Configuring done (0.4s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/andres/solar_farm_sim/build/solar_farm_gz
+failed to create symbolic link '/home/andres/solar_farm_sim/build/solar_farm_gz/ament_cmake_python/solar_farm_gz/solar_farm_gz' because existing path cannot be removed: Is a directory
+gmake[2]: *** [CMakeFiles/ament_cmake_python_symlink_solar_farm_gz.dir/build.make:70: CMakeFiles/ament_cmake_python_symlink_solar_farm_gz] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:138: CMakeFiles/ament_cmake_python_symlink_solar_farm_gz.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2
