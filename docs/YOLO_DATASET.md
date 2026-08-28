@@ -231,9 +231,9 @@ carpeta del dataset.
 | `site_h_seed902_flight_49s.mp4` | site_h | 902 | 49 s | |
 | `site_i_seed903_flight_60s.mp4` | site_i | 903 | 60 s | |
 | `site_j_seed1101_flight_55s_wow.mp4` | site_j | 1101 | 55 s | hierba, cielo azul saturado, oscilación senoidal de 3 m en altitud por cada fila cruzada |
-| `site_j_seed1101_flight_60s_tfm.mp4` | site_j | 1101 | 60 s | + texto de título/estado personalizado desde `.env`, oscilación de 4 m, recuento real de módulos/defectos (corrección de error) |
+| `site_j_seed1101_flight_60s.mp4` | site_j | 1101 | 60 s | + texto de título/estado personalizado desde `.env`, oscilación de 4 m, recuento real de módulos/defectos (corrección de error) |
 | `site_j_seed1101_flight_45s_thermal.mp4` | site_j | 1101 | 45 s | primera prueba de `--thermal`, **antes** de la corrección de contraste (mancha roja uniforme — se conserva como referencia de antes/después) |
-| `site_j_seed1101_flight_60s_tfm_thermal.mp4` | site_j | 1101 | 60 s | todo lo anterior + señal nadir térmica calibrada — el vídeo combinado final |
+| `site_j_seed1101_flight_60s_thermal.mp4` | site_j | 1101 | 60 s | todo lo anterior + señal nadir térmica calibrada — el vídeo combinado final |
 
 **Estado actual (27/08):** de los ocho, solo `preview_flight_76s.mp4`
 sigue en `videos/`; el resto se ha borrado en una limpia posterior, ya

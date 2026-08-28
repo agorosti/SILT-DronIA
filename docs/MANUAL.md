@@ -36,11 +36,16 @@ referencia rápida después.
 
 ### Origen: por qué existe una simulación en vez de un dron real
 
-Este proyecto nace dentro del Trabajo Fin de Máster (TFM) de **Lucía
-Gorostidi**, con un objetivo concreto: simular el vuelo de un dron de
-inspección sobre un parque solar fotovoltaico capaz de detectar defectos en
-los paneles — suciedad, grietas, delaminación, excrementos de aves — de
-forma automática y sin intervención manual.
+Este proyecto es una demostración open source de **EuropeSIP
+Communications S.L.**, empresa especializada en Transformación Digital,
+Portales e Inteligencia Artificial, para explorar las posibilidades de la
+IA en el reconocimiento de imagen y las decisiones basadas en visión
+aplicadas a la ingeniería (más información en las [soluciones de IA de
+EuropeSIP](https://www.europesip.com/es/europesip/soluciones/inteligencia-artificial)).
+El objetivo concreto: simular el vuelo de un dron de inspección sobre un
+parque solar fotovoltaico capaz de detectar defectos en los paneles —
+suciedad, grietas, delaminación, excrementos de aves — de forma
+automática y sin intervención manual, usando **YOLO** y **OpenCV**.
 
 El plan original no era este. La idea inicial era hacerlo con un dron
 real: construirlo desde cero, montar los sensores necesarios — incluida una
@@ -55,8 +60,8 @@ sola para hacer descarrilar el proyecto:
   suficiente para detectar puntos calientes en un panel dañado no es
   barata, y se suma al resto del material necesario: chasis, controlador
   de vuelo, cámara RGB, enlace de vídeo, baterías, repuestos por si algo se
-  rompe en un vuelo de pruebas... Para un TFM, ese presupuesto deja de ser
-  trivial muy rápido.
+  rompe en un vuelo de pruebas... para un prototipo, ese presupuesto deja
+  de ser trivial muy rápido.
 - **El acceso legal a instalaciones.** Volar un dron sobre una planta
   fotovoltaica real, cumpliendo la normativa de aviación civil vigente
   (autorizaciones, restricciones de espacio aéreo, seguros de
@@ -67,17 +72,18 @@ sola para hacer descarrilar el proyecto:
   puntos anteriores, hace falta una instalación con defectos reales,
   variados y en cantidad suficiente para poder entrenar y evaluar un
   detector — y, lógicamente, ningún operador de una planta solar tiene
-  paneles rotos o sucios esperando a que alguien los fotografíe para un
-  trabajo académico.
+  paneles rotos o sucios esperando a que alguien los fotografíe para una
+  demostración.
 
 Ante ese escenario, la alternativa razonable quedó clara: si no se puede
 llevar el dron hasta un parque solar dañado, se puede llevar el parque
 solar — con sus defectos, y a demanda — hasta el dron, dentro de un mundo
-simulado. Por eso este proyecto usa Gazebo y ROS 2, y no lo hace como
-sustituto de segunda categoría del dron real, sino como la vía que permite
-completar el objetivo del TFM sin depender del coste del equipo, de la
-burocracia de vuelo ni de la disponibilidad de una instalación real ya
-dañada:
+simulado. Por eso este proyecto usa Gazebo y ROS 2 — herramientas que
+permiten simular con fidelidad el comportamiento de robots industriales y
+drones —, y no lo hace como sustituto de segunda categoría del dron real,
+sino como la vía que permite prototipar y completar el objetivo del
+proyecto sin depender del coste del equipo, de la burocracia de vuelo ni
+de la disponibilidad de una instalación real ya dañada:
 
 - Un parque solar generado proceduralmente no tiene coste de acceso ni de
   propietario: se genera con un único comando, con tantos defectos, tipos y

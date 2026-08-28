@@ -186,8 +186,9 @@ Pequeños puntos internos, registrados para completitud:
   `autonomous_flight.py`) en vez de asumir un valor fijo por mundo — ata
   con el punto anterior.
 - **Encontrado hoy (27/08), segundo caso.** En los vuelos de 60 s grabados
-  para la demo de inferencia (`site_j_seed1101_flight_60s_tfm.mp4` y su
-  contraparte `_thermal`), el dron sale del recinto vallado cerca del
+  para la demo de inferencia (`site_j_seed1101_flight_60s.mp4` y su
+  contraparte `_thermal`, ya sustituidos por la versión de 120 s con
+  `--route`), el dron sale del recinto vallado cerca del
   final de la grabación: en el vídeo RGB el contenido es bueno hasta
   ~40 s y ya está fuera de la valla en el 41 s; en el térmico se degrada
   antes, buen contenido hasta ~39 s. En ambos casos la lectura de `ALT`

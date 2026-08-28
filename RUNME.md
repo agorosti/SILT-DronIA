@@ -258,12 +258,13 @@ ros2 run solar_farm_gz flight_video -- \
 | `--nadir-out` | desactivado | además del vídeo compuesto de `--out`, escribe la señal de nadir en crudo (resolución nativa, sin recuadro ni HUD) a esta ruta, grabada en el mismo vuelo — la resolución sobre la que entrena el detector, útil para correr inferencia sin la pérdida de nitidez de recortar el recuadro incrustado |
 | `--keep` | desactivado | conserva el mundo de captura temporal (útil para depurar) |
 
-**Personalizar el título sin tocar nada en cada comando** — edita el
-`.env` en la raíz del proyecto:
+**Personalizar el título sin tocar nada en cada comando** — copia
+`.env-sample` a `.env` (no versionado, ver `.gitignore`) en la raíz del
+proyecto y ajusta los valores:
 
 ```bash
 # .env
-FLIGHT_TITLE_LINE1=TFM de <tu nombre> - <tu universidad> - Inspección Solar
+FLIGHT_TITLE_LINE1=EuropeSIP Communications - Inspección Solar con IA
 FLIGHT_TITLE_LINE2=Dron Autoconstruido | Raspberry Pi Camera Module 3, nadir
 FLIGHT_STATUS_LABEL=Simulacion Ardupilot (SITL-GUIDED)
 ```

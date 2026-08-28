@@ -4,13 +4,21 @@ Mundos de parques solares fotovoltaicos generados proceduralmente para
 **Gazebo Harmonic** y **ROS 2 Jazzy**, construidos para investigación de
 inspección aérea.
 
+Proyecto open source de **EuropeSIP Communications S.L.** — empresa
+especializada en Transformación Digital, Portales e Inteligencia
+Artificial — para explorar las posibilidades de la IA en un campo tan
+relevante como el reconocimiento de imagen y las decisiones basadas en
+visión aplicadas a la ingeniería. Más información sobre las soluciones de
+IA de EuropeSIP en
+[europesip.com/es/europesip/soluciones/inteligencia-artificial](https://www.europesip.com/es/europesip/soluciones/inteligencia-artificial).
+
 ## Contexto y motivación
 
-Este proyecto nace dentro del Trabajo Fin de Máster (TFM) de **Lucía
-Gorostidi**, con un objetivo concreto: simular el vuelo de un dron de
+El objetivo concreto de este proyecto: simular el vuelo de un dron de
 inspección sobre un parque solar fotovoltaico capaz de detectar defectos en
 los paneles — suciedad, grietas, delaminación, excrementos de aves — de
-forma automática y sin intervención manual.
+forma automática y sin intervención manual, usando **YOLO** y **OpenCV**
+para el reconocimiento de imagen.
 
 El plan original no era este. La idea inicial era hacerlo con un dron
 real: construirlo desde cero, montar los sensores necesarios — incluida una
@@ -25,8 +33,8 @@ sola para hacer descarrilar el proyecto:
   suficiente para detectar puntos calientes en un panel dañado no es
   barata, y se suma al resto del material necesario: chasis, controlador
   de vuelo, cámara RGB, enlace de vídeo, baterías, repuestos por si algo se
-  rompe en un vuelo de pruebas... Para un TFM, ese presupuesto deja de ser
-  trivial muy rápido.
+  rompe en un vuelo de pruebas... para un prototipo, ese presupuesto deja
+  de ser trivial muy rápido.
 - **El acceso legal a instalaciones.** Volar un dron sobre una planta
   fotovoltaica real, cumpliendo la normativa de aviación civil vigente
   (autorizaciones, restricciones de espacio aéreo, seguros de
@@ -37,13 +45,16 @@ sola para hacer descarrilar el proyecto:
   puntos anteriores, hace falta una instalación con defectos reales,
   variados y en cantidad suficiente para poder entrenar y evaluar un
   detector — y, lógicamente, ningún operador de una planta solar tiene
-  paneles rotos o sucios esperando a que alguien los fotografíe para un
-  trabajo académico.
+  paneles rotos o sucios esperando a que alguien los fotografíe para una
+  demostración.
 
 Ante ese escenario, la alternativa razonable quedó clara: si no se puede
 llevar el dron hasta un parque solar dañado, se puede llevar el parque
 solar — con sus defectos, y a demanda — hasta el dron, dentro de un mundo
-simulado.
+simulado. Para eso se ha elegido simular el entorno con **Gazebo** y
+**ROS 2** — herramientas que permiten simular con fidelidad el
+comportamiento de robots industriales y drones — y así prototipar la
+solución de extremo a extremo antes de depender de hardware real.
 
 **Por qué la simulación con Gazebo y ROS 2 cubre esos huecos, y no es un
 sustituto de segunda categoría:**
@@ -69,11 +80,15 @@ sustituto de segunda categoría:**
   variado.
 
 En resumen: la simulación no sustituye al dron real por falta de
-ambición, sino que es la vía que permite completar el objetivo del TFM —
-entrenar y validar un sistema de detección de defectos sobre un dron de
-inspección — sin depender del coste del equipo, de la burocracia de vuelo
-ni de la disponibilidad de una instalación real ya dañada. El resto de este
-documento es la referencia técnica completa de ese sistema.
+ambición, sino que es la vía que permite completar el objetivo del
+proyecto — entrenar y validar un sistema de detección de defectos sobre un
+dron de inspección — sin depender del coste del equipo, de la burocracia de
+vuelo ni de la disponibilidad de una instalación real ya dañada. Además del
+mundo virtual donde volar el dron, este prototipo viene preparado para
+generar el dataset de imágenes anotadas que después sirve como prueba de
+concepto para entrenar el modelo de IA — el pipeline completo, de
+principio a fin. El resto de este documento es la referencia técnica
+completa de ese sistema.
 
 ---
 
