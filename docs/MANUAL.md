@@ -49,14 +49,16 @@ parque solar fotovoltaico capaz de detectar defectos en los paneles —
 suciedad, grietas, delaminación, excrementos de aves — de forma
 automática y sin intervención manual, usando **YOLO** y **OpenCV**.
 
-El plan original no era este. La idea inicial era hacerlo con un dron
-real: construirlo desde cero, montar los sensores necesarios — incluida una
-cámara termográfica, clave para detectar puntos calientes en celdas
-dañadas — y volar sobre instalaciones fotovoltaicas reales para capturar y
-etiquetar imágenes de defectos con las que entrenar un detector.
+Este proyecto nace de las dificultades que plantea llevar a cabo esta
+inspección con un dron real: construirlo desde cero, montar los sensores
+necesarios — incluida una cámara termográfica, clave para detectar puntos
+calientes en celdas dañadas —, volar sobre instalaciones fotovoltaicas
+reales para capturar imágenes de defectos, y a partir de ahí crear, depurar
+y mantener un dataset de defectos reales con el que entrenar y probar el
+modelo de IA.
 
-Ese plan se topó pronto con varias dificultades, cada una suficiente por sí
-sola para hacer descarrilar el proyecto:
+Cada una de estas dificultades es, por sí sola, suficiente para hacer
+descarrilar el proyecto:
 
 - **El coste del equipo.** Una cámara termográfica con resolución
   suficiente para detectar puntos calientes en un panel dañado no es
@@ -76,6 +78,12 @@ sola para hacer descarrilar el proyecto:
   detector — y, lógicamente, ningún operador de una planta solar tiene
   paneles rotos o sucios esperando a que alguien los fotografíe para una
   demostración.
+- **Crear, depurar y gestionar el dataset de defectos reales.** Incluso
+  resolviendo los tres puntos anteriores, cada imagen capturada hay que
+  revisarla, etiquetarla y validarla a mano, detectar y corregir errores de
+  etiquetado, y mantener el conjunto creciendo y organizado a medida que se
+  acumulan nuevos casos — un proceso manual, lento y propenso a errores que
+  hay que sostener durante todo el desarrollo del detector.
 
 Ante ese escenario, la alternativa razonable quedó clara: si no se puede
 llevar el dron hasta un parque solar dañado, se puede llevar el parque

@@ -21,14 +21,14 @@ defects in the panels — dirt, cracks, delamination, bird droppings —
 without manual intervention, using **YOLO** and **OpenCV** for image
 recognition.
 
-The original plan wasn't this one. The initial idea was to do it with a
-real drone: build it from scratch, mount the necessary sensors — including
-a thermal camera, key to detecting hot spots in damaged cells — and fly
-over real photovoltaic installations to capture and label defect images to
-train a detector.
+This project grows out of the difficulties involved in carrying out this
+inspection with a real drone: building it from scratch, mounting the
+necessary sensors — including a thermal camera, key to detecting hot spots
+in damaged cells —, flying over real photovoltaic installations to capture
+defect images, and from there creating, debugging, and maintaining a
+dataset of real defects to train and test the AI model.
 
-That plan quickly ran into several difficulties, any one of which would
-have been enough to derail the project on its own:
+Each of these difficulties is, on its own, enough to derail the project:
 
 - **Equipment cost.** A thermal camera with enough resolution to detect
   hot spots on a damaged panel isn't cheap, and it adds to the rest of the
@@ -46,6 +46,12 @@ have been enough to derail the project on its own:
   sufficient quantity to train and evaluate a detector — and, naturally,
   no solar plant operator has broken or dirty panels sitting around
   waiting to be photographed for a demo.
+- **Creating, debugging, and managing the real-defect dataset.** Even
+  after solving the three points above, every captured image still has to
+  be reviewed, labeled, and validated by hand, labeling errors have to be
+  found and fixed, and the set has to be kept growing and organized as new
+  cases accumulate — a manual, slow, error-prone process that has to be
+  sustained for as long as the detector is being developed.
 
 Given that scenario, the reasonable alternative became clear: if the drone
 can't be brought to a damaged solar farm, the solar farm — with its
