@@ -1,5 +1,7 @@
 # Ejecutar la simulación
 
+*This document is also available in [English](INSTRUCTIONS-en.md).*
+
 Cómo configurar y operar el dron de inspección del parque solar.
 
 Las secciones 1–4 son una configuración inicial, de una sola vez. Después de

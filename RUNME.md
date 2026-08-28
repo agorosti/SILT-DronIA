@@ -1,5 +1,7 @@
 # RUNME — lanzar la simulación y generar vídeos
 
+*This document is also available in [English](RUNME-en.md).*
+
 Referencia rápida y práctica: cómo poner en marcha la simulación en Gazebo,
 y cómo generar un vídeo **aparte**, sin tener que volar a mano — ya sea
 para una demo/presentación o como footage para probar un pipeline de

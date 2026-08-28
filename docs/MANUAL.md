@@ -1,5 +1,7 @@
 # Manual completo — solar_farm_gz
 
+*This document is also available in [English](MANUAL-en.md).*
+
 Guía de referencia única del proyecto: qué es, cómo está construido, por qué
 está construido así, y cómo instalarlo, generarlo y volarlo paso a paso.
 Este documento reúne y amplía lo que ya cuentan el [README](../README.md), la

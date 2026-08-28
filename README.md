@@ -1,5 +1,7 @@
 # solar_farm_gz
 
+*This document is also available in [English](README-en.md).*
+
 Mundos de parques solares fotovoltaicos generados proceduralmente para
 **Gazebo Harmonic** y **ROS 2 Jazzy**, construidos para investigación de
 inspección aérea.
